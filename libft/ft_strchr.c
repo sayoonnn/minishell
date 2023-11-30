@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/05 13:54:04 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/05 16:44:56 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+char	*ft_strchr(const char *s, int c)
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
-
-#endif
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if (*s == (char)c)
+		return ((char *)s);
+	return (NULL);
+}

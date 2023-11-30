@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/05 12:49:10 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/07 15:23:58 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
+	size_t	cnt;
 
-#endif
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	cnt = 0;
+	while (*(src + cnt) && cnt < dstsize - 1)
+	{
+		*(dst + cnt) = *(src + cnt);
+		cnt++;
+	}
+	*(dst + cnt) = 0;
+	return (ft_strlen(src));
+}

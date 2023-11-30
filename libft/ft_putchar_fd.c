@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/06 16:00:01 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/07 14:56:31 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
+#include <unistd.h>
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+void	ft_putchar_fd(char c, int fd)
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
-
-#endif
+	write(fd, &c, 1);
+	return ;
+}

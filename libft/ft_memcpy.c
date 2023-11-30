@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/05 11:43:35 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/07 15:26:58 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
+	size_t	cnt;
 
-#endif
+	cnt = 0;
+	if (!dst && !src)
+		return (NULL);
+	while (cnt < n)
+	{
+		*((char *)dst + cnt) = *((char *)src + cnt);
+		cnt ++;
+	}
+	return (dst);
+}

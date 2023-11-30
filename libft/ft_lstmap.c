@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/07 16:12:11 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/07 17:00:06 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
+	t_list	*tmp;
+	void	*tcont;
+	t_list	*rev;
 
-#endif
+	rev = NULL;
+	while (lst != NULL)
+	{
+		tcont = f(lst->content);
+		tmp = ft_lstnew(tcont);
+		if (!tmp)
+		{
+			del(tcont);
+			ft_lstclear(&rev, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&rev, tmp);
+		lst = lst->next;
+	}
+	return (rev);
+}

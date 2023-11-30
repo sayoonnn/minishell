@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/06 14:22:19 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/07 21:13:19 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
+#include <stdlib.h>
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
+	char	*tmp;
 
-#endif
+	if (ft_strlen(s) <= start)
+		return (ft_strdup(""));
+	if (start + len > ft_strlen(s))
+		len = ft_strlen(s) - start;
+	tmp = (char *)malloc((len + 1) * sizeof(char));
+	if (!tmp)
+		return (NULL);
+	ft_memcpy(tmp, s + start, len);
+	*(tmp + len) = 0;
+	return (tmp);
+}

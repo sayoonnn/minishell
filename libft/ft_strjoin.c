@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/06 14:44:28 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/06 15:17:07 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
+#include <stdlib.h>
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
+	char	*tmp;
+	int		s1_len;
+	int		s2_len;
 
-#endif
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	tmp = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	if (!tmp)
+		return (NULL);
+	ft_memcpy(tmp, s1, s1_len);
+	ft_memcpy(tmp + s1_len, s2, s2_len);
+	*(tmp + s1_len + s2_len) = 0;
+	return (tmp);
+}

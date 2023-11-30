@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/10/06 15:51:53 by sayoon            #+#    #+#             */
+/*   Updated: 2023/10/06 21:28:07 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
+#include <stdlib.h>
 
-# define PIPE 1
-
-#include "libft/libft.h"
-
-typedef struct s_tree_node
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
+	char			*tmp;
+	unsigned int	idx;
 
-#endif
+	tmp = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!tmp)
+		return (NULL);
+	idx = 0;
+	while (*(s + idx))
+	{
+		*(tmp + idx) = f(idx, *(s + idx));
+		idx++;
+	}
+	tmp[idx] = 0;
+	return (tmp);
+}
