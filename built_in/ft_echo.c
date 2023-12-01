@@ -23,7 +23,7 @@ static size_t	ft_arrlen(char *arr[])
 	return (i);
 }
 
-void	ft_echo(char *arg[])
+int	ft_echo(char *arg[])
 {
 	size_t	i;
 
@@ -44,4 +44,5 @@ void	ft_echo(char *arg[])
 		else
 			printf("%s\n", arg[2]);
 	}
+	return (0);
 }

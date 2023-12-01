@@ -1,11 +1,14 @@
 NAME	= minishell
-SRC		= ft_cd.c
+SRC		= built_in/ft_env.c built_in/ft_export.c built_in/env_tree_func.c tmp.c\
+		  built_in/ft_unset.c
 OBJ		= $(SRC:.c=.o)
+
+INC		= ./includes
 
 LIBFT	= libft/libft.a
 
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra -g
 
 all :
 	@make $(NAME) -j4
@@ -18,8 +21,8 @@ $(LIBFT):
 	@make -C libft
 	@echo LIBFT DONE ✅
 
-%.o : %.c minishell.h
-	@$(CC) $(CFLAGS) -c $< -o $@
+%.o : %.c
+	@$(CC) $(CFLAGS) -c $< -o $@ -I $(INC)
 
 clean:
 	@make -C libft clean

@@ -24,10 +24,10 @@ SRC		= ft_atoi.c ft_bzero.c ft_calloc.c \
 
 OBJ		= $(SRC:.c=.o)
 
-B_SRC	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c\
-		  ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
+# B_SRC	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c\
+# 		  ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
 
-B_OBJ	= $(B_SRC:.c=.o)
+# B_OBJ	= $(B_SRC:.c=.o)
 
 CC 		= cc
 AR		= ar
@@ -37,12 +37,11 @@ ARFLAGS	= rc
 
 all: $(NAME)
 
-$(NAME): $(NAME)($(OBJ))
-bonus: $(NAME)($(B_OBJ))
+$(NAME): $(OBJ)
+	@$(AR) $(ARFLAGS) $@ $^
 
-(%.o): %.c libft.h
-	@$(CC) $(CFLAGS) -c $< -o $%
-	@$(AR) $(ARFLAGS) $@ $%
+%.o: %.c libft.h
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(B_OBJ)

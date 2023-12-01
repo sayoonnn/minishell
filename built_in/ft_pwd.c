@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 16:28:23 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/13 16:28:26 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/01 18:59:00 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/01 18:59:04 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#include "minishell.h"
 
-int	ft_strcmp(char *s1, char *s2)
+#include <limits.h>
+#include <unistd.h>
+#include <stdio.h>
+
+int	ft_pwd(void)
 {
-	if (s1 == NULL || s2 == NULL)
-		return (0);
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	return (*s1 - *s2);
+	char	path[PATH_MAX];
+
+	if (!getcwd(path, sizeof(path)))
+		return (1);
+	printf("%s\n", path);
+	return (0);
 }

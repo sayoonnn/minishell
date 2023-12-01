@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 16:28:23 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/13 16:28:26 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/01 19:34:57 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/01 19:34:57 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#include "minishell.h"
+#include "built_in_func.h"
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_env(t_envnode *envp)
 {
-	if (s1 == NULL || s2 == NULL)
-		return (0);
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	return (*s1 - *s2);
+	print_envnode(envp);
+	return (0);
 }

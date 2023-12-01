@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   built_in_func.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/01 20:27:06 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/01 20:27:08 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef BUILT_IN_FUNC_H
+# define BUILT_IN_FUNC_H
 
-# define PIPE 1
+# include "env_tree.h"
 
-#include "libft/libft.h"
-
-typedef struct s_tree_node
-{
-	int 			type;
-	// 정보
-	struct s_tree *left;
-	struct s_tree *right;
-}			t_tree_node;
+int		ft_echo(char *arg[]);
+int		ft_env(t_envnode *envp);
+int		ft_export(t_envnode *env, char *str);
+void	ft_exit(void);
+int		ft_pwd(void);
+int		ft_unset(t_envnode *env, char *str);
 
 #endif

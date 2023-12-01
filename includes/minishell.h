@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 16:28:23 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/13 16:28:26 by sayoon           ###   ########.fr       */
+/*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
+/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	if (s1 == NULL || s2 == NULL)
-		return (0);
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	return (*s1 - *s2);
-}
+#include "libft.h"
+
+#endif

@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 16:28:23 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/13 16:28:26 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/01 19:22:55 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/01 19:22:56 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
 
-int	ft_strcmp(char *s1, char *s2)
+void	ft_exit(void)
 {
-	if (s1 == NULL || s2 == NULL)
-		return (0);
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	return (*s1 - *s2);
+	exit(0);
 }
