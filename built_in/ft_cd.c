@@ -10,12 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
-#include "env_tree.h"
-#include <limits.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "minishell.h"
+#define PATH_MAX 4096
 
 static void	cd_home(t_envnode *env)
 {
@@ -25,6 +21,7 @@ static void	cd_home(t_envnode *env)
 	if (!home)
 	{
 		//에러설정
+		printf("home?\n");
 		return ;
 	}
 	if (chdir(home->value) < 0)
@@ -63,12 +60,9 @@ static void	cd_oldpwd(t_envnode *env)
 
 void	ft_cd(char *arg[], t_envnode *env)
 {
-	char		buffer[PATH_MAX];
-	t_envnode	*tmp;
-
-	if (arg[1] == NULL || !ft_strncmp(arg[1], "~", 1))
+	if (arg[1] == NULL || !ft_strcmp(arg[1], "~"))
 		cd_home(env);
-	else if (!ft_strncmp(arg[1], "-", 1))
+	else if (!ft_strcmp(arg[1], "-"))
 		cd_oldpwd(env);
 	if (chdir(arg[1]) < 0)
 		// bash: cd: /home/sayon/dfijos: No such file or directory

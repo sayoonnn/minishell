@@ -13,6 +13,15 @@
 #include "minishell.h"
 #include "built_in_func.h"
 
+static void	print_envnode(t_envnode *tree)
+{
+	if (tree == NULL)
+		return ;
+	print_envnode(tree->left);
+	printf("%s=%s\n", tree->key, tree->value);
+	print_envnode(tree->right);
+}
+
 int	ft_env(t_envnode *envp)
 {
 	print_envnode(envp);

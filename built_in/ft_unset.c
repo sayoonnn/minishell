@@ -13,8 +13,10 @@
 #include "minishell.h"
 #include "built_in_func.h"
 
-int	ft_unset(t_envnode *env, char *str)
+int	ft_unset(t_envnode *env, char *arg[])
 {
-	delete_envnode(env, str);
+	if (arg[1] == NULL)
+		return ;
+	delete_envnode(env, arg[1]);
 	return (1);
 }

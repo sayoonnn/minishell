@@ -29,15 +29,6 @@ t_envnode	*make_envnode(char *key, char *value)
 	return (tmp);
 }
 
-void	print_envnode(t_envnode *tree)
-{
-	if (tree == NULL)
-		return ;
-	print_envnode(tree->left);
-	printf("%s=%s\n", tree->key, tree->value);
-	print_envnode(tree->right);
-}
-
 t_envnode	*add_envnode(t_envnode *tree, t_envnode *newnode)
 {
 	if (tree == NULL)
@@ -66,55 +57,7 @@ t_envnode	*find_envnode(t_envnode *root, char *key)
 		return (root);
 	if (ft_strcmp(root->key, key) > 0)
 		return (find_envnode(root->left, key));
-	if (ft_strcmp(root->key, key < 0))
+	if (ft_strcmp(root->key, key) < 0)
 		return (find_envnode(root->right, key));
-	return (NULL);
-}
-
-static void	free_node(t_envnode *node)
-{
-	free(node->key);
-	free(node->value);
-	free(node);
-}
-
-t_envnode	*delete_envnode(t_envnode *env, char *str)
-{
-	t_envnode	*tmp;
-
-	if (env == NULL)
-		return (NULL);
-	if (ft_strcmp(env->key, str) > 0)
-		env->left = delete_envnode(env->left, str);
-	else if (ft_strcmp(env->key, str) < 0)
-		env->right = delete_envnode(env->right, str);
-	else
-	{
-		if (env->right == NULL && env->left == NULL)
-		{
-			free_node(env);
-			return (NULL);
-		}
-		if (env->right != NULL && env->left == NULL)
-		{
-			tmp = env->right;
-			free_node(env);
-			return (tmp);
-		}
-		if (env->right == NULL && env->left != NULL)
-		{
-			tmp = env->left;
-			free_node(env);
-			return (tmp);
-		}
-		tmp = env->right;
-		while (tmp->left != NULL)
-			tmp = tmp->left;
-		free(env->key);
-		free(env->value);
-		env->key = ft_strdup(tmp->key);
-		env->value = ft_strdup(tmp->value);
-		env->right = delete_envnode(env->right, env->key);
-	}
-	return (env);
+	return (root);
 }

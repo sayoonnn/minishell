@@ -32,14 +32,14 @@ int	ft_echo(char *arg[])
 		printf("\n");
 	else if (i == 2)
 	{
-		if (!ft_strncmp(arg[1], "-n", 2))
+		if (!ft_strcmp(arg[1], "-n"))
 			printf("");
 		else
 			printf("%s\n", arg[1]);
 	}
 	else
 	{
-		if (!ft_strncmp(arg[1], "-n", 2))
+		if (!ft_strcmp(arg[1], "-n"))
 			printf("%s", arg[2]);
 		else
 			printf("%s\n", arg[2]);

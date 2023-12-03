@@ -1,6 +1,6 @@
 NAME	= minishell
-SRC		= built_in/ft_env.c built_in/ft_export.c built_in/env_tree_func.c tmp.c\
-		  built_in/ft_unset.c
+SRC		= main.c utils/signal_handler.c utils/envp_utils.c utils/envtree_func.c\
+		  built_in/ft_env.c utils/envtree_func2.c built_in/ft_cd.c built_in/ft_export.c
 OBJ		= $(SRC:.c=.o)
 
 INC		= ./includes
@@ -8,14 +8,13 @@ INC		= ./includes
 LIBFT	= libft/libft.a
 
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra 
-#-fsanitize=address
+CFLAGS		= -Wall -Werror -Wextra -fsanitize=address
 
 all :
 	@make $(NAME) -j4
 
 $(NAME): $(OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $@
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $@ -lreadline
 	@echo $(NAME) DONE ✅ 
 
 $(LIBFT):
@@ -30,7 +29,8 @@ clean:
 	@rm -f $(OBJ)
 	@echo CLEAN DONE ✅
 
-fclean: clean
+fclean:
+	@make clean
 	@make -C libft fclean
 	@rm -f $(NAME)
 	@echo FCLEAN DONE ✅

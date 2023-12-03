@@ -27,6 +27,7 @@ typedef struct	s_envnode
 t_envnode	*make_envnode(char *key, char *value);
 t_envnode	*add_envnode(t_envnode *tree, t_envnode *newnode);
 t_envnode	*delete_envnode(t_envnode *env, char *str);
-void		print_envnode(t_envnode *tree);
+t_envnode	*find_envnode(t_envnode *root, char *key);
+void		clear_node(t_envnode *env);
 
 #endif
