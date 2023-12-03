@@ -20,10 +20,12 @@ t_envnode	*make_envnode(char *key, char *value)
 	tmp = malloc(sizeof(t_envnode));
 	if (!tmp)
 		exit(1);
-	tmp->key = key;
-	tmp->value = value;
+	tmp->key = ft_strdup(key);
+	tmp->value = ft_strdup(value);
 	tmp->left = NULL;
 	tmp->right = NULL;
+	if (!tmp->key || !tmp->value)
+		exit(1);
 	return (tmp);
 }
 
@@ -54,6 +56,19 @@ t_envnode	*add_envnode(t_envnode *tree, t_envnode *newnode)
 	else
 		tree->right = add_envnode(tree->right, newnode);
 	return (tree);
+}
+
+t_envnode	*find_envnode(t_envnode *root, char *key)
+{
+	if (root == NULL)
+		return (NULL);
+	if (!ft_strcmp(root->key, key))
+		return (root);
+	if (ft_strcmp(root->key, key) > 0)
+		return (find_envnode(root->left, key));
+	if (ft_strcmp(root->key, key < 0))
+		return (find_envnode(root->right, key));
+	return (NULL);
 }
 
 static void	free_node(t_envnode *node)

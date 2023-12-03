@@ -7,6 +7,7 @@ int main(int ac, char *av[], char *envp[]){
 	(void)av;
 	t_envnode *env;
 
+	env = NULL;
 	while (*envp){
 		char **tmp = ft_split(*envp, '=');
 		env = add_envnode(env, make_envnode(tmp[0], tmp[1]));
