@@ -17,6 +17,7 @@ static void	free_node(t_envnode *node)
 {
 	free(node->key);
 	free(node->value);
+	free(node->forarr);
 	free(node);
 }
 

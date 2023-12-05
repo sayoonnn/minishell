@@ -18,16 +18,26 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <limits.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <termios.h>
 # include "libft.h"
 # include "env_tree.h"
 # include "built_in_func.h"
 
 void		set_signal(void);
-t_envnode	*init_envp(char *envp[]);
+t_envtree	*init_envp(char *envp[]);
+void		print_enoent(char *pname, char *dirname);
+char		**make_envp(t_envtree *env);
+char		*make_command(char *cmd, t_envnode *path_node);
+void		exec_single_cmd(char *cmd, char *argv[], t_envtree *env);
+void		free_arr(char **arr);
+char		*make_tmpfile(char *end);
+void		handle_heredoc(char *file_name);
+
 
 #endif

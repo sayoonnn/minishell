@@ -1,6 +1,10 @@
-NAME	= minishell
-SRC		= main.c utils/signal_handler.c utils/envp_utils.c utils/envtree_func.c\
-		  built_in/ft_env.c utils/envtree_func2.c built_in/ft_cd.c built_in/ft_export.c
+NAME	=	minishell
+SRC		=	main.c\
+			builtin/ft_cd.c builtin/ft_echo.c builtin/ft_env.c builtin/ft_unset.c\
+			builtin/ft_exit.c builtin/ft_export.c builtin/ft_pwd.c\
+			utils/envtree_func.c utils/envtree_func2.c utils/envp_utils.c utils/signal_handler.c\
+			execve/execve_utils.c execve/execve.c\
+			utils/print_err.c
 OBJ		= $(SRC:.c=.o)
 
 INC		= ./includes
@@ -8,7 +12,7 @@ INC		= ./includes
 LIBFT	= libft/libft.a
 
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra -fsanitize=address
+CFLAGS		= -Wall -Werror -Wextra -fsanitize=address -g
 
 all :
 	@make $(NAME) -j4

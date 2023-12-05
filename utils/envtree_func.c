@@ -16,17 +16,28 @@
 t_envnode	*make_envnode(char *key, char *value)
 {
 	t_envnode	*tmp;
+	char		*t;
 
 	tmp = malloc(sizeof(t_envnode));
 	if (!tmp)
 		exit(1);
 	tmp->key = ft_strdup(key);
 	tmp->value = ft_strdup(value);
+	t = ft_strjoin(tmp->key, "=");
+	tmp->forarr = ft_strjoin(t, tmp->value);
+	free(t);
 	tmp->left = NULL;
 	tmp->right = NULL;
 	if (!tmp->key || !tmp->value)
 		exit(1);
 	return (tmp);
+}
+
+void	add_env(t_envtree *env, t_envnode *newnode)
+{
+	if (!find_envnode(env->root, newnode->key))
+		env->num_nodes++;
+	env->root = add_envnode(env->root, newnode);
 }
 
 t_envnode	*add_envnode(t_envnode *tree, t_envnode *newnode)
@@ -37,8 +48,10 @@ t_envnode	*add_envnode(t_envnode *tree, t_envnode *newnode)
 	{
 		free(tree->key);
 		free(tree->value);
+		free(tree->forarr);
 		tree->key = newnode->key;
 		tree->value = newnode->value;
+		tree->forarr = ft_strjoin(tree->value, tree->forarr);
 		free(newnode);
 		return (tree);
 	}

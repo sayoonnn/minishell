@@ -12,20 +12,50 @@
 
 #include "minishell.h"
 
-t_envnode	*init_envp(char *envp[])
+t_envtree	*init_envp(char *envp[])
 {
-	t_envnode	*env;
+	t_envtree	*env;
 	char		*key;
 	char		*value;
 
-	env = NULL;
+	env = malloc(sizeof(t_envtree));
+	if (!env)
+		exit(-1);
+	env->root = NULL;
+	env->num_nodes = 0;
 	while (*envp)
 	{
 		key = *envp;
 		value = ft_strchr(*envp, '=') + 1;
 		*ft_strchr(*envp, '=') = 0;
-		env = add_envnode(env, make_envnode(key, value));
+		env->root = add_envnode(env->root, make_envnode(key, value));
+		env->num_nodes++;
 		envp++;
 	}
 	return (env);
+}
+
+static void	make_arr(t_envtree *tree, t_envnode *env, char **envp)
+{
+	static int	i = 0;
+
+	if (tree->root == env)
+		i = 0;
+	if (env == NULL)
+		return ;
+	make_arr(tree, env->left, envp);
+	envp[i++] = env->forarr;
+	make_arr(tree, env->right, envp);
+}
+
+char	**make_envp(t_envtree *env)
+{
+	char	**tmp;
+
+	tmp = malloc(sizeof(char *) * (env->num_nodes + 1));
+	if (!tmp)
+		exit(1);
+	make_arr(env, env->root, tmp);
+	tmp[env->num_nodes] = NULL;
+	return (tmp);
 }

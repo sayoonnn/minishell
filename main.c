@@ -23,7 +23,7 @@ static void	startup_minishell(void)
 	buffer = get_next_line(fd);
 	while (buffer)
 	{
-		printf("\033[0;36m%s\033[0;38m", buffer);
+		printf("\033[0;32m%s\033[0;38m", buffer);
 		free(buffer);
 		buffer = get_next_line(fd);
 	}
@@ -33,7 +33,8 @@ static void	startup_minishell(void)
 int main(int ac, char *av[], char *envp[])
 {
 	char		*line;
-	t_envnode	*env;
+	char		**tmp;
+	t_envtree	*env;
 
 	(void)ac;
 	(void)av;
@@ -43,25 +44,15 @@ int main(int ac, char *av[], char *envp[])
 	line = readline("$> ");
 	while (line)
 	{
-		if (!ft_strcmp(line, "env"))
-			ft_env(env);
-		if (!ft_strncmp(line, "cd", 2))
-		{
-			char *tmp[2];
-			tmp[0] = line;
-			tmp[1] = ft_strchr(line, ' ') + 1;
-			ft_cd(tmp, env);
-			printf("%s\n", getcwd(NULL, 4096));
-		}
-		if (!ft_strncmp(line, "export", 6))
-		{
-			char *tmp[2];
-			tmp[0] = line;
-			tmp[1] = ft_strchr(line, ' ') + 1;
-			ft_export(tmp, env);
-		}
-		free(line);
+		tmp = ft_split(line, ' ');
+		exec_single_cmd(tmp[0], tmp, env);
+		int i = -1;
+		while (tmp[++i])
+			free(tmp[i]);
+		free(tmp);
+		add_history(line);
 		line = readline("$> ");
 	}
-	clear_node(env);
+	clear_node(env->root);
+	free(env);
 }

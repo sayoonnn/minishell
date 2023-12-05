@@ -18,46 +18,55 @@ static void	print_envnode(t_envnode *tree)
 	if (tree == NULL)
 		return ;
 	print_envnode(tree->left);
-	printf("declare - x %s=\"%s\"\n", tree->key, tree->value);
+	printf("declare -x %s=\"%s\"\n", tree->key, tree->value);
 	print_envnode(tree->right);
 }
 
-static void	add_value(t_envnode *env, char *key, char *value)
+static void	add_value(t_envtree *env, char *key, char *value)
 {
 	t_envnode	*node;
 	char		*tmp;
 
-	node = find_envnode(env, key);
+	node = find_envnode(env->root, key);
 	if (!node)
-		add_envnode(env, make_envnode(key, value));
+		add_env(env, make_envnode(key, value));
 	else
 	{
 		tmp = node->value;
 		node->value = ft_strjoin(node->value, value);
 		free(tmp);
+		tmp = node->forarr;
+		node->forarr = ft_strjoin(node->forarr, value);
+		free(tmp);
 	}
 }
 
-int	ft_export(char *arg[], t_envnode *env)
+int	ft_export(char *arg[], t_envtree *env)
 {
 	char	*key;
 	char	*value;
 
 	if (arg[1] == NULL)
-		print_envnode(env);
+	{
+		print_envnode(env->root);
+		return (0);
+	}
 	key = arg[1];
-	value = ft_strchr(arg[1], '=') + 1;
+	value = ft_strchr(arg[1], '=');
 	if (!value)
-		return (1);
+	{
+		add_env(env, make_envnode(key, ""));
+		return (0);
+	}
 	if (*(ft_strchr(arg[1], '=') - 1) == '+')
 	{
 		*ft_strchr(arg[1], '+') = 0;
-		add_value(env, key, value);
+		add_value(env, key, value + 1);
 	}
 	else
 	{
 		*ft_strchr(arg[1], '=') = 0;
-		add_envnode(env, make_envnode(key, value));
+		add_env(env, make_envnode(key, value + 1));
 	}
 	return (0);
 }

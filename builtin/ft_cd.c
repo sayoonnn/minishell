@@ -11,27 +11,26 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define PATH_MAX 4096
 
-static void	cd_home(t_envnode *env)
+static void	cd_home(t_envtree *env)
 {
-	t_envnode	*home;
+	t_envnode	*tmp;
+	char		*pwd;
 
-	home = find_envnode(env, "HOME");
-	if (!home)
+	pwd = getcwd(NULL, PATH_MAX);
+	if (!pwd)
+		exit(1);
+	tmp = find_envnode(env->root, "HOME");
+	if (chdir(tmp->value) < 0)
 	{
-		//에러설정
-		printf("home?\n");
+		print_enoent("cd", tmp->value);
 		return ;
 	}
-	if (chdir(home->value) < 0)
-	{
-		// 에러 설정
-		return ;
-	}
+	add_env(env, make_envnode("OLDPWD", pwd));
+	free(pwd);
 }
 
-static void	cd_oldpwd(t_envnode *env)
+static void	cd_oldpwd(t_envtree *env)
 {
 	t_envnode	*old;
 	char		*pwd;
@@ -42,30 +41,39 @@ static void	cd_oldpwd(t_envnode *env)
 		//에러 설정
 		exit(1) ;
 	}
-	old = find_envnode(env, "OLDPWD");
-	if (!old)
+	old = find_envnode(env->root, "OLDPWD");
+	if (old)
 	{
-		add_envnode(env, make_envnode("OLDPWD", pwd));
-		printf("%s\n", pwd);
-		free(pwd);
-		return ;
+		if (chdir(old->value) < 0)
+		{
+			print_enoent("cd", old->value);
+			return ;
+		}
 	}
 	printf("%s\n", old->value);
-	if (chdir(old->value) < 0)
-		return ;
-	free(old->value);
-	old->value = pwd;
-	return ;
+	add_env(env, make_envnode("OLDPWD", pwd));
+	free(pwd);
 }
 
-void	ft_cd(char *arg[], t_envnode *env)
+void	ft_cd(char *arg[], t_envtree *env)
 {
+	char	*cur;
+
+	cur = getcwd(NULL, PATH_MAX);
+	if (!cur)
+		exit(1);
 	if (arg[1] == NULL || !ft_strcmp(arg[1], "~"))
 		cd_home(env);
 	else if (!ft_strcmp(arg[1], "-"))
 		cd_oldpwd(env);
-	if (chdir(arg[1]) < 0)
-		// bash: cd: /home/sayon/dfijos: No such file or directory
-		// errno 설정
-	return ;
+	else 
+	{
+		if (chdir(arg[1]) < 0)
+		{
+			print_enoent("cd", arg[1]);
+			return ;
+		}
+		add_env(env, make_envnode("OLDPWD", cur));
+		free(cur);
+	}
 }

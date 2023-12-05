@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in_func.h                                    :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 20:27:06 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/01 20:27:08 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/05 16:34:16 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/05 16:34:17 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILT_IN_FUNC_H
-# define BUILT_IN_FUNC_H
+#include "minishell.h"
 
-void	ft_cd(char *arg[], t_envtree *env);
-int		ft_echo(char *arg[]);
-int		ft_env(t_envnode *envp);
-void	ft_exit(void);
-int		ft_export(char *arg[], t_envtree *env);
-int		ft_pwd(void);
-int		ft_unset(t_envtree *env, char *arg[]);
+int		ft_unset(t_envtree *env, char *arg[])
+{
+	int	i;
 
-#endif
+	i = 0;
+	while (arg[i])
+	{
+		delete_envnode(env->root, arg[i]);
+		env->num_nodes--;
+		i++;
+	}
+	return (1);
+}
