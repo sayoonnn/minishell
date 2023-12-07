@@ -29,7 +29,6 @@ void	set_signal(void)
 
 static void	signal_handler(int signal)
 {
-
 	if (signal == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
