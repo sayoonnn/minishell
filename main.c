@@ -44,12 +44,7 @@ int main(int ac, char *av[], char *envp[])
 	line = readline("$> ");
 	while (line)
 	{
-		tmp = ft_split(line, ' ');
-		exec_single_cmd(tmp[0], tmp, env);
-		int i = -1;
-		while (tmp[++i])
-			free(tmp[i]);
-		free(tmp);
+
 		add_history(line);
 		line = readline("$> ");
 	}

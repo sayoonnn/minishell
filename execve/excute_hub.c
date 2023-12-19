@@ -12,4 +12,5 @@
 
 #include "minishell.h"
 
+void	excute_hub()
 

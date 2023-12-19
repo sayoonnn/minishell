@@ -62,8 +62,6 @@ void	free_data(t_data *data)
 		}
 		if (data->argv_lst)
 			free(data->argv_lst);
-		if (data->root)
-			cut_tree(data->root);
 	}
 	free(data);
 }

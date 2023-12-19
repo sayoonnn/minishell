@@ -226,8 +226,6 @@ int	analyze_syntax(t_data *data)
 
 	while (!deque_empty(data->tokens))
 	{
-		printf("%d\n", deque_front(data->tokens));
-		printf("test deque front\n");
 		token_type = deque_front(data->tokens);
 		if (token_type == CMD || token_type == ARGV)
 			check = insert_cmd_token(data);

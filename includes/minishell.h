@@ -28,6 +28,7 @@
 # include "libft.h"
 # include "env_tree.h"
 # include "built_in_func.h"
+# include "parse_tree.h"
 
 void		set_signal(void);
 t_envtree	*init_envp(char *envp[]);
@@ -38,6 +39,8 @@ void		exec_single_cmd(char *cmd, char *argv[], t_envtree *env);
 void		free_arr(char **arr);
 char		*make_tmpfile(char *end);
 void		handle_heredoc(char *file_name);
+int			parse_line(char *line);
+void		cut_tree(t_tree_node *root);
 
 
 #endif

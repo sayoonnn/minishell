@@ -10,45 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "minishell.h"
 
-void	func()
+t_tree_node	*parse_line(char *line)
 {
-	system("leaks -q test");
-}
+	int			flag;
+	t_data		*data;
+	t_tree_node	*ret;
 
-void	traverse_parse_tree(t_tree_node *root)
-{
-	if (root != NULL)
-	{
-		traverse_parse_tree(root->left);
-		printf("%d\n", root->token_type);
-		traverse_parse_tree(root->right);
-	}
-}
-
-int	main(void)
-{
-	char	*cmd = "ls -l -a >>a<<b>c| grep \"\" | cat <x>>y";
-	t_data	*data;
-
-	atexit(func);
 	data = (t_data *)malloc(sizeof(t_data));
 	if (data == NULL)
-		return (1);
+		exit(1);
 	if (init_data(data))
-		return (1);
-	if (tokenize(cmd, data))
-	{
-		free_data(data);
-		return (1);
-	}
-	if (analyze_syntax(data))
-	{
-		free_data(data);
-		return (1);
-	}
-	traverse_parse_tree(data->root);
+		exit(1);
+	if (tokenize(line, data))
+		exit(1);
+	flag = analyze_syntax(data);
+	if (flag == 1)
+		exit(1);
+	else if (flag == -1)
+		return (NULL);
+	ret = data->root;
 	free_data(data);
-	return (0);
+	return (ret);
 }
