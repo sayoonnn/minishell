@@ -12,10 +12,11 @@
 
 #include "minishell.h"
 
-void	print_enoent(char *pname, char *dirname)
+void	print_err(char *pname, char *str_err)
 {
 	write(STDERR_FILENO, "minishell: ", 11);
 	write(STDERR_FILENO, pname, ft_strlen(pname));
 	write(STDERR_FILENO, ": ", 2);
-	perror(dirname);
+	write(STDERR_FILENO, str_err, ft_strlen(str_err));
+	write(STDERR_FILENO, "\n", 1);
 }

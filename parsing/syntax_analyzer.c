@@ -56,10 +56,10 @@ char	**convert_lst_to_array(t_list *lst)
 	tmp = lst->head;
 	while (tmp != NULL)
 	{
-		printf("%s ", tmp->content);
 		argvs[idx++] = tmp->content;
 		tmp = tmp->next;
 	}
+	argvs[idx] = NULL;
 	ft_lstclear(lst, 1);
 	return (argvs);
 }

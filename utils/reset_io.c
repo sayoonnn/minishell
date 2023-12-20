@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   reset_io.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 00:23:37 by sayoon            #+#    #+#             */
-/*   Updated: 2023/10/07 15:53:31 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/19 18:32:49 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/19 18:32:49 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	reset_io(int save[2])
 {
-	t_list	*tmp;
-
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = ft_lstlast(*lst);
-	tmp->next = new;
-	return ;
+	dup2(save[0], STDIN_FILENO);
+	dup2(save[1], STDOUT_FILENO);
+	close(save[0]);
+	close(save[1]);
 }

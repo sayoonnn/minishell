@@ -33,7 +33,7 @@ static void	startup_minishell(void)
 int main(int ac, char *av[], char *envp[])
 {
 	char		*line;
-	char		**tmp;
+	t_tree_node	*parsed_line;
 	t_envtree	*env;
 
 	(void)ac;
@@ -44,7 +44,8 @@ int main(int ac, char *av[], char *envp[])
 	line = readline("$> ");
 	while (line)
 	{
-
+		parsed_line = parse_line(line);
+		excute_hub(parsed_line, env);
 		add_history(line);
 		line = readline("$> ");
 	}

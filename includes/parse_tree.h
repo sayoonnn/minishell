@@ -26,9 +26,9 @@
 # define CMD_INFO 11
 
 # include <stdio.h>
-# include "libft/libft.h"
-# include "argv_list/argv_list.h"
-# include "deque/deque.h"
+# include "libft.h"
+# include "deque.h"
+# include "argv_list.h"
 
 typedef struct s_tree_node
 {

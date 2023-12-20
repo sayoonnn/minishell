@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 16:12:11 by sayoon            #+#    #+#             */
-/*   Updated: 2023/10/07 17:00:06 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/19 17:31:45 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/19 17:31:46 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef ERRORS_H
+# define ERRORS_H
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-{
-	t_list	*tmp;
-	void	*tcont;
-	t_list	*rev;
+# define ERR_NO_DIR_FILE	"No such file or directory"
+# define ERR_CMD_NOT_FOUND	"command not found"
 
-	rev = NULL;
-	while (lst != NULL)
-	{
-		tcont = f(lst->content);
-		tmp = ft_lstnew(tcont);
-		if (!tmp)
-		{
-			del(tcont);
-			ft_lstclear(&rev, del);
-			return (NULL);
-		}
-		ft_lstadd_back(&rev, tmp);
-		lst = lst->next;
-	}
-	return (rev);
-}
+# define CODE_CMD_NOT_FOUND 127
+# define CODE_PERM_DENIED	126
+
+#endif

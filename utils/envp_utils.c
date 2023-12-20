@@ -48,7 +48,7 @@ static void	make_arr(t_envtree *tree, t_envnode *env, char **envp)
 	make_arr(tree, env->right, envp);
 }
 
-char	**make_envp(t_envtree *env)
+char	**tree_2_envp(t_envtree *env)
 {
 	char	**tmp;
 

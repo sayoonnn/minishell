@@ -86,7 +86,7 @@ static char	**ft_emptyc(char const *s)
 	}
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_oldsplit(char const *s, char c)
 {
 	int		row;
 	int		cnt;

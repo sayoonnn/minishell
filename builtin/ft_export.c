@@ -41,6 +41,8 @@ static void	add_value(t_envtree *env, char *key, char *value)
 	}
 }
 
+// 인자가 여러개 들어올 경우 =이 붙은 것만 체크하면 됨
+
 int	ft_export(char *arg[], t_envtree *env)
 {
 	char	*key;
