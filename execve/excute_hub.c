@@ -23,5 +23,4 @@ void	excute_hub(t_tree_node *pt, t_envtree *env)
 
 	if (pt->token_type == CMD)
 		exec_single_cmd(pt->left->contents, env, fd);
-	}
 }
