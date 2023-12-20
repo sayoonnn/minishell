@@ -6,7 +6,7 @@
 #    By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 14:56:11 by jonghopa          #+#    #+#              #
-#    Updated: 2023/12/19 15:55:12 by jonghopa         ###   ########.fr        #
+#    Updated: 2023/12/20 13:38:35 by jonghopa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ tokenizer_utils.c \
 parsing_utils.c \
 init_free.c \
 cmd_argv_analyzer.c \
-cmd_argv_analyzer_utils.c \
 syntax_error.c \
 syntax_analyzer.c \
 

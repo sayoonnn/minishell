@@ -6,7 +6,7 @@
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 15:38:25 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/19 14:44:34 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:47:58 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		tokenize(char *cmd, t_data *data);
 
 int		select_word_token_type(t_data *data);
 int		check_rquote(char *cmd, size_t *idx, size_t *new_len);
+void	cut_tree(t_tree_node *root);
 int		init_data(t_data *data);
 void	free_data(t_data *data);
 

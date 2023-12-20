@@ -6,7 +6,7 @@
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 15:45:15 by devpark           #+#    #+#             */
-/*   Updated: 2023/12/19 15:41:58 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:41:20 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	**convert_lst_to_array(t_list *lst)
 		argvs[idx++] = tmp->content;
 		tmp = tmp->next;
 	}
+	printf("\n");
+	argvs[idx] = NULL;
 	ft_lstclear(lst, 1);
 	return (argvs);
 }
@@ -90,7 +92,8 @@ int	insert_pipeline(t_tree_node **root, t_deque *tokens, t_list *lst)
 
 	if (tokens->front->right == NULL)
 		return (print_syntax_token_error("newline"));
-	if (*root == NULL || ((*root)->token_type == PIPELINE && (*root)->right == NULL))
+	if (*root == NULL
+		|| ((*root)->token_type == PIPELINE && (*root)->right == NULL))
 		return (print_syntax_token_error("|"));
 	if (lst->head != NULL)
 		if (insert_cmd_info(*root, lst))
@@ -121,10 +124,8 @@ int	insert_cmd_token(t_data *data)
 	else if (data->root->token_type == PIPELINE && data->root->right == NULL)
 		data->root->right = cmd;
 	if (deque_front(data->tokens) == CMD || deque_front(data->tokens) == ARGV)
-	{
 		if (analyze_cmd_argv(data, data->tokens->front->content))
 			return (1);
-	}
 	deque_pop_front(data->tokens);
 	return (0);
 }
@@ -226,8 +227,6 @@ int	analyze_syntax(t_data *data)
 
 	while (!deque_empty(data->tokens))
 	{
-		printf("%d\n", deque_front(data->tokens));
-		printf("test deque front\n");
 		token_type = deque_front(data->tokens);
 		if (token_type == CMD || token_type == ARGV)
 			check = insert_cmd_token(data);

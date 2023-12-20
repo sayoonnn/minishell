@@ -6,7 +6,7 @@
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 19:10:15 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/18 23:26:42 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:52:34 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	cut_tree(t_tree_node *root)
 {
 	size_t	word_idx;
 
-	word_idx = 0;
 	if (root != NULL)
 	{
+		word_idx = 0;
 		cut_tree(root->left);
 		cut_tree(root->right);
 		if (root->contents != NULL)
@@ -52,7 +52,7 @@ int	init_data(t_data *data)
 
 void	free_data(t_data *data)
 {
-	if (!(data->tokens) || !(data->argv_lst) || !(data->root))
+	if (data->tokens || data->argv_lst || data->root)
 	{
 		if (data->tokens)
 		{

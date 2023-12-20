@@ -6,7 +6,7 @@
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:59:04 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/19 16:02:56 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:51:24 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,12 @@ int	main(void)
 		free_data(data);
 		return (1);
 	}
-	traverse_parse_tree(data->root);
+	printf("Syntax Clear\n");
+	// traverse_parse_tree(data->root);
+	if (data->root->token_type == PIPELINE)
+		printf("root : PIPELINE");
+	else if (data->root->token_type == CMD)
+		printf("root : CMD");
 	free_data(data);
 	return (0);
 }
