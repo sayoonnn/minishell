@@ -15,11 +15,11 @@
 int	print_syntax_token_error(char *content)
 {
 	printf("bash: syntax error near unexpected token `%s'", content);
-	return (-1);
+	return (1);
 }
 
 int	print_syntax_unmatched_error(char ch)
 {
 	printf("bash: syntax error: not matched `%c'\n", ch);
-	return (-1);
+	return (1);
 }

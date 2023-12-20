@@ -12,18 +12,19 @@
 
 #ifndef PARSE_TREE_H
 # define PARSE_TREE_H
-# define CMD 0
-# define ARGV 1
-# define FILENAME 2
-# define PIPELINE 3
-# define REDIRECTION 4
-# define REDIRECTION_LIST 5
-# define REDIRECTION_INFO 6
-# define DLESS 7
-# define DGREAT 8
-# define LESS 9
-# define GREAT 10
-# define CMD_INFO 11
+
+# define CMD 				0
+# define ARGV 				1
+# define FILENAME 			2
+# define PIPELINE 			3
+# define REDIRECTION	 	4
+# define REDIRECTION_LIST 	5
+# define REDIRECTION_INFO 	6
+# define DLESS				7
+# define DGREAT 			8
+# define LESS 				9
+# define GREAT 				10
+# define CMD_INFO 			11
 
 # include <stdio.h>
 # include "libft.h"

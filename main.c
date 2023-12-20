@@ -28,19 +28,18 @@ static void	startup_minishell(void)
 		buffer = get_next_line(fd);
 	}
 	close(fd);
-} 
+}
 
-int main(int ac, char *av[], char *envp[])
+int main(void)
 {
 	char		*line;
 	t_tree_node	*parsed_line;
 	t_envtree	*env;
+	extern char	**environ;
 
-	(void)ac;
-	(void)av;
 	startup_minishell();
 	set_signal();
-	env = init_envp(envp);
+	env = init_envp(environ);
 	line = readline("$> ");
 	while (line)
 	{

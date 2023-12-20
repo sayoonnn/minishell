@@ -3,7 +3,7 @@ SRC		=	builtin/ft_cd.c builtin/ft_echo.c builtin/ft_env.c builtin/ft_exit.c\
 			builtin/ft_export.c builtin/ft_pwd.c builtin/ft_unset.c\
 			\
 			execve/exec_single.c execve/excute_hub.c execve/exec_bin.c execve/exec_utils.c\
-			execve/exec_builtin.c\
+			execve/exec_builtin.c execve/heredoc.c execve/redirection.c execve/exec_redir.c\
 			\
 			parsing/cmd_argv_analyzer_utils.c parsing/cmd_argv_analyzer.c parsing/init_free.c\
 			parsing/parse_line.c parsing/parsing_utils.c parsing/syntax_analyzer.c\
@@ -23,7 +23,7 @@ DEQUE	= deque/deque.a
 LIST	= argv_list/argv_list.a
 
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra -fsanitize=address
+CFLAGS		= -Wall -Werror -Wextra -fsanitize=address -g
 
 all :
 	@make $(NAME) -j4

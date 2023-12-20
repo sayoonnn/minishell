@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   excute_hub.c                                       :+:      :+:    :+:   */
+/*   exec_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 16:00:10 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/05 16:00:10 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/20 14:20:34 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/20 14:20:41 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	excute_hub(t_tree_node *pt, t_envtree *env)
+int	open_in_file(char *file_name)
 {
-	static is_pipe = 0;
-	int io_fd[2] = {0, 1};
+	int	fd;
 
-	if (pt == NULL)
-		return ;
-	if (pt->token_type == PIPELINE)
-	{
-		excute_hub(pt->right, env);
-		excute_hub(pt->left, env);
-		return ;
-	}
-	if (pt->token_type == CMD)
-	{
-		// $ 치환
-		handle_redir(pt->right, io_fd);
-		exec_single_cmd(pt->left->contents, env, io_fd);
-	}
+	fd = open(file_name, O_RDONLY);
+	if (fd < 0)
+		perror(file_name);
+	return (fd);
+}
+
+int	open_out_file(char *file_name, int opt)
+{
+	int	fd;
+
+	fd = open(file_name, opt, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (fd < 0)
+		perror(file_name);
+	return (fd);
 }

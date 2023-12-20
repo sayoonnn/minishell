@@ -27,15 +27,15 @@ static void	todo_parent(pid_t pid)
 	waitpid(pid, &status, WUNTRACED | WCONTINUED);
 }
 
-void	exec_single_cmd(char *argv[], t_envtree *env, int fd[2])
+void	exec_single_cmd(char *argv[], t_envtree *env, int io_fd[2])
 {
-	int		save[2];
+	int		save_fd[2];
 	pid_t	pid;
 
-	save[0] = dup(STDIN_FILENO);
-	save[1] = dup(STDOUT_FILENO);
-	dup2(fd[0], STDIN_FILENO);
-	dup2(fd[1], STDOUT_FILENO);
+	save_fd[0] = dup(STDIN_FILENO);
+	save_fd[1] = dup(STDOUT_FILENO);
+	dup2(io_fd[0], STDIN_FILENO);
+	dup2(io_fd[1], STDOUT_FILENO);
 	if (is_builtin(argv[0]))
 		exec_builtin(argv[0], argv, env);
 	else
@@ -48,5 +48,5 @@ void	exec_single_cmd(char *argv[], t_envtree *env, int fd[2])
 		else
 			todo_parent(pid);
 	}
-	reset_io(save);
+	reset_io(save_fd);
 }

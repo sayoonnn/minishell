@@ -6,7 +6,7 @@
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 15:45:15 by devpark           #+#    #+#             */
-/*   Updated: 2023/12/19 15:41:58 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:41:20 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ int	insert_pipeline(t_tree_node **root, t_deque *tokens, t_list *lst)
 
 	if (tokens->front->right == NULL)
 		return (print_syntax_token_error("newline"));
-	if (*root == NULL || ((*root)->token_type == PIPELINE && (*root)->right == NULL))
+	if (*root == NULL
+		|| ((*root)->token_type == PIPELINE && (*root)->right == NULL))
 		return (print_syntax_token_error("|"));
 	if (lst->head != NULL)
 		if (insert_cmd_info(*root, lst))
@@ -121,10 +122,8 @@ int	insert_cmd_token(t_data *data)
 	else if (data->root->token_type == PIPELINE && data->root->right == NULL)
 		data->root->right = cmd;
 	if (deque_front(data->tokens) == CMD || deque_front(data->tokens) == ARGV)
-	{
 		if (analyze_cmd_argv(data, data->tokens->front->content))
 			return (1);
-	}
 	deque_pop_front(data->tokens);
 	return (0);
 }
@@ -162,13 +161,13 @@ int	insert_redirection_type(t_tree_node *root, t_deque *tokens)
 
 	rd_content = tokens->front->content;
 	token_type = 0;
-	if (!ft_strncmp(rd_content, "<", 1))
+	if (!ft_strcmp(rd_content, "<"))
 		token_type = LESS;
-	else if (!ft_strncmp(rd_content, ">", 1))
+	else if (!ft_strcmp(rd_content, ">"))
 		token_type = GREAT;
-	else if (!ft_strncmp(rd_content, "<<", 2))
+	else if (!ft_strcmp(rd_content, "<<"))
 		token_type = DLESS;
-	else if (!ft_strncmp(rd_content, ">>", 2))
+	else if (!ft_strcmp(rd_content, ">>"))
 		token_type = DGREAT;
 	rd_real = create_tree_node(token_type);
 	if (rd_real == NULL)
