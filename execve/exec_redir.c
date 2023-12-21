@@ -26,7 +26,7 @@ int	open_out_file(char *file_name, int opt)
 {
 	int	fd;
 
-	fd = open(file_name, opt, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	fd = open(file_name, opt, 0644);
 	if (fd < 0)
 		perror(file_name);
 	return (fd);

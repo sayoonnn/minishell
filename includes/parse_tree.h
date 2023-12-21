@@ -35,6 +35,7 @@ typedef struct s_tree_node
 {
 	int					token_type;
 	char				**contents;
+	int					fd[2];
 	struct s_tree_node	*left;
 	struct s_tree_node	*right;
 }				t_tree_node;

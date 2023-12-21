@@ -44,8 +44,11 @@ int main(void)
 	while (line)
 	{
 		parsed_line = parse_line(line);
-		excute_hub(parsed_line, env);
-		add_history(line);
+		if (parsed_line != NULL)
+		{
+			excute_hub(parsed_line, env);
+			add_history(line);
+		}
 		line = readline("$> ");
 	}
 	clear_node(env->root);

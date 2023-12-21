@@ -27,15 +27,17 @@ static void	todo_parent(pid_t pid)
 	waitpid(pid, &status, WUNTRACED | WCONTINUED);
 }
 
-void	exec_single_cmd(char *argv[], t_envtree *env, int io_fd[2])
+void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 {
 	int		save_fd[2];
+	char	**argv;
 	pid_t	pid;
 
+	argv = node->left->contents;
 	save_fd[0] = dup(STDIN_FILENO);
 	save_fd[1] = dup(STDOUT_FILENO);
-	dup2(io_fd[0], STDIN_FILENO);
-	dup2(io_fd[1], STDOUT_FILENO);
+	dup2(node->fd[0], STDIN_FILENO);
+	dup2(node->fd[1], STDOUT_FILENO);
 	if (is_builtin(argv[0]))
 		exec_builtin(argv[0], argv, env);
 	else

@@ -12,99 +12,44 @@
 
 #include "minishell.h"
 
-static int	is_builtin(char *cmd)
+static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2])
 {
-	if (!ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "env") \
-	|| !ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "pwd") \
-	|| !ft_strcmp(cmd, "unset"))
-		return (1);
-	return (0);
+	dup2(pipe_fd[1], STDOUT_FILENO);
+	close(pipe_fd[0]);
+	if (is_builtin(node->left->contents[0]))
+		exec_builtin(node->left->contents[0], node->left->contents, env);
+	else if (exec_bin(node->left->contents, env))
+		exit(EXIT_FAILURE);
 }
 
-static void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
+static void	todo_parent(t_tree_node *node, t_envtree *env, int save_fd[2], int pipe_fd[2])
 {
-	if (!ft_strcmp(cmd, "cd"))
-		ft_cd(argv, env);
-	if (!ft_strcmp(cmd, "echo"))
-		ft_echo(argv);
-	if (!ft_strcmp(cmd, "env"))
-		ft_env(env->root);
-	if (!ft_strcmp(cmd, "exit"))
-	{
-		printf("exit\n");
-		ft_exit();
-	}
-	if (!ft_strcmp(cmd, "export"))
-		ft_export(argv, env);
-	if (!ft_strcmp(cmd, "pwd"))
-		ft_pwd();
-	if (!ft_strcmp(cmd, "unset"))
-		ft_unset(env, argv);
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], STDIN_FILENO);
+	excute_hub(node->left, env);
+	close(STDIN_FILENO);
+	wait(NULL);
+	dup2(save_fd[0], STDIN_FILENO);
+	dup2(save_fd[1], STDOUT_FILENO);
+	close(save_fd[0]);
+	close(save_fd[1]);
 }
 
-int status;
-
-void	exec_last_cmd(char *cmd, char *argv[], t_envtree *env)
+void	 exec_pipe_cmd(t_tree_node *node, t_envtree *env)
 {
-	char	**envp;
-	char	*command;
+	int		save_fd[2];
+	int		pipe_fd[2];
 	pid_t	pid;
 
-	if (!cmd)
-		return ;
-	envp = make_envp(env);
-	command = make_command(cmd, find_envnode(env->root, "PATH"));
-	pid = fork();
-	if (pid < 0)
-		exit(1);
-	if (pid == 0)
-	{
-		// redirection 처리
-		if (is_builtin(cmd))
-		{
-			exec_builtin(cmd, argv, env);
-			return ;
-		}
-		execve(command, argv, envp);
-		exit(1);
-	}
-	waitpid(pid, &status, WUNTRACED);
-	free(envp);
-}
-
-void	exec_multi_cmd(char *cmd, char *argv[], t_envtree *env)
-{
-	char	**envp;
-	char	*command;
-	int		fd[2];
-	pid_t	pid;
-
-	if (!cmd)
-		return ;
-	envp = make_envp(env);
-	command = make_command(cmd, find_envnode(env->root, "PATH"));
-	if (pipe(fd) < 0)
+	save_fd[0] = dup(STDIN_FILENO);
+	save_fd[1] = dup(STDOUT_FILENO);
+	if (pipe(pipe_fd) < 0)
 		exit(1);
 	pid = fork();
-	if (pid < 0)
+	if (pid == -1)
 		exit(1);
 	if (pid == 0)
-	{
-		// redirection 처리
-		close(fd[0]);
-		if (dup2(fd[1], STDOUT_FILENO) < 0)
-			exit(1);
-		if (is_builtin(cmd))
-		{
-			exec_builtin(cmd, argv, env);
-			return ;
-		}
-		execve(command, argv, envp);
-		exit(1);
-	}
-	close(fd[1]);
-	if (dup2(fd[0], STDIN_FILENO) < 0)
-		exit(1);
-	waitpid(pid, &status, WUNTRACED);
-	free(envp);
+		todo_chid(node->right, env, pipe_fd);
+	else
+		todo_parent(node, env, save_fd, pipe_fd);
 }

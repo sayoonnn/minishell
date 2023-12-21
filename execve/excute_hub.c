@@ -12,23 +12,30 @@
 
 #include "minishell.h"
 
+void	sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe)
+{
+	node->fd[0] = 0;
+	node->fd[1] = 1;
+	if (!handle_redir(node->right, node->fd))
+		return ;
+	if (is_pipe)
+		exec_pipe_cmd(node, env);
+	else
+		exec_single_cmd(node, env);
+}
+
 void	excute_hub(t_tree_node *pt, t_envtree *env)
 {
-	static is_pipe = 0;
-	int io_fd[2] = {0, 1};
+	static int	is_pipe = false;
 
-	if (pt == NULL)
-		return ;
 	if (pt->token_type == PIPELINE)
 	{
-		excute_hub(pt->right, env);
+		is_pipe = true;
 		excute_hub(pt->left, env);
-		return ;
+		sub_redir_exec(pt->right, env, is_pipe);
+		is_pipe = false;
 	}
 	if (pt->token_type == CMD)
-	{
-		// $ 치환
-		handle_redir(pt->right, io_fd);
-		exec_single_cmd(pt->left->contents, env, io_fd);
-	}
+		sub_redir_exec(pt, env, is_pipe);
+
 }

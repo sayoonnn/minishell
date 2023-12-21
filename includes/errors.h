@@ -19,6 +19,6 @@
 # define CODE_CMD_NOT_FOUND 127
 # define CODE_PERM_DENIED	126
 
-int	errno;
+extern int	errno;
 
 #endif

@@ -31,14 +31,22 @@
 # include "parse_tree.h"
 # include "errors.h"
 
+enum	e_bool
+{
+	false,
+	true
+};
+
 void		set_signal(void);
 t_envtree	*init_envp(char *envp[]);
 void		print_err(char *pname, char *dirname);
 char		**tree_2_envp(t_envtree *env);
 char		*make_binpath(char *cmd, t_envnode *path_node);
-void		exec_single_cmd(char *argv[], t_envtree *env, int fd[2]);
+void		exec_single_cmd(t_tree_node *node, t_envtree *env);
 int			exec_bin(char **argv, t_envtree *env);
 void		excute_hub(t_tree_node *pt, t_envtree *env);
+void		exec_pipe_cmd(t_tree_node *node, t_envtree *env);
+void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe);
 
 int			is_builtin(char *cmd);
 void		exec_builtin(char *cmd, char *argv[], t_envtree *env);
@@ -49,7 +57,7 @@ void		free_arr(char **arr);
 int		open_in_file(char *file_name);
 int		open_out_file(char *file_name, int opt);
 int		get_heredoc_fd(char *delimiter);
-void	handle_redir(t_tree_node *pt, int io_fd[2]);
+int		handle_redir(t_tree_node *pt, int io_fd[2]);
 
 
 

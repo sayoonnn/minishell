@@ -18,6 +18,8 @@ t_tree_node	*parse_line(char *line)
 	t_data		*data;
 	t_tree_node	*ret;
 
+	if (*line == 0)
+		return (NULL);
 	data = (t_data *)malloc(sizeof(t_data));
 	if (data == NULL)
 		exit(1);
@@ -27,9 +29,11 @@ t_tree_node	*parse_line(char *line)
 		exit(1);
 	flag = analyze_syntax(data);
 	if (flag == 1)
-		exit(1);
-	else if (flag == -1)
+	{
+		ret = data->root;
+		free_data(data);
 		return (NULL);
+	}
 	ret = data->root;
 	free_data(data);
 	return (ret);
