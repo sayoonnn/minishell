@@ -44,9 +44,9 @@ char		**tree_2_envp(t_envtree *env);
 char		*make_binpath(char *cmd, t_envnode *path_node);
 void		exec_single_cmd(t_tree_node *node, t_envtree *env);
 int			exec_bin(char **argv, t_envtree *env);
-void		excute_hub(t_tree_node *pt, t_envtree *env);
-void		exec_pipe_cmd(t_tree_node *node, t_envtree *env);
-void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe);
+void		excute_hub(t_tree_node *pt, t_envtree *env, int n);
+void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n);
+void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe, int cnt);
 
 int			is_builtin(char *cmd);
 void		exec_builtin(char *cmd, char *argv[], t_envtree *env);

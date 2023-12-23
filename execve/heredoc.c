@@ -23,7 +23,7 @@ int		get_heredoc_fd(char *delimiter)
 	doc = heredoc(delimiter);
 	if (!doc)
 	{
-		errno = 1;
+		// err_code = 1;
 		return (-1);
 	}
 	if (pipe(pipe_fd) < 0)

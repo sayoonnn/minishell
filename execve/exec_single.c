@@ -33,6 +33,8 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 	char	**argv;
 	pid_t	pid;
 
+	if (!handle_redir(node->right, node->fd))
+		return ;
 	argv = node->left->contents;
 	save_fd[0] = dup(STDIN_FILENO);
 	save_fd[1] = dup(STDOUT_FILENO);

@@ -46,7 +46,7 @@ int main(void)
 		parsed_line = parse_line(line);
 		if (parsed_line != NULL)
 		{
-			excute_hub(parsed_line, env);
+			excute_hub(parsed_line, env, 0);
 			add_history(line);
 		}
 		line = readline("$> ");
