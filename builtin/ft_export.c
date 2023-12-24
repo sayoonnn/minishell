@@ -43,18 +43,29 @@ static void	add_value(t_envtree *env, char *key, char *value)
 
 // 인자가 여러개 들어올 경우 =이 붙은 것만 체크하면 됨
 
+static void	check_n_add(char *key, char *value, t_envtree *env)
+{
+	
+}
+
 int	ft_export(char *arg[], t_envtree *env)
 {
 	char	*key;
 	char	*value;
+	int		i;
 
 	if (arg[1] == NULL)
 	{
 		print_envnode(env->root);
 		return (0);
 	}
-	key = arg[1];
-	value = ft_strchr(arg[1], '=');
+	i = 1;
+	while (arg[i])
+	{
+		key = arg[1];
+		value = ft_strchr(arg[1], '=');
+	}
+
 	if (!value)
 	{
 		add_env(env, make_envnode(key, ""));
