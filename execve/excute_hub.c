@@ -12,28 +12,73 @@
 
 #include "minishell.h"
 
-void	sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe, int cnt)
+int	*get_fd(void)
+{
+	static int	fd[2] = {-1, -1};
+	
+	return (fd);
+}
+
+void	save_fd(int input, int output)
+{
+	get_fd()[0] = input;
+	get_fd()[1] = output;
+}
+
+void	sub_redir_exec_single(t_tree_node *node, t_envtree *env)
 {
 	node->fd[0] = 0;
 	node->fd[1] = 1;
 	if (!handle_redir(node->right, node->fd))
 		return ;
-	if (is_pipe)
-		exec_pipe_cmd(node, env, cnt);
-	else
-		exec_single_cmd(node, env);
+	exec_single_cmd(node, env);
 }
 
-void	excute_hub(t_tree_node *pt, t_envtree *env, int n)
+void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 {
-	static int			is_pipe = false;
-
-	if (pt->token_type == PIPELINE)
+	if (get_fd()[0] == -1 && get_fd()[1] == -1)
+		save_fd(dup(STDIN_FILENO), dup(STDOUT_FILENO));
+	if (node->left->token_type == PIPELINE)
 	{
-		is_pipe = true;
-		sub_redir_exec(pt->right, env, true, n);
-		is_pipe = false;
+		sub_redir_exec_pipe(node->left, env, n + 1);
+		exec_pipe_cmd(node->right, env, n);
 	}
-	else if (pt->token_type == CMD)
-		sub_redir_exec(pt, env, is_pipe, n);
+	else
+	{
+		exec_pipe_cmd(node->left, env, n + 1);
+		exec_pipe_cmd(node->right, env, n);
+	}
+	if (n == 0)
+	{
+		while (waitpid(-1, NULL, 0) != -1)
+			;
+		dup2(get_fd()[0], STDIN_FILENO);
+		dup2(get_fd()[1], STDOUT_FILENO);
+		save_fd(-1, -1);
+	}
+}
+
+void	trave_redir(t_tree_node *pt)
+{
+	if (pt == NULL)
+		return ;
+	if (pt->token_type == CMD)
+	{
+		pt->fd[0] = 0;
+		pt->fd[1] = 1;
+		handle_redir(pt->right, pt->fd);
+	}
+	trave_redir(pt->left);
+	trave_redir(pt->right);
+}
+
+void	excute_hub(t_tree_node *pt, t_envtree *env)
+{
+	if (pt->token_type == CMD)
+		sub_redir_exec_single(pt, env);
+	else
+	{
+		trave_redir(pt);
+		sub_redir_exec_pipe(pt ,env, 0);
+	}
 }

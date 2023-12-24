@@ -32,7 +32,6 @@ int		get_heredoc_fd(char *delimiter)
 	close(pipe_fd[1]);
 	free(doc);
 	return (pipe_fd[0]);
-
 }
 
 static char	*append_line(char *dst, char *src)
