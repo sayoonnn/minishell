@@ -62,9 +62,9 @@ void	ft_cd(char *arg[], t_envtree *env)
 	cur = getcwd(NULL, PATH_MAX);
 	if (!cur)
 		exit(1);
-	if (arg[1] == NULL || !ft_strcmp(arg[1], "~"))
+	if (arg[1] == NULL || !ft_strncmp(arg[1], "~", 2))
 		cd_home(env);
-	else if (!ft_strcmp(arg[1], "-"))
+	else if (!ft_strncmp(arg[1], "-", 2))
 		cd_oldpwd(env);
 	else 
 	{

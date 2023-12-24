@@ -43,7 +43,7 @@ static int	check_err(char *bin_path, char *cmd, t_envtree *env)
 	}
 	if (is_directory(bin_path))
 	{
-		print_err(bin_path, "is directory\n");
+		print_err(bin_path, "is directory");
 		return (CODE_PERM_DENIED);
 	}
 	if (access(bin_path, X_OK) != 0)

@@ -22,14 +22,16 @@ t_envnode	*make_envnode(char *key, char *value)
 	if (!tmp)
 		exit(1);
 	tmp->key = ft_strdup(key);
-	tmp->value = ft_strdup(value);
+	if (value != NULL)
+		tmp->value = ft_strdup(value);
+	else
+		tmp->value = NULL;
 	t = ft_strjoin(tmp->key, "=");
-	tmp->forarr = ft_strjoin(t, tmp->value);
+	if (value != NULL)
+		tmp->forarr = ft_strjoin(t, tmp->value);
 	free(t);
 	tmp->left = NULL;
 	tmp->right = NULL;
-	if (!tmp->key || !tmp->value)
-		exit(1);
 	return (tmp);
 }
 

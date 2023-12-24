@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	err_code = 0;
+
 static void	startup_minishell(void)
 {
 	int		fd;

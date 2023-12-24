@@ -31,10 +31,7 @@ void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 	if (!ft_strcmp(cmd, "env"))
 		ft_env(env->root);
 	if (!ft_strcmp(cmd, "exit"))
-	{
-		printf("exit\n");
-		ft_exit();
-	}
+		ft_exit(argv);
 	if (!ft_strcmp(cmd, "export"))
 		ft_export(argv, env);
 	if (!ft_strcmp(cmd, "pwd"))

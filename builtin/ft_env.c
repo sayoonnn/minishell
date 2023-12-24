@@ -18,7 +18,7 @@ static void	print_envnode(t_envnode *tree)
 	if (tree == NULL)
 		return ;
 	print_envnode(tree->left);
-	if (*tree->value != 0)
+	if (tree->value != NULL)
 		printf("%s=%s\n", tree->key, tree->value);
 	print_envnode(tree->right);
 }
