@@ -22,9 +22,9 @@ static void	todo_child(char *argv[], t_envtree *env)
 
 static void	todo_parent(pid_t pid)
 {
-	int status;
+	int	status;
 
-	waitpid(pid, &status, WUNTRACED | WCONTINUED);
+	waitpid(pid, &status, 0);
 }
 
 void	exec_single_cmd(t_tree_node *node, t_envtree *env)

@@ -15,7 +15,7 @@
 int	*get_fd(void)
 {
 	static int	fd[2] = {-1, -1};
-	
+
 	return (fd);
 }
 
@@ -58,20 +58,6 @@ void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 	}
 }
 
-void	trave_redir(t_tree_node *pt)
-{
-	if (pt == NULL)
-		return ;
-	if (pt->token_type == CMD)
-	{
-		pt->fd[0] = 0;
-		pt->fd[1] = 1;
-		handle_redir(pt->right, pt->fd);
-	}
-	trave_redir(pt->left);
-	trave_redir(pt->right);
-}
-
 void	excute_hub(t_tree_node *pt, t_envtree *env)
 {
 	if (pt->token_type == CMD)
@@ -79,6 +65,6 @@ void	excute_hub(t_tree_node *pt, t_envtree *env)
 	else
 	{
 		trave_redir(pt);
-		sub_redir_exec_pipe(pt ,env, 0);
+		sub_redir_exec_pipe(pt, env, 0);
 	}
 }

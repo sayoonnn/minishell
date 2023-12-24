@@ -61,6 +61,7 @@ int		open_in_file(char *file_name);
 int		open_out_file(char *file_name, int opt);
 int		get_heredoc_fd(char *delimiter);
 int		handle_redir(t_tree_node *pt, int io_fd[2]);
+void	trave_redir(t_tree_node *pt);
 
 
 char			*make_tmpfile(char *end);

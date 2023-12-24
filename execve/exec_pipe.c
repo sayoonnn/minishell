@@ -36,7 +36,7 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int n)
 		exit(EXIT_FAILURE);
 }
 
-void	 exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n)
+void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n)
 {
 	pid_t	pid;
 	int		pipe_fd[2];

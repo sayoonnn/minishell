@@ -19,11 +19,12 @@ static char	*find_path(char *cmd, t_envtree *env)
 	else
 		return (make_binpath(cmd, find_envnode(env->root, "PATH")));
 }
-static int is_directory(char *bin_path)
-{
-	struct stat file_info;
 
-    if (stat(bin_path, &file_info) == -1)
+static int	is_directory(char *bin_path)
+{
+	struct stat	file_info;
+
+	if (stat(bin_path, &file_info) == -1)
 		exit(1);
 	if (S_ISDIR(file_info.st_mode))
 		return (1);

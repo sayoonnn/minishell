@@ -15,17 +15,14 @@
 static char	*heredoc(char *delimiter);
 static char	*append_line(char *dst, char *src);
 
-int		get_heredoc_fd(char *delimiter)
+int	get_heredoc_fd(char *delimiter)
 {
 	int		pipe_fd[2];
 	char	*doc;
 
 	doc = heredoc(delimiter);
 	if (!doc)
-	{
-		// err_code = 1;
-		return (-1);
-	}
+		exit(EXIT_FAILURE);
 	if (pipe(pipe_fd) < 0)
 		exit(1);
 	write(pipe_fd[1], doc, ft_strlen(doc));
@@ -36,8 +33,8 @@ int		get_heredoc_fd(char *delimiter)
 
 static char	*append_line(char *dst, char *src)
 {
-	char *tmp;
-	
+	char	*tmp;
+
 	if (!dst)
 		dst = ft_strdup("");
 	tmp = dst;
@@ -66,4 +63,18 @@ static char	*heredoc(char *delimiter)
 	}
 	free(line);
 	return (doc);
+}
+
+void	trave_redir(t_tree_node *pt)
+{
+	if (pt == NULL)
+		return ;
+	if (pt->token_type == CMD)
+	{
+		pt->fd[0] = 0;
+		pt->fd[1] = 1;
+		handle_redir(pt->right, pt->fd);
+	}
+	trave_redir(pt->left);
+	trave_redir(pt->right);
 }
