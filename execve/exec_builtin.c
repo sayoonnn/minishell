@@ -25,17 +25,17 @@ int	is_builtin(char *cmd)
 void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 {
 	if (!ft_strcmp(cmd, "cd"))
-		ft_cd(argv, env);
+		err_code = ft_cd(argv, env);
 	if (!ft_strcmp(cmd, "echo"))
-		ft_echo(argv);
+		err_code = ft_echo(argv);
 	if (!ft_strcmp(cmd, "env"))
-		ft_env(env->root);
+		err_code = ft_env(env->root);
 	if (!ft_strcmp(cmd, "exit"))
-		ft_exit(argv);
+		err_code = ft_exit(argv);
 	if (!ft_strcmp(cmd, "export"))
-		ft_export(argv, env);
+		err_code = ft_export(argv, env);
 	if (!ft_strcmp(cmd, "pwd"))
-		ft_pwd();
+		err_code = ft_pwd();
 	if (!ft_strcmp(cmd, "unset"))
-		ft_unset(env, argv);
+		err_code = ft_unset(env, argv);
 }
