@@ -88,7 +88,7 @@ int	ft_export(char *arg[], t_envtree *env)
 	if (arg[1] == NULL)
 	{
 		print_envnode(env->root);
-		return (0);
+		return (success);
 	}
 	i = 1;
 	while (arg[i])
@@ -96,7 +96,7 @@ int	ft_export(char *arg[], t_envtree *env)
 		key = arg[i];
 		value = ft_strchr(arg[i], '=');
 		if (!check_is_valid(key))
-		{ 
+		{
 			print_err(key, "not a valid identifier");
 			i++;
 			continue ;
@@ -104,5 +104,5 @@ int	ft_export(char *arg[], t_envtree *env)
 		check_n_add(key, value, env);
 		i++;
 	}
-	return (0);
+	return (success);
 }

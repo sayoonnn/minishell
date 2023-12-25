@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		ft_unset(t_envtree *env, char *arg[])
+int	ft_unset(t_envtree *env, char *arg[])
 {
 	int	i;
 
@@ -23,5 +23,5 @@ int		ft_unset(t_envtree *env, char *arg[])
 		env->num_nodes--;
 		i++;
 	}
-	return (1);
+	return (success);
 }

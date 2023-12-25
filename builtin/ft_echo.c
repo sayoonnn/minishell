@@ -33,7 +33,7 @@ int	ft_echo(char *arg[])
 	else if (i == 2)
 	{
 		if (!ft_strcmp(arg[1], "-n"))
-			return (1);
+			return (success);
 		else
 			printf("%s\n", arg[1]);
 	}
@@ -44,5 +44,5 @@ int	ft_echo(char *arg[])
 		else
 			printf("%s\n", arg[2]);
 	}
-	return (0);
+	return (success);
 }

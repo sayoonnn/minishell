@@ -31,12 +31,6 @@
 # include "parse_tree.h"
 # include "errors.h"
 
-enum	e_bool
-{
-	false,
-	true
-};
-
 void		set_signal(void);
 t_envtree	*init_envp(char *envp[]);
 void		print_err(char *pname, char *dirname);

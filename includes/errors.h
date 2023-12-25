@@ -19,6 +19,18 @@
 # define CODE_CMD_NOT_FOUND 127
 # define CODE_PERM_DENIED	126
 
+enum	e_bool
+{
+	false,
+	true
+};
+
+enum	e_success
+{
+	success,
+	fail
+};
+
 void	print_err_builtin(char *func_name ,char *pname, char *str_err);
 
 extern int	err_code;
