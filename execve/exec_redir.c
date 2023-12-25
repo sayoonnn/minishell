@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   exec_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 16:12:11 by sayoon            #+#    #+#             */
-/*   Updated: 2023/10/07 17:00:06 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/20 14:20:34 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/20 14:20:41 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+int	open_in_file(char *file_name)
 {
-	t_list	*tmp;
-	void	*tcont;
-	t_list	*rev;
+	int	fd;
 
-	rev = NULL;
-	while (lst != NULL)
-	{
-		tcont = f(lst->content);
-		tmp = ft_lstnew(tcont);
-		if (!tmp)
-		{
-			del(tcont);
-			ft_lstclear(&rev, del);
-			return (NULL);
-		}
-		ft_lstadd_back(&rev, tmp);
-		lst = lst->next;
-	}
-	return (rev);
+	fd = open(file_name, O_RDONLY);
+	if (fd < 0)
+		perror(file_name);
+	return (fd);
+}
+
+int	open_out_file(char *file_name, int opt)
+{
+	int	fd;
+
+	fd = open(file_name, opt, 0644);
+	if (fd < 0)
+		perror(file_name);
+	return (fd);
 }

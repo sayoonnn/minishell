@@ -14,7 +14,7 @@
 
 int	print_syntax_token_error(char *content)
 {
-	printf("bash: syntax error near unexpected token `%s'", content);
+	printf("bash: syntax error near unexpected token `%s'\n", content);
 	return (1);
 }
 

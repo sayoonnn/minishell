@@ -23,7 +23,7 @@ static void	cd_home(t_envtree *env)
 	tmp = find_envnode(env->root, "HOME");
 	if (chdir(tmp->value) < 0)
 	{
-		print_enoent("cd", tmp->value);
+		print_err("cd", tmp->value);
 		return ;
 	}
 	add_env(env, make_envnode("OLDPWD", pwd));
@@ -46,7 +46,7 @@ static void	cd_oldpwd(t_envtree *env)
 	{
 		if (chdir(old->value) < 0)
 		{
-			print_enoent("cd", old->value);
+			print_err("cd", old->value);
 			return ;
 		}
 	}
@@ -62,15 +62,15 @@ void	ft_cd(char *arg[], t_envtree *env)
 	cur = getcwd(NULL, PATH_MAX);
 	if (!cur)
 		exit(1);
-	if (arg[1] == NULL || !ft_strcmp(arg[1], "~"))
+	if (arg[1] == NULL || !ft_strncmp(arg[1], "~", 2))
 		cd_home(env);
-	else if (!ft_strcmp(arg[1], "-"))
+	else if (!ft_strncmp(arg[1], "-", 2))
 		cd_oldpwd(env);
 	else 
 	{
 		if (chdir(arg[1]) < 0)
 		{
-			print_enoent("cd", arg[1]);
+			print_err("cd", arg[1]);
 			return ;
 		}
 		add_env(env, make_envnode("OLDPWD", cur));

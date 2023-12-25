@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   reset_io.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/17 21:53:51 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/10/03 22:13:34 by devpark          ###   ########.fr       */
+/*   Created: 2023/12/19 18:32:49 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/19 18:32:49 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#	include	"libft.h"
+#include "minishell.h"
 
-char	*ft_strchr(const char *s, int c)
+void	reset_io(int save[2])
 {
-	int				i;
-	unsigned char	ch;
-
-	i = 0;
-	ch = (unsigned char)c;
-	while (s[i] != '\0' && s[i] != ch)
-		i++;
-	if (ch != '\0' && s[i] == '\0')
-		return (0);
-	return ((char *)(s + i));
+	dup2(save[0], STDIN_FILENO);
+	dup2(save[1], STDOUT_FILENO);
+	close(save[0]);
+	close(save[1]);
 }

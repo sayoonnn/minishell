@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 16:01:00 by sayoon            #+#    #+#             */
-/*   Updated: 2023/10/07 16:07:42 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/19 17:31:45 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/19 17:31:46 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef ERRORS_H
+# define ERRORS_H
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
-{
-	while (lst != NULL)
-	{
-		f(lst->content);
-		lst = lst->next;
-	}
-	return ;
-}
+# define ERR_NO_DIR_FILE	"No such file or directory"
+# define ERR_CMD_NOT_FOUND	"command not found"
+
+# define CODE_CMD_NOT_FOUND 127
+# define CODE_PERM_DENIED	126
+
+void	print_err_builtin(char *func_name ,char *pname, char *str_err);
+
+extern int	err_code;
+
+#endif

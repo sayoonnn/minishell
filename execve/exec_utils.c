@@ -22,7 +22,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-char	*make_command(char *cmd, t_envnode *path_node)
+char	*make_binpath(char *cmd, t_envnode *path_node)
 {
 	int			i;
 	char		**path;
@@ -30,15 +30,14 @@ char	*make_command(char *cmd, t_envnode *path_node)
 	char		*command;
 
 	if (!path_node)
-		// 에러 표시
 		return (NULL);
-	path = ft_split(path_node->value, ':');
+	path = ft_oldsplit(path_node->value, ':');
 	tmp = ft_strjoin("/", cmd);
 	i = -1;
 	while (path[++i])
 	{
 		command = ft_strjoin(path[i], tmp);
-		if (!access(command, F_OK | X_OK))
+		if (!access(command, F_OK))
 		{
 			free(tmp);
 			free_arr(path);

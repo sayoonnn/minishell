@@ -6,34 +6,36 @@
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 15:38:25 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/20 13:47:58 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:44:34 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_TREE_H
 # define PARSE_TREE_H
-# define CMD 0
-# define ARGV 1
-# define FILENAME 2
-# define PIPELINE 3
-# define REDIRECTION 4
-# define REDIRECTION_LIST 5
-# define REDIRECTION_INFO 6
-# define DLESS 7
-# define DGREAT 8
-# define LESS 9
-# define GREAT 10
-# define CMD_INFO 11
+
+# define CMD 				0
+# define ARGV 				1
+# define FILENAME 			2
+# define PIPELINE 			3
+# define REDIRECTION	 	4
+# define REDIRECTION_LIST 	5
+# define REDIRECTION_INFO 	6
+# define DLESS				7
+# define DGREAT 			8
+# define LESS 				9
+# define GREAT 				10
+# define CMD_INFO 			11
 
 # include <stdio.h>
-# include "libft/libft.h"
-# include "argv_list/argv_list.h"
-# include "deque/deque.h"
+# include "libft.h"
+# include "deque.h"
+# include "argv_list.h"
 
 typedef struct s_tree_node
 {
 	int					token_type;
 	char				**contents;
+	int					fd[2];
 	struct s_tree_node	*left;
 	struct s_tree_node	*right;
 }				t_tree_node;
@@ -61,7 +63,6 @@ int		tokenize(char *cmd, t_data *data);
 
 int		select_word_token_type(t_data *data);
 int		check_rquote(char *cmd, size_t *idx, size_t *new_len);
-void	cut_tree(t_tree_node *root);
 int		init_data(t_data *data);
 void	free_data(t_data *data);
 

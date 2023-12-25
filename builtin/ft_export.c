@@ -18,7 +18,10 @@ static void	print_envnode(t_envnode *tree)
 	if (tree == NULL)
 		return ;
 	print_envnode(tree->left);
-	printf("declare -x %s=\"%s\"\n", tree->key, tree->value);
+	if (tree->value == NULL)
+		printf("declare -x %s\n", tree->key);
+	else
+		printf("declare -x %s=\"%s\"\n", tree->key, tree->value);
 	print_envnode(tree->right);
 }
 
@@ -41,32 +44,65 @@ static void	add_value(t_envtree *env, char *key, char *value)
 	}
 }
 
+static void	check_n_add(char *key, char *value, t_envtree *env)
+{
+	if (!value)
+		add_env(env, make_envnode(key, NULL));
+	else if (*(value - 1) == '+')
+	{
+		*(value - 1) = 0;
+		add_value(env, key, value + 1);
+	}
+	else
+	{
+		*value = 0;
+		add_env(env, make_envnode(key, value + 1));
+	}
+}
+
+static int	check_is_valid(char *key)
+{
+	int	i;
+
+	i = 0;
+	while (key[i] && key[i] != '=')
+	{
+		if (key[i] == '_')
+		{
+			i++;
+			continue ;
+		}
+		if (!ft_isalnum(key[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 int	ft_export(char *arg[], t_envtree *env)
 {
 	char	*key;
 	char	*value;
+	int		i;
 
 	if (arg[1] == NULL)
 	{
 		print_envnode(env->root);
 		return (0);
 	}
-	key = arg[1];
-	value = ft_strchr(arg[1], '=');
-	if (!value)
+	i = 1;
+	while (arg[i])
 	{
-		add_env(env, make_envnode(key, ""));
-		return (0);
-	}
-	if (*(ft_strchr(arg[1], '=') - 1) == '+')
-	{
-		*ft_strchr(arg[1], '+') = 0;
-		add_value(env, key, value + 1);
-	}
-	else
-	{
-		*ft_strchr(arg[1], '=') = 0;
-		add_env(env, make_envnode(key, value + 1));
+		key = arg[i];
+		value = ft_strchr(arg[i], '=');
+		if (!check_is_valid(key))
+		{ 
+			print_err(key, "not a valid identifier");
+			i++;
+			continue ;
+		}
+		check_n_add(key, value, env);
+		i++;
 	}
 	return (0);
 }

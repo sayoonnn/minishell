@@ -56,11 +56,9 @@ char	**convert_lst_to_array(t_list *lst)
 	tmp = lst->head;
 	while (tmp != NULL)
 	{
-		printf("%s ", tmp->content);
 		argvs[idx++] = tmp->content;
 		tmp = tmp->next;
 	}
-	printf("\n");
 	argvs[idx] = NULL;
 	ft_lstclear(lst, 1);
 	return (argvs);
@@ -163,13 +161,13 @@ int	insert_redirection_type(t_tree_node *root, t_deque *tokens)
 
 	rd_content = tokens->front->content;
 	token_type = 0;
-	if (!ft_strncmp(rd_content, "<", 1))
+	if (!ft_strcmp(rd_content, "<"))
 		token_type = LESS;
-	else if (!ft_strncmp(rd_content, ">", 1))
+	else if (!ft_strcmp(rd_content, ">"))
 		token_type = GREAT;
-	else if (!ft_strncmp(rd_content, "<<", 2))
+	else if (!ft_strcmp(rd_content, "<<"))
 		token_type = DLESS;
-	else if (!ft_strncmp(rd_content, ">>", 2))
+	else if (!ft_strcmp(rd_content, ">>"))
 		token_type = DGREAT;
 	rd_real = create_tree_node(token_type);
 	if (rd_real == NULL)

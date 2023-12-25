@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   sub_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 00:23:37 by sayoon            #+#    #+#             */
-/*   Updated: 2023/10/07 15:53:31 by sayoon           ###   ########.fr       */
+/*   Created: 2023/12/20 20:55:06 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/20 20:55:07 by sayoon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+static int	check_next_char(char c)
 {
-	t_list	*tmp;
-
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = ft_lstlast(*lst);
-	tmp->next = new;
-	return ;
+	return (c == '\0' || ((ft_isalnum(c) == 0 && c != '_') && c != '?'));
 }

@@ -20,12 +20,16 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		s2_len;
 
 	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
+	if (s2 == NULL)
+		s2_len = 0;
+	else
+		s2_len = ft_strlen(s2);
 	tmp = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
 	if (!tmp)
 		return (NULL);
 	ft_memcpy(tmp, s1, s1_len);
-	ft_memcpy(tmp + s1_len, s2, s2_len);
+	if (s2 != NULL)
+		ft_memcpy(tmp + s1_len, s2, s2_len);
 	*(tmp + s1_len + s2_len) = 0;
 	return (tmp);
 }

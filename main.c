@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	err_code = 0;
+
 static void	startup_minishell(void)
 {
 	int		fd;
@@ -28,29 +30,27 @@ static void	startup_minishell(void)
 		buffer = get_next_line(fd);
 	}
 	close(fd);
-} 
+}
 
-int main(int ac, char *av[], char *envp[])
+int main(void)
 {
 	char		*line;
-	char		**tmp;
+	t_tree_node	*parsed_line;
 	t_envtree	*env;
+	extern char	**environ;
 
-	(void)ac;
-	(void)av;
 	startup_minishell();
 	set_signal();
-	env = init_envp(envp);
+	env = init_envp(environ);
 	line = readline("$> ");
 	while (line)
 	{
-		tmp = ft_split(line, ' ');
-		exec_single_cmd(tmp[0], tmp, env);
-		int i = -1;
-		while (tmp[++i])
-			free(tmp[i]);
-		free(tmp);
-		add_history(line);
+		parsed_line = parse_line(line);
+		if (parsed_line != NULL)
+		{
+			excute_hub(parsed_line, env);
+			add_history(line);
+		}
 		line = readline("$> ");
 	}
 	clear_node(env->root);
