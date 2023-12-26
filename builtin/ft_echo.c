@@ -13,36 +13,33 @@
 #include "minishell.h"
 #include <stdio.h>
 
-static size_t	ft_arrlen(char *arr[])
+static int	find_start_idx(char *argv[], int *nflag)
 {
-	size_t	i;
-
-	i = 0;
-	while (*arr++)
-		i++;
-	return (i);
+	if (argv[1] == NULL)
+		return (1);
+	if (!ft_strcmp("-n", argv[1]))
+	{
+		*nflag = true;
+		return (2);
+	}
+	return (1);
 }
 
-int	ft_echo(char *arg[])
+int	ft_echo(char *argv[])
 {
-	size_t	i;
+	int	nflag;
+	int	start;
 
-	i = ft_arrlen(arg);
-	if (i == 1)
+	nflag = false;
+	start = find_start_idx(argv, &nflag);
+	while (argv[start])
+	{
+		printf("%s", argv[start]);
+		if (argv[start + 1] != NULL)
+			printf(" ");
+		start++;
+	}
+	if (!nflag)
 		printf("\n");
-	else if (i == 2)
-	{
-		if (!ft_strcmp(arg[1], "-n"))
-			return (success);
-		else
-			printf("%s\n", arg[1]);
-	}
-	else
-	{
-		if (!ft_strcmp(arg[1], "-n"))
-			printf("%s", arg[2]);
-		else
-			printf("%s\n", arg[2]);
-	}
 	return (success);
 }

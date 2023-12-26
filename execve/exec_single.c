@@ -31,7 +31,7 @@ static void	todo_parent(pid_t pid)
 		if (WTERMSIG(err_code) == SIGQUIT)
 			printf("Quit: 3");
 		printf("\n");
-		err_code = 128 + WTERMSIG(err_code);
+		err_code = (128 + WTERMSIG(err_code)) << 8;
 	}
 	set_signal();
 }

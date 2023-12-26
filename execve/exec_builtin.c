@@ -51,7 +51,7 @@ int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)
 	if (!ft_strcmp(cmd, "env"))
 		ret = ft_env(env->root);
 	if (!ft_strcmp(cmd, "exit"))
-		ret = ft_exit(argv);
+		ft_exit(argv);
 	if (!ft_strcmp(cmd, "export"))
 		ret = ft_export(argv, env);
 	if (!ft_strcmp(cmd, "pwd"))

@@ -34,7 +34,7 @@ static void	reset_setting(int saved_fd[2])
 		if (WTERMSIG(err_code) == SIGQUIT)
 			printf("Quit: 3");
 		printf("\n");
-		err_code = 128 + WTERMSIG(err_code);
+		err_code = (128 + WTERMSIG(err_code)) << 8;
 	}
 	set_signal();
 	dup2(saved_fd[0], STDIN_FILENO);
@@ -78,5 +78,4 @@ void	excute_hub(t_tree_node *pt, t_envtree *env)
 		trave_redir(pt);
 		sub_redir_exec_pipe(pt, env, 0);
 	}
-	printf("errcode: %d\n", err_code);
 }
