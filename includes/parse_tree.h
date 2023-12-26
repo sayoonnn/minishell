@@ -64,5 +64,6 @@ int			check_rquote(char *cmd, size_t *idx, size_t *new_len);
 int			tokenize(char *cmd, t_parsing *parsing);
 int			analyze_syntax(t_parsing *parsing);
 t_tree_node	*parse_line(char *line, t_parsing *parsing);
+int			select_word_token_type(t_parsing *parsing);
 
 #endif

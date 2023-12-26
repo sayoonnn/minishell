@@ -21,7 +21,7 @@ int	free_new_word(char *word)
 int	link_argv(t_parsing *parsing, char *argv)
 {
 	char	*res;
-	t_list	*new;
+	t_node	*new;
 
 	if (argv == NULL)
 		return (1);
@@ -31,7 +31,7 @@ int	link_argv(t_parsing *parsing, char *argv)
 	{
 		new = ft_lstnew(argv);
 		if (new == NULL)
-			return (free_new_argv(argv));
+			return (free_new_word(argv));
 		ft_lstadd_back(parsing->word_lst, new);
 		parsing->detach = 1;
 	}
@@ -39,7 +39,7 @@ int	link_argv(t_parsing *parsing, char *argv)
 	{
 		res = ft_strjoin(parsing->word_lst->tail->content, argv);
 		if (res == NULL)
-			return (free_new_argv(argv));
+			return (free_new_word(argv));
 		free(parsing->word_lst->tail->content);
 		free(argv);
 		parsing->word_lst->tail->content = res;

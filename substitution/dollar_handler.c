@@ -10,16 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
-#include "env_tree.h"
-#include "errors.h"
+#include "minishell.h"
 
 int	handle_special_dollar(t_parsing *parsing, char *word, size_t *idx)
 {
 	char	*res;
 
 	res = NULL;
-	if (word[*idx] == 0 || is_quote(word[*idx]) || is_space(word[*idx]))
+	if (word[*idx] == 0 || is_quote(word[*idx]) || is_white(word[*idx]))
 		res = make_word(word, idx, 1);
 	else if (word[(*idx)++] == '?')
 		res = ft_itoa(err_code);
@@ -37,17 +35,17 @@ int	handle_dollar_in_qts(t_parsing *ps, t_envtree *env, char *word, size_t *idx)
 	t_envnode	*envnode;
 	char		*key;
 
-	if (word[++(*idx)] == '?' || is_space(word[*idx]) || is_quote(word[*idx]))
-		return (process_special_dollar(ps, word, idx));
+	if (word[++(*idx)] == '?' || is_white(word[*idx]) || is_quote(word[*idx]))
+		return (handle_special_dollar(ps, word, idx));
 	tmp_idx = (*idx);
 	while (word[tmp_idx] != '"'
-		&& !is_space(word[tmp_idx]) && !is_quote(word[tmp_idx]))
+		&& !is_white(word[tmp_idx]) && !is_quote(word[tmp_idx]))
 		tmp_idx++;
 	key = make_word(word, &tmp_idx, tmp_idx - (*idx));
 	if (key == NULL)
 		return (1);
 	(*idx) = tmp_idx;
-	envnode = find_envnode(ps->root, key);
+	envnode = find_envnode(env->root, key);
 	free(key);
 	if (envnode != NULL)
 		if (link_argv(ps, ft_strdup(envnode->value)))
@@ -73,7 +71,7 @@ int	handle_dollar_in_wd(t_parsing *ps, t_envtree *env, char *word, size_t *idx)
 	key = make_word(word, &tmp_idx, tmp_idx - (*idx));
 	if (key == NULL)
 		return (1);
-	envnode = find_envnode(env, key);
+	envnode = find_envnode(env->root, key);
 	free(key);
 	(*idx) = tmp_idx;
 	if (envnode != NULL)
@@ -98,7 +96,7 @@ int	handle_wd(t_parsing *ps, t_envtree *env, char *word, size_t *idx)
 			(*idx) = tmp_idx;
 			if (link_argv(ps, sliced))
 				return (1);
-			if (process_dollar_in_word(ps, env, word, idx))
+			if (handle_dollar_in_wd(ps, env, word, idx))
 				return (1);
 			tmp_idx = *idx;
 			continue ;
@@ -124,7 +122,7 @@ int	handle_word_with_qts(t_parsing *ps, t_envtree *env, char *word, size_t *idx)
 			if (link_argv(ps, make_word(word, &tmp_idx, tmp_idx - *idx)))
 				return (1);
 			(*idx) = tmp_idx;
-			if (dollar_in_quotes(ps, env, word, idx))
+			if (handle_dollar_in_qts(ps, env, word, idx))
 				return (1);
 			tmp_idx = *idx;
 			continue ;

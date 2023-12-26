@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	cd_home(t_envtree *env)
+static int	cd_home(t_envtree *env)
 {
 	t_envnode	*tmp;
 	char		*pwd;
@@ -23,39 +23,38 @@ static void	cd_home(t_envtree *env)
 	tmp = find_envnode(env->root, "HOME");
 	if (chdir(tmp->value) < 0)
 	{
-		print_err("cd", tmp->value);
-		return ;
+		print_err_builtin("cd", ERR_NO_DIR_FILE, tmp->value);
+		return (fail);
 	}
 	add_env(env, make_envnode("OLDPWD", pwd));
 	free(pwd);
+	return (success);
 }
 
-static void	cd_oldpwd(t_envtree *env)
+static int	cd_oldpwd(t_envtree *env)
 {
 	t_envnode	*old;
 	char		*pwd;
 
 	pwd = getcwd(NULL, PATH_MAX);
 	if (!pwd)
-	{
-		//에러 설정
-		exit(1) ;
-	}
+		exit(1);
 	old = find_envnode(env->root, "OLDPWD");
 	if (old)
 	{
 		if (chdir(old->value) < 0)
 		{
-			print_err("cd", old->value);
-			return ;
+			print_err_builtin("cd", ERR_NO_DIR_FILE, old->value);
+			return (fail);
 		}
 	}
 	printf("%s\n", old->value);
 	add_env(env, make_envnode("OLDPWD", pwd));
 	free(pwd);
+	return (success);
 }
 
-void	ft_cd(char *arg[], t_envtree *env)
+int	ft_cd(char *arg[], t_envtree *env)
 {
 	char	*cur;
 
@@ -63,17 +62,18 @@ void	ft_cd(char *arg[], t_envtree *env)
 	if (!cur)
 		exit(1);
 	if (arg[1] == NULL || !ft_strncmp(arg[1], "~", 2))
-		cd_home(env);
+		return (cd_home(env));
 	else if (!ft_strncmp(arg[1], "-", 2))
-		cd_oldpwd(env);
-	else 
+		return (cd_oldpwd(env));
+	else
 	{
 		if (chdir(arg[1]) < 0)
 		{
-			print_err("cd", arg[1]);
-			return ;
+			print_err_builtin("cd", ERR_NO_DIR_FILE, arg[1]);
+			return (fail);
 		}
 		add_env(env, make_envnode("OLDPWD", cur));
 		free(cur);
 	}
+	return (success);
 }

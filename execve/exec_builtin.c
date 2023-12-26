@@ -25,17 +25,38 @@ int	is_builtin(char *cmd)
 void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 {
 	if (!ft_strcmp(cmd, "cd"))
-		ft_cd(argv, env);
+		err_code = ft_cd(argv, env) << 8;
 	if (!ft_strcmp(cmd, "echo"))
-		ft_echo(argv);
+		err_code = ft_echo(argv) << 8;
 	if (!ft_strcmp(cmd, "env"))
-		ft_env(env->root);
+		err_code = ft_env(env->root) << 8;
+	if (!ft_strcmp(cmd, "exit"))
+		err_code = ft_exit(argv) << 8;
+	if (!ft_strcmp(cmd, "export"))
+		err_code = ft_export(argv, env) << 8;
+	if (!ft_strcmp(cmd, "pwd"))
+		err_code = ft_pwd() << 8;
+	if (!ft_strcmp(cmd, "unset"))
+		err_code = ft_unset(env, argv) << 8;
+}
+
+int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)
+{
+	int	ret;
+
+	if (!ft_strcmp(cmd, "cd"))
+		ret = ft_cd(argv, env);
+	if (!ft_strcmp(cmd, "echo"))
+		ret = ft_echo(argv);
+	if (!ft_strcmp(cmd, "env"))
+		ret = ft_env(env->root);
 	if (!ft_strcmp(cmd, "exit"))
 		ft_exit(argv);
 	if (!ft_strcmp(cmd, "export"))
-		ft_export(argv, env);
+		ret = ft_export(argv, env);
 	if (!ft_strcmp(cmd, "pwd"))
-		ft_pwd();
+		ret = ft_pwd();
 	if (!ft_strcmp(cmd, "unset"))
-		ft_unset(env, argv);
+		ret = ft_unset(env, argv);
+	return (ret);
 }

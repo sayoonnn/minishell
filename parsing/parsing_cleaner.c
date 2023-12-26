@@ -31,6 +31,7 @@ void	clean_parsing_tools(t_parsing *parsing)
 {
 	deque_clear(parsing->tokens);
 	cut_tree(parsing->root);
+	parsing->root = NULL;
 }
 
 void	free_parsing(t_parsing *parsing)

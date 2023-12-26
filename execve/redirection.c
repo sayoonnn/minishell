@@ -54,6 +54,21 @@ static int	make_input(char *filename, int io_fd[2], int opt)
 	return (true);
 }
 
+static int	check_n_open(char *file_name, int io_fd[2], int type)
+{
+	if (type == GREAT || type == DGREAT)
+	{
+		if (!make_output(file_name, io_fd, type))
+			return (false);
+	}
+	else
+	{
+		if (!make_input(file_name, io_fd, type))
+			return (false);
+	}
+	return (true);
+}
+
 int	handle_redir(t_tree_node *pt, int io_fd[2])
 {
 	int	ret;
@@ -72,16 +87,9 @@ int	handle_redir(t_tree_node *pt, int io_fd[2])
 	}
 	else if (pt->token_type == REDIRECTION_INFO)
 	{
-		if (pt->left->token_type == GREAT || pt->left->token_type == DGREAT)
-		{
-			if (!make_output(pt->right->contents[0], io_fd, pt->left->token_type))
-				return (false);
-		}
-		else
-		{
-			if (!make_input(pt->right->contents[0], io_fd, pt->left->token_type))
-				return (false);
-		}
+		ret = check_n_open(pt->right->contents->head->content, io_fd, pt->left->token_type);
+		if (!ret)
+			return (ret);
 	}
 	return (true);
 }

@@ -26,5 +26,5 @@ static void	print_envnode(t_envnode *tree)
 int	ft_env(t_envnode *envp)
 {
 	print_envnode(envp);
-	return (0);
+	return (success);
 }

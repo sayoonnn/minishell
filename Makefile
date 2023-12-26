@@ -4,15 +4,16 @@ SRC		=	builtin/ft_cd.c builtin/ft_echo.c builtin/ft_env.c builtin/ft_exit.c\
 			\
 			execve/exec_single.c execve/excute_hub.c execve/exec_bin.c execve/exec_utils.c\
 			execve/exec_builtin.c execve/heredoc.c execve/redirection.c execve/exec_redir.c\
-			execve/exec_pipe.c\
 			\
-			parsing/init_free.c parsing/parsing_init.c parsing/parsing_cleaner.c\
+			parsing/parsing_init.c parsing/parsing_cleaner.c\
 			parsing/parse_line.c parsing/parsing_utils.c\
 			parsing/syntax_analyzer.c parsing/syntax_error.c parsing/tokenizer.c\
 			parsing/tokenizer_utils.c\
 			\
 			utils/envp_utils.c utils/envtree_func.c utils/envtree_func2.c utils/print_err.c\
 			utils/reset_io.c utils/signal_handler.c utils/startup_minishell.c\
+			\
+			substitution/cmd_argv_analyzer.c substitution/dollar_handler.c substitution/meta_character_utils.c\
 			\
 			main.c
 

@@ -22,6 +22,13 @@
 # define CODE_SYNTAX_ERROR 	258
 
 # include <unistd.h>
+# include "libft.h"
+
+enum	e_success
+{
+	success,
+	fail
+};
 
 void	print_err(char *pname, char *dirname);
 void	print_err_builtin(char *func_name ,char *pname, char *str_err);

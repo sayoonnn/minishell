@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	startup_minishell(void)
+void	startup_minishell(void)
 {
 	int		fd;
 	char	*buffer;

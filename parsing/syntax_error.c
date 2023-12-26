@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "errors.h"
+#include <stdio.h>
 
 int	print_syntax_token_error(char *content)
 {

@@ -16,28 +16,38 @@ static void	todo_child(char *argv[], t_envtree *env)
 {
 	int	ret;
 
+	set_child_signal();
 	ret = exec_bin(argv, env);
 	exit(ret);
 }
 
 static void	todo_parent(pid_t pid)
-{
-	int	status;
-
-	waitpid(pid, &status, 0);
+{	
+	(void)pid;
+	signal(SIGINT, SIG_IGN);
+	wait(&err_code);
+	if (WIFSIGNALED(err_code))
+	{
+		if (WTERMSIG(err_code) == SIGQUIT)
+			printf("Quit: 3");
+		printf("\n");
+		err_code = (128 + WTERMSIG(err_code)) << 8;
+	}
+	set_signal();
 }
 
-void	exec_single_cmd(t_tree_node *node, t_envtree *env)
+void	exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst)
 {
 	int		save_fd[2];
 	char	**argv;
 	pid_t	pid;
 
-	argv = node->left->contents;
+	argv = convert_word_lst_to_array(lst);
 	save_fd[0] = dup(STDIN_FILENO);
 	save_fd[1] = dup(STDOUT_FILENO);
 	dup2(node->fd[0], STDIN_FILENO);
 	dup2(node->fd[1], STDOUT_FILENO);
+	printf("%s\n", argv[0]);
 	if (is_builtin(argv[0]))
 		exec_builtin(argv[0], argv, env);
 	else

@@ -30,6 +30,7 @@
 # include "built_in_func.h"
 # include "parse_tree.h"
 # include "errors.h"
+# include "substitude.h"
 
 enum	e_bool
 {
@@ -37,18 +38,26 @@ enum	e_bool
 	true
 };
 
-void		set_signal(void);
+void		startup_minishell(void);
+
 t_envtree	*init_envp(char *envp[]);
 char		**tree_2_envp(t_envtree *env);
 char		*make_binpath(char *cmd, t_envnode *path_node);
-void		exec_single_cmd(t_tree_node *node, t_envtree *env);
+void		exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst);
 int			exec_bin(char **argv, t_envtree *env);
-void		excute_hub(t_tree_node *pt, t_envtree *env);
+void		excute_hub(t_parsing *ps, t_envtree *env);
 void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n);
 void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe, int cnt);
 
 int			*get_fd(void);
 void		save_fd(int input, int output);
+
+// signal
+void		set_signal(void);
+void		set_child_signal(void);
+void	signal_handler(int signal);
+
+
 
 int			is_builtin(char *cmd);
 void		exec_builtin(char *cmd, char *argv[], t_envtree *env);

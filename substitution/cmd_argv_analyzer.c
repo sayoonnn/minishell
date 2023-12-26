@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
-#include "env_tree.h"
-#include "errors.h"
+#include "minishell.h"
 
 int	substitute_word(t_parsing *parsing, t_envtree *env, char *content)
 {
@@ -27,7 +25,7 @@ int	substitute_word(t_parsing *parsing, t_envtree *env, char *content)
 				return (1);
 			continue ;
 		}
-		if (check_word_in_syntax(parsing, content, &idx))
+		if (handle_wd(parsing, env, content, &idx))
 			return (1);
 	}
 	return (0);
@@ -48,14 +46,15 @@ int	substitute_words(t_parsing *parsing, t_envtree *env, t_list *contents)
 	return (0);
 }
 
-char	**convert_word_lst_to_array(t_parsing *parsing)
+char	**convert_word_lst_to_array(t_list *lst)
 {
 	t_node			*ptr;
 	char			**words;
 	unsigned int	cnt;
 	unsigned int	idx;
 
-	ptr = parsing->word_lst->head;
+	cnt = 0;
+	ptr = lst->head;
 	while (ptr != NULL)
 	{
 		cnt++;
@@ -64,14 +63,14 @@ char	**convert_word_lst_to_array(t_parsing *parsing)
 	words = (char **)malloc(sizeof(char *) * (cnt + 1));
 	if (words == NULL)
 		return (NULL);
-	ptr = parsing->word_lst->head;
+	ptr = lst->head;
 	idx = 0;
 	while (ptr != NULL)
 	{
 		words[idx++] = ptr->content;
-		parsing->word_lst->head = ptr->next;
+		lst->head = ptr->next;
 		free(ptr);
-		ptr = parsing->word_lst->head;
+		ptr = lst->head;
 	}
 	words[idx] = NULL;
 	return (words);
@@ -81,7 +80,7 @@ int	convert_content_to_argv(t_parsing *ps, t_envtree *env, t_list *contents)
 {
 	if (substitute_words(ps, env, contents))
 		return (1);
-	if (convert_word_lst_to_array(ps))
+	if (convert_word_lst_to_array(ps->word_lst))
 		return (1);
 	return (0);
 }

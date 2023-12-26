@@ -49,6 +49,6 @@ int main(void)
 		}
 		line = readline("$> ");
 	}
-	free_minishell_data(env, parsing);
+	free_minishell_data(env->root, parsing);
 	return (EXIT_SUCCESS);
 }
