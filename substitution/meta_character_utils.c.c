@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_argv_analyzer_utils.c                          :+:      :+:    :+:   */
+/*   meta_character_convertor_utils.c.c                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 16:55:58 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/26 16:32:04 by devpark          ###   ########.fr       */
+/*   Created: 2023/12/20 20:55:06 by sayoon            #+#    #+#             */
+/*   Updated: 2023/12/26 21:12:50 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "minishell.h"
 
-int	free_new_argv(char *argv)
+int	free_new_word(char *word)
 {
-	free(argv);
+	free(word);
 	return (1);
 }
 
@@ -27,41 +27,41 @@ int	link_argv(t_parsing *parsing, char *argv)
 		return (1);
 	if (ft_strlen(argv) == 0)
 		free(argv);
-	else if (parsing->argv_lst->head == 0 || parsing->detach == 0)
+	else if (parsing->word_lst->head == 0 || parsing->detach == 0)
 	{
 		new = ft_lstnew(argv);
 		if (new == NULL)
 			return (free_new_argv(argv));
-		ft_lstadd_back(parsing->argv_lst, new);
+		ft_lstadd_back(parsing->word_lst, new);
 		parsing->detach = 1;
 	}
 	else if (parsing->detach)
 	{
-		res = ft_strjoin(parsing->argv_lst->tail->content, argv);
+		res = ft_strjoin(parsing->word_lst->tail->content, argv);
 		if (res == NULL)
 			return (free_new_argv(argv));
-		free(parsing->argv_lst->tail->content);
+		free(parsing->word_lst->tail->content);
 		free(argv);
-		parsing->argv_lst->tail->content = res;
+		parsing->word_lst->tail->content = res;
 	}
 	return (0);
 }
 
-int	link_argv_to_lst(t_parsing *parsing, char **strs, char *value)
+int	link_argv_to_word_lst(t_parsing *parsing, char **strs, char *value)
 {
-	char	*dup;
+	char	*copy;
 	size_t	word_idx;
 
 	word_idx = 0;
 	parsing->detach = !(is_white(value[0]));
 	while (strs[word_idx] != NULL)
 	{
-		dup = ft_strdup(strs[word_idx]);
-		if (dup == NULL)
+		copy = ft_strdup(strs[word_idx]);
+		if (copy == NULL)
 			return (free_perfectly_split(strs));
-		if (link_argv(parsing, dup))
+		if (link_argv(parsing, copy))
 		{
-			free(dup);
+			free(copy);
 			return (free_perfectly_split(strs));
 		}
 		parsing->detach = 0;
@@ -69,21 +69,5 @@ int	link_argv_to_lst(t_parsing *parsing, char **strs, char *value)
 	}
 	parsing->detach = !(is_white(value[ft_strlen(value) - 1]));
 	free_perfectly_split(strs);
-	return (0);
-}
-
-int	process_special_dollar(t_parsing *parsing, char *word, size_t *idx)
-{
-	char	*res;
-
-	res = NULL;
-	if (word[*idx] == 0)
-		res = make_word(word, idx, 1);
-	// else if (word[(*idx)++] == '?')
-	// 	res = itoa(0);
-	if (res == NULL)
-		return (1);
-	if (link_argv(parsing, res))
-		return (free_new_argv(res));
 	return (0);
 }

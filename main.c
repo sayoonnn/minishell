@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 19:34:56 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/26 15:34:56 by devpark          ###   ########.fr       */
+/*   Updated: 2023/12/26 18:48:01 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int main(void)
 	{
 		if (line != NULL)
 		{
-			parse_tree = parse_line(line, parsing);
-			excute_hub(parse_tree, env);
+			parse_line(line, parsing);
+			excute_hub(parsing, env);
 			clean_parsing_tools(parsing);
 			parse_tree = NULL;
 			if (ft_strncmp(line, "", 1))
