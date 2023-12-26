@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tree.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 15:38:25 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/19 14:44:34 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/26 14:47:49 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define CMD 				0
 # define ARGV 				1
 # define FILENAME 			2
-# define PIPELINE 			3
+# define PIPE	 			3
 # define REDIRECTION	 	4
 # define REDIRECTION_LIST 	5
 # define REDIRECTION_INFO 	6
@@ -29,44 +29,43 @@
 # include <stdio.h>
 # include "libft.h"
 # include "deque.h"
-# include "argv_list.h"
+# include "list.h"
 
 typedef struct s_tree_node
 {
 	int					token_type;
-	char				**contents;
+	t_list				*contents;
 	int					fd[2];
 	struct s_tree_node	*left;
 	struct s_tree_node	*right;
 }				t_tree_node;
 
-typedef struct s_data
+typedef struct s_parsing
 {
 	int			cmd_flag;
 	int			detach;
 	t_deque		*tokens;
 	t_list		*argv_lst;
 	t_tree_node	*root;
-}				t_data;
+	t_tree_node	*cmd_info_ptr;
+}				t_parsing;
 
-int		is_white(char ch);
-int		is_quote(char ch);
-int		is_operator(char ch);
-int		free_perfectly_split(char **strs);
-char	*make_word(char *cmd, size_t *idx, size_t len);
-int		link_argv(t_data *data, char *argv);
-int		link_argv_to_lst(t_data *data, char **strs, char *value);
-int		process_special_dollar(t_data *data, char *word, size_t *idx);
-int		analyze_cmd_argv(t_data *data, char *word);
-int		analyze_syntax(t_data *data);
-int		tokenize(char *cmd, t_data *data);
+t_parsing	*init_parsing_tool(void);
+void		clean_parsing_tools(t_parsing *parsing);
+void		free_parsing(t_parsing *parsing);
 
-int		select_word_token_type(t_data *data);
-int		check_rquote(char *cmd, size_t *idx, size_t *new_len);
-int		init_data(t_data *data);
-void	free_data(t_data *data);
+int			print_syntax_token_error(char *content);
+int			print_syntax_unmatched_error(char ch);
 
-int		print_syntax_token_error(char *content);
-int		print_syntax_unmatched_error(char ch);
+int			is_white(char ch);
+int			is_quote(char ch);
+int			is_operator(char ch);
+char		*make_word(char *cmd, size_t *idx, size_t len);
+int			free_perfectly_split(char **strs);
+int			check_rquote(char *cmd, size_t *idx, size_t *new_len);
+
+int			tokenize(char *cmd, t_parsing *data);
+int			analyze_syntax(t_parsing *data);
+t_tree_node	*parse_line(char *line, t_parsing *parsing);
 
 #endif

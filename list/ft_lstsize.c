@@ -1,15 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_errcode.c                                       :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 18:37:04 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/20 18:37:04 by sayoon           ###   ########.fr       */
+/*   Created: 2023/04/16 15:30:12 by jonghopa          #+#    #+#             */
+/*   Updated: 2023/12/21 23:16:39 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "list.h"
 
+int	ft_lstsize(t_list *lst)
+{
+	t_node	*tmp;
+	int		len;
 
+	len = 0;
+	tmp = lst->head;
+	while (tmp != NULL)
+	{
+		tmp = tmp->next;
+		len++;
+	}
+	return (len);
+}

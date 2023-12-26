@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute_hub.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:00:10 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/05 16:00:10 by sayoon           ###   ########.fr       */
+/*   Updated: 2023/12/25 23:40:13 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 {
 	if (get_fd()[0] == -1 && get_fd()[1] == -1)
 		save_fd(dup(STDIN_FILENO), dup(STDOUT_FILENO));
-	if (node->left->token_type == PIPELINE)
+	if (node->left->token_type == PIPE)
 	{
 		sub_redir_exec_pipe(node->left, env, n + 1);
 		exec_pipe_cmd(node->right, env, n);

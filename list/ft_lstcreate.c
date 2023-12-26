@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstcreate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 15:30:00 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/13 20:36:02 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/09/08 16:34:30 by jonghopa          #+#    #+#             */
+/*   Updated: 2023/12/21 23:16:19 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "argv_list.h"
+#include "list.h"
 
-t_argv	*ft_lstnew(void *content)
+t_list	*ft_lstcreate(void)
 {
-	t_argv	*new;
+	t_list	*lst;
 
-	new = (t_argv *)malloc(sizeof(t_argv));
-	if (new == NULL)
+	lst = (t_list *)malloc(sizeof(t_list));
+	if (lst == NULL)
 		return (NULL);
-	new->content = content;
-	new->next = NULL;
-	return (new);
+	lst->head = NULL;
+	lst->tail = NULL;
+	return (lst);
 }

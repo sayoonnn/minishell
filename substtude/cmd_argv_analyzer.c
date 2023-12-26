@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_argv_analyzer.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:00:26 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/20 13:43:46 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/25 23:40:39 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	analyze_cmd_argv(t_data *data, char *word)
 {
-	t_argv	*new;
+	t_list	*new;
 	char	*dup;
 
 	dup = ft_strdup(word);

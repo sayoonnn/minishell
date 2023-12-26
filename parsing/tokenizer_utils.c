@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:30:47 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/18 22:37:11 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/26 14:42:09 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ int	check_rquote(char *cmd, size_t *idx, size_t *new_len)
 	return (0);
 }
 
-int	select_word_token_type(t_data *data)
+int	select_word_token_type(t_parsing *parsing)
 {
 	int	token_type;
 
 	token_type = CMD;
-	if (deque_empty(data->tokens) || data->cmd_flag == 0)
+	if (deque_empty(parsing->tokens) || parsing->cmd_flag == 0)
 	{
-		data->cmd_flag = 1;
+		parsing->cmd_flag = 1;
 		token_type = CMD;
 	}
-	else if (deque_back(data->tokens) == REDIRECTION)
+	else if (deque_back(parsing->tokens) == REDIRECTION)
 		token_type = FILENAME;
-	else if (data->cmd_flag)
+	else if (parsing->cmd_flag)
 		token_type = ARGV;
 	return (token_type);
 }

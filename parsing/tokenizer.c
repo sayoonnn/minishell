@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 13:27:25 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/20 13:53:52 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:47:06 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_redirection(char *cmd, t_deque *tokens, size_t *idx)
 	return (check);
 }
 
-int	check_pipeline(char *cmd, t_data *data, size_t *idx)
+int	check_pipeline(char *cmd, t_parsing *data, size_t *idx)
 {
 	size_t	len;
 	int		check;
@@ -53,13 +53,13 @@ int	check_pipeline(char *cmd, t_data *data, size_t *idx)
 	len = ft_strlen(pipe);
 	if (len == 0)
 		return (0);
-	check = deque_push_back(data->tokens, PIPELINE, pipe);
+	check = deque_push_back(data->tokens, PIPE, pipe);
 	(*idx) += len;
 	data->cmd_flag = 0;
 	return (check);
 }
 
-int	check_word(char *cmd, t_data *data, size_t *idx)
+int	check_word(char *cmd, t_parsing *data, size_t *idx)
 {
 	int		token_type;
 	size_t	new_len;
@@ -83,7 +83,7 @@ int	check_word(char *cmd, t_data *data, size_t *idx)
 	return (0);
 }
 
-int	tokenize(char *cmd, t_data *data)
+int	tokenize(char *cmd, t_parsing *data)
 {
 	size_t	cmd_len;
 	size_t	idx;

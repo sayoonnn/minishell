@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_argv_analyzer_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 16:55:58 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/19 14:53:00 by jonghopa         ###   ########.fr       */
+/*   Updated: 2023/12/25 23:41:11 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	free_new_argv(char *argv)
 int	link_argv(t_data *data, char *argv)
 {
 	char	*res;
-	t_argv	*new;
+	t_list	*new;
 
 	if (argv == NULL)
 		return (1);

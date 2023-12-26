@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 15:30:12 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/13 20:58:15 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/04/16 15:29:04 by jonghopa          #+#    #+#             */
+/*   Updated: 2023/12/26 11:09:45 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "argv_list.h"
+#include "list.h"
 
-int	ft_lstsize(t_list *lst)
+void	ft_lstclear(t_list *lst)
 {
-	t_argv	*tmp;
-	int		len;
+	t_node	*tmp;
 
-	len = 0;
-	tmp = lst->head;
-	while (tmp != NULL)
+	while (lst->head != NULL)
 	{
-		tmp = tmp->next;
-		len++;
+		tmp = lst->head;
+		lst->head = lst->head->next;
+		tmp->next = NULL;
+		ft_lstdelone(tmp);
 	}
-	return (len);
+	lst->tail = NULL;
+	return ;
 }

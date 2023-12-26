@@ -6,14 +6,14 @@
 #    By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 14:56:11 by jonghopa          #+#    #+#              #
-#    Updated: 2023/12/18 23:06:08 by jonghopa         ###   ########.fr        #
+#    Updated: 2023/12/22 17:00:50 by jonghopa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -g3 -Wall -Wextra -Werror
 
-NAME = argv_list.a
+NAME = list.a
 SRCS = \
 ft_lstcreate.c \
 ft_lstadd_back.c \
@@ -40,7 +40,7 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 
-re: 
+re:
 	@make fclean
 	@make all
 

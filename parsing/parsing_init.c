@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   parsing_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/19 16:31:08 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/26 14:48:20 by devpark          ###   ########.fr       */
+/*   Created: 2023/12/18 19:10:15 by jonghopa          #+#    #+#             */
+/*   Updated: 2023/12/26 14:35:59 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse_tree.h"
 
-t_tree_node	*parse_line(char *line, t_parsing *parsing)
+t_parsing	*init_parsing_tool(void)
 {
-	int			flag;
-	t_tree_node	*ret;
+	t_parsing	*parsing;
 
-	if (*line == 0)
-		return (NULL);
-	if (tokenize(line, parsing))
+	parsing = (t_parsing *)malloc(sizeof(t_parsing));
+	if (parsing == NULL)
 		exit(1);
-	flag = analyze_syntax(parsing);
-	if (flag == 1)
-		return (NULL);
-	ret = parsing->root;
-	return (ret);
+	parsing->tokens = deque_create();
+	parsing->argv_lst = ft_lstcreate();
+	if (!(parsing->tokens) || !(parsing->argv_lst))
+		exit(1);
+	parsing->detach = 0;
+	parsing->cmd_flag = 0;
+	parsing->root = NULL;
+	parsing->cmd_info_ptr = NULL;
+	return (parsing);
 }

@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 15:31:11 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/13 20:59:38 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/04/16 15:29:15 by jonghopa          #+#    #+#             */
+/*   Updated: 2023/12/26 11:09:53 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "argv_list.h"
+#include "list.h"
 
-t_argv	*ft_lstlast(t_list *lst)
+void	ft_lstdelone(t_node *argv)
 {
-	t_argv	*tmp;
-
-	if (lst->tail == NULL)
-		return (NULL);
-	tmp = lst->tail;
-	return (tmp);
+	free(argv->content);
+	free(argv);
 }

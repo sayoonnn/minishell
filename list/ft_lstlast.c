@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 15:29:04 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/18 23:02:45 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/04/16 15:31:11 by jonghopa          #+#    #+#             */
+/*   Updated: 2023/12/21 23:16:30 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "argv_list.h"
+#include "list.h"
 
-void	ft_lstclear(t_list *lst, int status)
+t_node	*ft_lstlast(t_list *lst)
 {
-	t_argv	*tmp;
+	t_node	*tmp;
 
-	while (lst->head != NULL)
-	{
-		tmp = lst->head;
-		lst->head = lst->head->next;
-		tmp->next = NULL;
-		ft_lstdelone(tmp, status);
-	}
-	lst->tail = NULL;
-	return ;
+	if (lst->tail == NULL)
+		return (NULL);
+	tmp = lst->tail;
+	return (tmp);
 }
