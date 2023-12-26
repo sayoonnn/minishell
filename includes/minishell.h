@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2023/11/29 17:18:28 by sayoon           ###   ########.fr       */
+/*   Updated: 2023/12/26 16:43:49 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ enum	e_bool
 
 void		set_signal(void);
 t_envtree	*init_envp(char *envp[]);
-void		print_err(char *pname, char *dirname);
 char		**tree_2_envp(t_envtree *env);
 char		*make_binpath(char *cmd, t_envnode *path_node);
 void		exec_single_cmd(t_tree_node *node, t_envtree *env);
@@ -48,8 +47,8 @@ void		excute_hub(t_tree_node *pt, t_envtree *env);
 void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n);
 void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe, int cnt);
 
-int		*get_fd(void);
-void	save_fd(int input, int output);
+int			*get_fd(void);
+void		save_fd(int input, int output);
 
 int			is_builtin(char *cmd);
 void		exec_builtin(char *cmd, char *argv[], t_envtree *env);
@@ -66,7 +65,6 @@ void	trave_redir(t_tree_node *pt);
 
 char			*make_tmpfile(char *end);
 void			handle_heredoc(char *file_name);
-t_tree_node     *parse_line(char *line);
 void			exec_multi_cmd(char *cmd, char *argv[], t_envtree *env);
 void			cut_tree(t_tree_node *root);
 

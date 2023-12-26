@@ -6,7 +6,7 @@
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 15:38:25 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/26 14:47:49 by devpark          ###   ########.fr       */
+/*   Updated: 2023/12/26 16:59:32 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_parsing
 	int			cmd_flag;
 	int			detach;
 	t_deque		*tokens;
-	t_list		*argv_lst;
+	t_list		*word_lst;
 	t_tree_node	*root;
 	t_tree_node	*cmd_info_ptr;
 }				t_parsing;
@@ -54,9 +54,6 @@ t_parsing	*init_parsing_tool(void);
 void		clean_parsing_tools(t_parsing *parsing);
 void		free_parsing(t_parsing *parsing);
 
-int			print_syntax_token_error(char *content);
-int			print_syntax_unmatched_error(char ch);
-
 int			is_white(char ch);
 int			is_quote(char ch);
 int			is_operator(char ch);
@@ -64,8 +61,8 @@ char		*make_word(char *cmd, size_t *idx, size_t len);
 int			free_perfectly_split(char **strs);
 int			check_rquote(char *cmd, size_t *idx, size_t *new_len);
 
-int			tokenize(char *cmd, t_parsing *data);
-int			analyze_syntax(t_parsing *data);
+int			tokenize(char *cmd, t_parsing *parsing);
+int			analyze_syntax(t_parsing *parsing);
 t_tree_node	*parse_line(char *line, t_parsing *parsing);
 
 #endif

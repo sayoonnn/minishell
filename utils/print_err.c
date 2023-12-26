@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   print_err.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:43:34 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/04 19:43:36 by sayoon           ###   ########.fr       */
+/*   Updated: 2023/12/26 15:44:50 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "errors.h"
 
 void	print_err(char *pname, char *str_err)
 {

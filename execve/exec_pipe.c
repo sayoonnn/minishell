@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execve.c                                           :+:      :+:    :+:   */
+/*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 20:12:11 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/04 20:12:12 by sayoon           ###   ########.fr       */
+/*   Updated: 2023/12/26 16:15:44 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int n)
 		dup2(node->fd[1], STDOUT_FILENO);
 	if (is_builtin(node->left->contents[0]))
 	{
-		exec_builtin(node->left->contents[0], node->left->contents, env);
+		exec_builtin(node->left->contents, node->left->contents, env);
 		exit(EXIT_SUCCESS);
 	}
 	else if (exec_bin(node->left->contents, env))

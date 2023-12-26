@@ -6,11 +6,12 @@
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 15:45:15 by devpark           #+#    #+#             */
-/*   Updated: 2023/12/26 13:46:56 by devpark          ###   ########.fr       */
+/*   Updated: 2023/12/26 15:42:36 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_tree.h"
+#include "errors.h"
 
 int	select_parse_tree_token_type(int token_type)
 {
@@ -35,7 +36,7 @@ t_tree_node	*create_tree_node(int token_type)
 	return (syntax_node);
 }
 
-int	insert_pipeline(t_tree_node **root, t_deque *tokens, t_parsing *data)
+int	insert_pipeline(t_tree_node **root, t_deque *tokens, t_parsing *parsing)
 {
 	t_tree_node	*tmp;
 
@@ -49,7 +50,7 @@ int	insert_pipeline(t_tree_node **root, t_deque *tokens, t_parsing *data)
 	tmp->left = *root;
 	*root = tmp;
 	deque_pop_front(tokens);
-	data->cmd_info_ptr = NULL;
+	parsing->cmd_info_ptr = NULL;
 	return (0);
 }
 
@@ -119,7 +120,7 @@ int	insert_redirection_info(t_tree_node **root, t_deque *tokens)
 	return (0);
 }
 
-int	insert_cmd_info_token(t_tree_node **root, t_parsing *data)
+int	insert_cmd_info_token(t_tree_node **root, t_parsing *parsing)
 {
 	t_tree_node	*cmd;
 	t_tree_node	*cmd_info;
@@ -138,11 +139,11 @@ int	insert_cmd_info_token(t_tree_node **root, t_parsing *data)
 	cmd_info->contents = ft_lstcreate();
 	if (cmd_info->contents == NULL)
 		return (1);
-	data->cmd_info_ptr = cmd_info;
+	parsing->cmd_info_ptr = cmd_info;
 	return (0);
 }
 
-int	insert_redirection_list(t_tree_node **root, t_deque *tokens, t_parsing *data)
+int	insert_redirection_list(t_tree_node **root, t_deque *tokens, t_parsing *parsing)
 {
 	t_tree_node	*rd;
 	t_tree_node	*tmp;
@@ -154,7 +155,7 @@ int	insert_redirection_list(t_tree_node **root, t_deque *tokens, t_parsing *data
 	if (*root == NULL
 		|| ((*root)->token_type == PIPE && (*root)->right == NULL))
 	{
-		if (insert_cmd_info_token(root, data))
+		if (insert_cmd_info_token(root, parsing))
 			return (1);
 	}
 	tmp = *root;
@@ -169,7 +170,7 @@ int	insert_redirection_list(t_tree_node **root, t_deque *tokens, t_parsing *data
 	return (0);
 }
 
-int	connect_cmd_argv_content(t_tree_node **root, t_parsing *data)
+int	connect_cmd_argv_content(t_tree_node **root, t_parsing *parsing)
 {
 	t_node	*new;
 	char	*content;
@@ -177,10 +178,10 @@ int	connect_cmd_argv_content(t_tree_node **root, t_parsing *data)
 	if (*root == NULL
 		|| ((*root)->token_type == PIPE && (*root)->right == NULL))
 	{
-		if (insert_cmd_info_token(root, data))
+		if (insert_cmd_info_token(root, parsing))
 			return (1);
 	}
-	content = ft_strdup(data->tokens->front->content);
+	content = ft_strdup(parsing->tokens->front->content);
 	new = ft_lstnew(content);
 	if (content == NULL || new == NULL)
 	{
@@ -188,12 +189,12 @@ int	connect_cmd_argv_content(t_tree_node **root, t_parsing *data)
 			free(content);
 		return (1);
 	}
-	ft_lstadd_back(data->cmd_info_ptr->contents, new);
-	deque_pop_front(data->tokens);
+	ft_lstadd_back(parsing->cmd_info_ptr->contents, new);
+	deque_pop_front(parsing->tokens);
 	return (0);
 }
 
-int	check_word_syntax_error(t_tree_node **root, t_parsing *data)
+int	check_word_syntax_error(t_tree_node **root, t_parsing *parsing)
 {
 	char	quote;
 	char	quote_flag;
@@ -202,16 +203,16 @@ int	check_word_syntax_error(t_tree_node **root, t_parsing *data)
 	idx = 0;
 	quote = 0;
 	quote_flag = 0;
-	while (data->tokens->front->content[idx] != 0)
+	while (parsing->tokens->front->content[idx] != 0)
 	{
-		if (is_quote(data->tokens->front->content[idx]))
+		if (is_quote(parsing->tokens->front->content[idx]))
 		{
 			quote_flag = 1;
-			quote = data->tokens->front->content[idx++];
-			while (data->tokens->front->content[idx] != quote
-				&& data->tokens->front->content[idx] != 0)
+			quote = parsing->tokens->front->content[idx++];
+			while (parsing->tokens->front->content[idx] != quote
+				&& parsing->tokens->front->content[idx] != 0)
 				idx++;
-			if (data->tokens->front->content[idx] == 0)
+			if (parsing->tokens->front->content[idx] == 0)
 				break ;
 		}
 		quote_flag = 0;
@@ -219,23 +220,23 @@ int	check_word_syntax_error(t_tree_node **root, t_parsing *data)
 	}
 	if (quote_flag)
 		return (print_syntax_unmatched_error(quote));
-	return (connect_cmd_argv_content(root, data));
+	return (connect_cmd_argv_content(root, parsing));
 }
 
-int	analyze_syntax(t_parsing *data)
+int	analyze_syntax(t_parsing *parsing)
 {
 	int		token_type;
 	int		check;
 
-	while (!deque_empty(data->tokens))
+	while (!deque_empty(parsing->tokens))
 	{
-		token_type = deque_front(data->tokens);
+		token_type = deque_front(parsing->tokens);
 		if (token_type == CMD || token_type == ARGV)
-			check = check_word_syntax_error(&data->root, data);
+			check = check_word_syntax_error(&parsing->root, parsing);
 		else if (token_type == REDIRECTION)
-			check = insert_redirection_list(&data->root, data->tokens, data);
+			check = insert_redirection_list(&parsing->root, parsing->tokens, parsing);
 		else if (token_type == PIPE)
-			check = insert_pipeline(&data->root, data->tokens, data);
+			check = insert_pipeline(&parsing->root, parsing->tokens, parsing);
 		if (check)
 			return (check);
 	}

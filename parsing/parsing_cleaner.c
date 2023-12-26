@@ -6,7 +6,7 @@
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 14:34:22 by devpark           #+#    #+#             */
-/*   Updated: 2023/12/26 14:37:01 by devpark          ###   ########.fr       */
+/*   Updated: 2023/12/26 16:55:14 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@ void	cut_tree(t_tree_node *root)
 void	clean_parsing_tools(t_parsing *parsing)
 {
 	deque_clear(parsing->tokens);
-	ft_lstclear(parsing->argv_lst);
 	cut_tree(parsing->root);
 }
 
 void	free_parsing(t_parsing *parsing)
 {
-	if (parsing->tokens || parsing->root || parsing->argv_lst)
+	if (parsing->tokens || parsing->root)
 	{
 		if (parsing->tokens)
 		{
@@ -46,10 +45,5 @@ void	free_parsing(t_parsing *parsing)
 		}
 		if (parsing->root)
 			cut_tree(parsing->root);
-		if (parsing->argv_lst)
-		{
-			ft_lstclear(parsing->argv_lst);
-			free(parsing->argv_lst);
-		}
 	}
 }
