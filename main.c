@@ -55,4 +55,5 @@ int main(void)
 	}
 	clear_node(env->root);
 	free(env);
+	printf("exit\n");
 }

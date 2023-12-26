@@ -16,13 +16,24 @@ static void	todo_child(char *argv[], t_envtree *env)
 {
 	int	ret;
 
+	set_child_signal();
 	ret = exec_bin(argv, env);
 	exit(ret);
 }
 
 static void	todo_parent(pid_t pid)
-{
-	waitpid(pid, &err_code, 0);
+{	
+	(void)pid;
+	signal(SIGINT, SIG_IGN);
+	wait(&err_code);
+	if (WIFSIGNALED(err_code))
+	{
+		if (WTERMSIG(err_code) == SIGQUIT)
+			printf("Quit: 3");
+		printf("\n");
+		err_code = 128 + WTERMSIG(err_code);
+	}
+	set_signal();
 }
 
 void	exec_single_cmd(t_tree_node *node, t_envtree *env)

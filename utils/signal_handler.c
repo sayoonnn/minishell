@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-static void	signal_handler(int signal);
-
 void	set_signal(void)
 {
 	struct termios	term;
@@ -27,11 +25,25 @@ void	set_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	signal_handler(int signal)
+void	set_child_signal(void)
+{
+	struct termios	term;
+	int				termfd;
+
+	termfd = ttyslot();
+	tcgetattr(termfd, &term);
+	term.c_lflag |= (ECHOCTL);
+	tcsetattr(termfd, TCSANOW, &term);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+
+void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		write(STDOUT_FILENO, "\n", 1);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

@@ -12,19 +12,6 @@
 
 #include "minishell.h"
 
-int	*get_fd(void)
-{
-	static int	fd[2] = {-1, -1};
-
-	return (fd);
-}
-
-void	save_fd(int input, int output)
-{
-	get_fd()[0] = input;
-	get_fd()[1] = output;
-}
-
 void	sub_redir_exec_single(t_tree_node *node, t_envtree *env)
 {
 	node->fd[0] = 0;
@@ -37,28 +24,49 @@ void	sub_redir_exec_single(t_tree_node *node, t_envtree *env)
 	exec_single_cmd(node, env);
 }
 
+static void	reset_setting(int saved_fd[2])
+{
+	signal(SIGINT, SIG_IGN);
+	while (wait(&err_code) != -1)
+		;
+	if (WIFSIGNALED(err_code))
+	{
+		if (WTERMSIG(err_code) == SIGQUIT)
+			printf("Quit: 3");
+		printf("\n");
+		err_code = 128 + WTERMSIG(err_code);
+	}
+	set_signal();
+	dup2(saved_fd[0], STDIN_FILENO);
+	dup2(saved_fd[1], STDOUT_FILENO);
+	saved_fd[0] = -1;
+	saved_fd[1] = -1;
+}
+
 void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 {
-	if (get_fd()[0] == -1 && get_fd()[1] == -1)
-		save_fd(dup(STDIN_FILENO), dup(STDOUT_FILENO));
+	static int	saved_fd[2] = {-1, -1};
+
+	if (saved_fd[0] == -1 && saved_fd[1] == -1)
+	{
+		saved_fd[0] = dup(STDIN_FILENO);
+		saved_fd[1] = dup(STDOUT_FILENO);
+	}
 	if (node->left->token_type == PIPELINE)
 	{
 		sub_redir_exec_pipe(node->left, env, n + 1);
-		exec_pipe_cmd(node->right, env, n);
+		node->right->cmd_cnt = n;
+		exec_pipe_cmd(node->right, env, saved_fd);
 	}
 	else
 	{
-		exec_pipe_cmd(node->left, env, n + 1);
-		exec_pipe_cmd(node->right, env, n);
+		node->left->cmd_cnt = n + 1;
+		exec_pipe_cmd(node->left, env, saved_fd);
+		node->right->cmd_cnt = n;
+		exec_pipe_cmd(node->right, env, saved_fd);
 	}
 	if (n == 0)
-	{
-		while (waitpid(-1, &err_code, 0) != -1)
-			;
-		dup2(get_fd()[0], STDIN_FILENO);
-		dup2(get_fd()[1], STDOUT_FILENO);
-		save_fd(-1, -1);
-	}
+		reset_setting(saved_fd);
 }
 
 void	excute_hub(t_tree_node *pt, t_envtree *env)
@@ -70,4 +78,5 @@ void	excute_hub(t_tree_node *pt, t_envtree *env)
 		trave_redir(pt);
 		sub_redir_exec_pipe(pt, env, 0);
 	}
+	printf("errcode: %d\n", err_code);
 }

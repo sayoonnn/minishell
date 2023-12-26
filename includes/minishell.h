@@ -31,7 +31,6 @@
 # include "parse_tree.h"
 # include "errors.h"
 
-void		set_signal(void);
 t_envtree	*init_envp(char *envp[]);
 void		print_err(char *pname, char *dirname);
 char		**tree_2_envp(t_envtree *env);
@@ -39,9 +38,14 @@ char		*make_binpath(char *cmd, t_envnode *path_node);
 void		exec_single_cmd(t_tree_node *node, t_envtree *env);
 int			exec_bin(char **argv, t_envtree *env);
 void		excute_hub(t_tree_node *pt, t_envtree *env);
-void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n);
+void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int saved_fd[2]);
 void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe, int cnt);
 int		exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env);
+
+void		set_signal(void);
+void	signal_handler(int signal);
+void	set_child_signal(void);
+
 
 int		*get_fd(void);
 void	save_fd(int input, int output);

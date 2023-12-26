@@ -12,12 +12,13 @@
 
 #include "minishell.h"
 
-static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int n)
+static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int saved_fd[2])
 {
 	int	exit_code;
 
-	if (n == 0)
-		dup2(get_fd()[1], STDOUT_FILENO);
+	set_child_signal();
+	if (node->cmd_cnt == 0)
+		dup2(saved_fd[1], STDOUT_FILENO);
 	else
 	{
 		close(pipe_fd[0]);
@@ -39,12 +40,21 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int n)
 		exit(EXIT_FAILURE);
 }
 
-void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n)
+static void	todo_parent(int pipe_fd[2], int n)
+{
+	if (n != 0)
+	{
+		close(pipe_fd[1]);
+		dup2(pipe_fd[0], STDIN_FILENO);
+	}
+}
+
+void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, int saved_fd[2])
 {
 	pid_t	pid;
 	int		pipe_fd[2];
 
-	if (n != 0)
+	if (node->cmd_cnt != 0)
 	{
 		if (pipe(pipe_fd) < 0)
 			exit(1);
@@ -53,13 +63,7 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n)
 	if (pid == -1)
 		exit(1);
 	if (pid == 0)
-		todo_chid(node, env, pipe_fd, n);
+		todo_chid(node, env, pipe_fd, saved_fd);
 	else
-	{
-		if (n != 0)
-		{
-			close(pipe_fd[1]);
-			dup2(pipe_fd[0], STDIN_FILENO);
-		}
-	}
+		todo_parent(pipe_fd, node->cmd_cnt);
 }
