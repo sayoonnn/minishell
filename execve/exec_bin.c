@@ -71,5 +71,5 @@ int	exec_bin(char **argv, t_envtree *env)
 	if (execve(bin_path, argv, envp) == -1)
 		return (CODE_PERM_DENIED);
 	free(bin_path);
-	return (0);
+	return (success);
 }

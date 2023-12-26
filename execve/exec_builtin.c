@@ -39,3 +39,24 @@ void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 	if (!ft_strcmp(cmd, "unset"))
 		err_code = ft_unset(env, argv) << 8;
 }
+
+int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)
+{
+	int	ret;
+
+	if (!ft_strcmp(cmd, "cd"))
+		ret = ft_cd(argv, env);
+	if (!ft_strcmp(cmd, "echo"))
+		ret = ft_echo(argv);
+	if (!ft_strcmp(cmd, "env"))
+		ret = ft_env(env->root);
+	if (!ft_strcmp(cmd, "exit"))
+		ret = ft_exit(argv);
+	if (!ft_strcmp(cmd, "export"))
+		ret = ft_export(argv, env);
+	if (!ft_strcmp(cmd, "pwd"))
+		ret = ft_pwd();
+	if (!ft_strcmp(cmd, "unset"))
+		ret = ft_unset(env, argv);
+	return (ret);
+}

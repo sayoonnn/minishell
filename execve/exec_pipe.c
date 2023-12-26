@@ -14,6 +14,8 @@
 
 static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int n)
 {
+	int	exit_code;
+
 	if (n == 0)
 		dup2(get_fd()[1], STDOUT_FILENO);
 	else
@@ -29,8 +31,9 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int n)
 		dup2(node->fd[1], STDOUT_FILENO);
 	if (is_builtin(node->left->contents[0]))
 	{
-		exec_builtin(node->left->contents[0], node->left->contents, env);
-		exit(EXIT_SUCCESS);
+		exit_code = exec_builtin_pipe(node->left->contents[0], \
+		node->left->contents, env);
+		exit(exit_code);
 	}
 	else if (exec_bin(node->left->contents, env))
 		exit(EXIT_FAILURE);

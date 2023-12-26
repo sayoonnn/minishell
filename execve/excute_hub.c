@@ -70,5 +70,4 @@ void	excute_hub(t_tree_node *pt, t_envtree *env)
 		trave_redir(pt);
 		sub_redir_exec_pipe(pt, env, 0);
 	}
-	printf("ERR_CODE: %d\n", err_code >> 8);
 }

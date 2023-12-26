@@ -41,6 +41,7 @@ int			exec_bin(char **argv, t_envtree *env);
 void		excute_hub(t_tree_node *pt, t_envtree *env);
 void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n);
 void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe, int cnt);
+int		exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env);
 
 int		*get_fd(void);
 void	save_fd(int input, int output);
