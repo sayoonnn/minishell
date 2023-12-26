@@ -25,17 +25,17 @@ int	is_builtin(char *cmd)
 void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 {
 	if (!ft_strcmp(cmd, "cd"))
-		err_code = ft_cd(argv, env);
+		err_code = ft_cd(argv, env) << 8;
 	if (!ft_strcmp(cmd, "echo"))
-		err_code = ft_echo(argv);
+		err_code = ft_echo(argv) << 8;
 	if (!ft_strcmp(cmd, "env"))
-		err_code = ft_env(env->root);
+		err_code = ft_env(env->root) << 8;
 	if (!ft_strcmp(cmd, "exit"))
-		err_code = ft_exit(argv);
+		err_code = ft_exit(argv) << 8;
 	if (!ft_strcmp(cmd, "export"))
-		err_code = ft_export(argv, env);
+		err_code = ft_export(argv, env) << 8;
 	if (!ft_strcmp(cmd, "pwd"))
-		err_code = ft_pwd();
+		err_code = ft_pwd() << 8;
 	if (!ft_strcmp(cmd, "unset"))
-		err_code = ft_unset(env, argv);
+		err_code = ft_unset(env, argv) << 8;
 }

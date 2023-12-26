@@ -30,7 +30,10 @@ void	sub_redir_exec_single(t_tree_node *node, t_envtree *env)
 	node->fd[0] = 0;
 	node->fd[1] = 1;
 	if (!handle_redir(node->right, node->fd))
+	{
+		err_code = 1 << 8;
 		return ;
+	}
 	exec_single_cmd(node, env);
 }
 
