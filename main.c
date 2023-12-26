@@ -14,23 +14,23 @@
 
 int	err_code = 0;
 
-static void	startup_minishell(void)
-{
-	int		fd;
-	char	*buffer;
+// static void	startup_minishell(void)
+// {
+// 	int		fd;
+// 	char	*buffer;
 
-	fd = open("./utils/startup.txt", O_RDONLY);
-	if (fd < 0)
-		exit(1);
-	buffer = get_next_line(fd);
-	while (buffer)
-	{
-		printf("\033[0;32m%s\033[0;38m", buffer);
-		free(buffer);
-		buffer = get_next_line(fd);
-	}
-	close(fd);
-}
+// 	fd = open("./utils/startup.txt", O_RDONLY);
+// 	if (fd < 0)
+// 		exit(1);
+// 	buffer = get_next_line(fd);
+// 	while (buffer)
+// 	{
+// 		printf("\033[0;32m%s\033[0;38m", buffer);
+// 		free(buffer);
+// 		buffer = get_next_line(fd);
+// 	}
+// 	close(fd);
+// }
 
 int main(void)
 {
@@ -39,7 +39,7 @@ int main(void)
 	t_envtree	*env;
 	extern char	**environ;
 
-	startup_minishell();
+	// startup_minishell();
 	set_signal();
 	env = init_envp(environ);
 	line = readline("$> ");
@@ -55,5 +55,6 @@ int main(void)
 	}
 	clear_node(env->root);
 	free(env);
-	printf("exit\n");
+	write(2, "exit\n", 5);
+	exit(err_code);
 }
