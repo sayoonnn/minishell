@@ -33,7 +33,7 @@ static int	cd_home(t_envtree *env)
 		err_code = 1;
 		return (fail);
 	}
-	add_env(env, make_envnode("OLDPWD", pwd:q2));
+	add_env(env, make_envnode("OLDPWD", pwd));
 	free(pwd);
 	return (success);
 }
