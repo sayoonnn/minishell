@@ -40,6 +40,8 @@ static void	reset_setting(int saved_fd[2])
 		printf("\n");
 		err_code = (128 + WTERMSIG(err_code)) << 8;
 	}
+	else
+		err_code = err_code >> 8;
 	set_signal();
 	dup2(saved_fd[0], STDIN_FILENO);
 	dup2(saved_fd[1], STDOUT_FILENO);

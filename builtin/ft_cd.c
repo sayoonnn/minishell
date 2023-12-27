@@ -24,14 +24,16 @@ static int	cd_home(t_envtree *env)
 	if (!tmp)
 	{
 		print_err("cd", "no home directory");
+		err_code = 1;
 		return (fail);
 	}
 	if (chdir(tmp->value) < 0)
 	{
-		print_err_builtin("cd", ERR_NO_DIR_FILE, tmp->value);
+		print_err_builtin("cd", tmp->value, ERR_NO_DIR_FILE);
+		err_code = 1;
 		return (fail);
 	}
-	add_env(env, make_envnode("OLDPWD", pwd));
+	add_env(env, make_envnode("OLDPWD", pwd:q2));
 	free(pwd);
 	return (success);
 }
@@ -49,7 +51,8 @@ static int	cd_oldpwd(t_envtree *env)
 	{
 		if (chdir(old->value) < 0)
 		{
-			print_err_builtin("cd", ERR_NO_DIR_FILE, old->value);
+			print_err_builtin("cd", old->value, ERR_NO_DIR_FILE);
+			err_code = 1;
 			return (fail);
 		}
 	}

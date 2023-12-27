@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 static void	todo_chid(t_tree_node *node, t_envtree *env, \
-int pipe_fd[2], int saved_fd[2])
+						int pipe_fd[2], int saved_fd[2])
 {
 	int		exit_code;
 	char	**argv;

@@ -11,29 +11,30 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+# include <limits.h>
 
 int	ft_atoi(const char *str)
 {
-	long long	tmp;
-	int			sign;
-	char		*s;
+	int				sign;
+	int				i;
+	unsigned long	ret;
+	unsigned long	temp;
 
-	s = (char *)str;
+	i = 0;
 	sign = 1;
-	tmp = 0;
-	while (*s == ' ' || (*s >= 9 && *s <= 13))
-		s++;
-	if (*s == '-')
-		sign = -1;
-	if (*s == '-' || *s == '+')
-		s++;
-	if (!ft_isdigit(*s))
-		return (0);
-	while (ft_isdigit(*s))
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-')
+		sign *= -1;
+	i += (str[i] == '+' || str[i] == '-');
+	ret = 0;
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		tmp *= 10;
-		tmp += *s - '0';
-		s++;
+		temp = ret * 10 + (str[i] - '0');
+		if (temp > (unsigned long) LONG_MAX || ret > temp)
+			return (-1 + (sign < 0));
+		ret = temp;
+		i++;
 	}
-	return ((int)(tmp * sign));
+	return (ret * sign);
 }

@@ -14,6 +14,11 @@
 
 static int	ft_isnumber(char *str)
 {
+	int	num_cnt;
+
+	num_cnt = 0;
+	if (*str == 0)
+		return (false);
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -38,7 +43,7 @@ static int	get_status(int argc, char **argv)
 		else if (argc > 2)
 		{
 			print_err("exit", "too many arguments");
-			return (EXIT_FAILURE);
+			status = 255;
 		}
 		else
 			status = ft_atoi(argv[1]);
@@ -46,15 +51,19 @@ static int	get_status(int argc, char **argv)
 	return (status);
 }
 
-int	ft_exit(char **argv)
+int	ft_exit(char **argv, int is_pipe)
 {
 	int		status;
+	int		is_errd;
 	int		i;
 
+	(void)is_pipe;
 	i = 0;
+	is_errd = false;
 	while (argv[i])
 		i++;
-	ft_putstr_fd("exit\n", STDERR_FILENO);
 	status = get_status(i, argv);
+	// if (!is_pipe)
+	// 	ft_putstr_fd("exit\n", STDERR_FILENO);
 	exit(status);
 }

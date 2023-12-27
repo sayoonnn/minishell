@@ -39,7 +39,7 @@ void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 	if (!ft_strcmp(cmd, "env"))
 		err_code = ft_env(env->root) << 8;
 	if (!ft_strcmp(cmd, "exit"))
-		err_code = ft_exit(argv) << 8;
+		err_code = ft_exit(argv, false) << 8;
 	if (!ft_strcmp(cmd, "export"))
 		err_code = ft_export(argv, env) << 8;
 	if (!ft_strcmp(cmd, "pwd"))
@@ -59,7 +59,7 @@ int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)
 	if (!ft_strcmp(cmd, "env"))
 		ret = ft_env(env->root);
 	if (!ft_strcmp(cmd, "exit"))
-		ft_exit(argv);
+		ft_exit(argv, true);
 	if (!ft_strcmp(cmd, "export"))
 		ret = ft_export(argv, env);
 	if (!ft_strcmp(cmd, "pwd"))

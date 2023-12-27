@@ -33,6 +33,8 @@ static void	todo_parent(pid_t pid)
 		printf("\n");
 		err_code = (128 + WTERMSIG(err_code)) << 8;
 	}
+	else
+		err_code = err_code >> 8;
 	set_signal();
 }
 

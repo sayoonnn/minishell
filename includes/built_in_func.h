@@ -16,7 +16,7 @@
 int		ft_cd(char *arg[], t_envtree *env);
 int		ft_echo(char *arg[]);
 int		ft_env(t_envnode *envp);
-int		ft_exit(char **argv);
+int		ft_exit(char **argv, int is_pipe);
 int		ft_export(char *arg[], t_envtree *env);
 int		ft_pwd(void);
 int		ft_unset(t_envtree *env, char *arg[]);
