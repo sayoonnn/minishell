@@ -72,6 +72,7 @@ char	**convert_word_lst_to_array(t_list *lst)
 		free(ptr);
 		ptr = lst->head;
 	}
+	lst->tail = NULL;
 	words[idx] = NULL;
 	return (words);
 }

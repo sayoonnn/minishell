@@ -58,22 +58,23 @@ int	insert_filename(t_tree_node **root, t_deque *tokens)
 {
 	t_tree_node	*file;
 	t_node		*content;
+	char		*tmp;
 
 	content = NULL;
 	file = create_tree_node(FILENAME);
 	if (file == NULL)
 		return (1);
-	if (file->contents == NULL)
+	file->contents = ft_lstcreate();
+	tmp = ft_strdup(tokens->front->content);
+	if (!tmp)
+		exit(1);
+	content = ft_lstnew(tmp);
+	if (file->contents == NULL || content == NULL)
 	{
-		file->contents = ft_lstcreate();
-		content = ft_lstnew(tokens->front->content);
-		if (file->contents == NULL || content == NULL)
-		{
-			if (file->contents)
-				free(file->contents);
-			free(file);
-			return (1);
-		}
+		if (file->contents)
+			free(file->contents);
+		free(file);
+		return (1);
 	}
 	ft_lstadd_back(file->contents, content);
 	(*root)->right = file;

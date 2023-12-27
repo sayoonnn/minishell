@@ -22,7 +22,7 @@ int	get_heredoc_fd(char *delimiter)
 	line = readline("> ");
 	while (line)
 	{
-		if(!ft_strcmp(line, delimiter))
+		if (!ft_strcmp(line, delimiter))
 			break ;
 		ft_putstr_fd(line, pipe_fd[1]);
 		ft_putstr_fd("\n", pipe_fd[1]);
@@ -33,7 +33,7 @@ int	get_heredoc_fd(char *delimiter)
 	return (pipe_fd[0]);
 }
 
-void	trave_redir(t_tree_node *pt)
+void	trave_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt)
 {
 	if (pt == NULL)
 		return ;
@@ -41,8 +41,8 @@ void	trave_redir(t_tree_node *pt)
 	{
 		pt->fd[0] = 0;
 		pt->fd[1] = 1;
-		handle_redir(pt->right, pt->fd);
+		handle_redir(ps, env, pt->right, pt->fd);
 	}
-	trave_redir(pt->left);
-	trave_redir(pt->right);
+	trave_redir(ps, env, pt->left);
+	trave_redir(ps, env, pt->right);
 }

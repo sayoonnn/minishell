@@ -15,14 +15,30 @@
 
 static int	find_start_idx(char *argv[], int *nflag)
 {
+	size_t	i;
+	int		cnt;
+	int		start_idx;
+
+	start_idx = 1;
 	if (argv[1] == NULL)
 		return (1);
-	if (!ft_strcmp("-n", argv[1]))
+	while (argv[start_idx] != NULL && *argv[start_idx] == '-')
 	{
-		*nflag = true;
-		return (2);
+		cnt = 0;
+		i = 1;
+		while (argv[1][i])
+		{
+			if (argv[1][i] == 'n')
+				cnt++;
+			i++;
+		}
+		if ((size_t)cnt == i - 1)
+			*nflag = true;
+		else
+			return (start_idx);
+		start_idx++;
 	}
-	return (1);
+	return (start_idx);
 }
 
 int	ft_echo(char *argv[])

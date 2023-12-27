@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env_tree.h"
 
 static void	free_node(t_envnode *node)
 {
@@ -45,6 +44,18 @@ static t_envnode	*delete_leafnode(t_envnode *env)
 	return (NULL);
 }
 
+static void	make_forarr(t_envnode *env, char *key, char *value)
+{
+	char	*tmp;
+	char	*ret;
+
+	tmp = ft_strjoin(key, "=");
+	ret = ft_strjoin(tmp, value);
+	free(tmp);
+	free(env->forarr);
+	env->forarr = ret;
+}
+
 t_envnode	*delete_envnode(t_envnode *env, char *str)
 {
 	t_envnode	*tmp;
@@ -58,7 +69,8 @@ t_envnode	*delete_envnode(t_envnode *env, char *str)
 	else
 	{
 		if ((env->right == NULL && env->left == NULL) \
-		|| env->right != NULL || env->left != NULL)
+		|| (env->right != NULL && env->left == NULL) \
+		|| (env->left != NULL && env->right == NULL))
 			return (delete_leafnode(env));
 		tmp = env->right;
 		while (tmp->left != NULL)
@@ -67,6 +79,7 @@ t_envnode	*delete_envnode(t_envnode *env, char *str)
 		free(env->value);
 		env->key = ft_strdup(tmp->key);
 		env->value = ft_strdup(tmp->value);
+		make_forarr(env, env->key, env->value);
 		env->right = delete_envnode(env->right, env->key);
 	}
 	return (env);

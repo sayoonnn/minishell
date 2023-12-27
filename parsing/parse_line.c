@@ -10,21 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "minishell.h"
 
-t_tree_node	*parse_line(char *line, t_parsing *parsing)
+int parse_line(char *line, t_parsing *parsing)
 {
 	int			flag;
-	t_tree_node	*ret;
 
 	if (*line == 0)
-		return (NULL);
+		return (false);
 	if (tokenize(line, parsing))
 		exit(1);
 	flag = analyze_syntax(parsing);
 	if (flag == 1)
-		return (NULL);
-	ret = parsing->root;
+		exit(1);
 	parsing->detach = 0;
-	return (ret);
+	return (true);
 }

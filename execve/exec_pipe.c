@@ -12,9 +12,11 @@
 
 #include "minishell.h"
 
-static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int saved_fd[2])
+static void	todo_chid(t_tree_node *node, t_envtree *env, \
+int pipe_fd[2], int saved_fd[2])
 {
-	int	exit_code;
+	int		exit_code;
+	char	**argv;
 
 	set_child_signal();
 	if (node->cmd_cnt == 0)
@@ -30,13 +32,13 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, int pipe_fd[2], int sav
 		dup2(node->fd[0], STDIN_FILENO);
 	if (node->fd[1] != 1)
 		dup2(node->fd[1], STDOUT_FILENO);
-	if (is_builtin(node->left->contents[0]))
+	argv = convert_word_lst_to_array(node->left->contents);
+	if (is_builtin(argv[0]))
 	{
-		exit_code = exec_builtin_pipe(node->left->contents[0], \
-		node->left->contents, env);
+		exit_code = exec_builtin_pipe(argv[0], argv, env);
 		exit(exit_code);
 	}
-	else if (exec_bin(node->left->contents, env))
+	else if (exec_bin(argv, env))
 		exit(EXIT_FAILURE);
 }
 

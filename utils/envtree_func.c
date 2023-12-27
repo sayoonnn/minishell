@@ -28,8 +28,12 @@ t_envnode	*make_envnode(char *key, char *value)
 		tmp->value = NULL;
 	t = ft_strjoin(tmp->key, "=");
 	if (value != NULL)
+	{
 		tmp->forarr = ft_strjoin(t, tmp->value);
-	free(t);
+		free(t);
+	}
+	else
+		tmp->forarr = t;
 	tmp->left = NULL;
 	tmp->right = NULL;
 	return (tmp);
@@ -53,7 +57,7 @@ t_envnode	*add_envnode(t_envnode *tree, t_envnode *newnode)
 		free(tree->forarr);
 		tree->key = newnode->key;
 		tree->value = newnode->value;
-		tree->forarr = ft_strjoin(tree->value, tree->forarr);
+		tree->forarr = newnode->forarr;
 		free(newnode);
 		return (tree);
 	}

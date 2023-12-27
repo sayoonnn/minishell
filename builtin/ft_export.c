@@ -67,6 +67,8 @@ static int	check_is_valid(char *key)
 	i = 0;
 	while (key[i] && key[i] != '=')
 	{
+		if (i == 0 && (!ft_isalpha(key[i]) && key[i] != '_'))
+			return (false);
 		if (key[i] == '_')
 		{
 			i++;
@@ -92,7 +94,7 @@ int	ft_export(char *arg[], t_envtree *env)
 		print_envnode(env->root);
 		return (ret);
 	}
-	i = -1;
+	i = 0;
 	while (arg[++i])
 	{
 		key = arg[i];

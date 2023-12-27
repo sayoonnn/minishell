@@ -35,7 +35,8 @@ static int	check_err(char *bin_path, char *cmd, t_envtree *env)
 {
 	if (bin_path == NULL)
 	{
-		if (!find_envnode(env->root, "PATH"))
+		if (!find_envnode(env->root, "PATH") || \
+		find_envnode(env->root, "PATH")->value == NULL)
 			print_err(cmd, ERR_NO_DIR_FILE);
 		else
 			print_err(cmd, ERR_CMD_NOT_FOUND);

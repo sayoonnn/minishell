@@ -54,7 +54,7 @@ static int	make_input(char *filename, int io_fd[2], int opt)
 	return (true);
 }
 
-static int	check_n_open(char *file_name, int io_fd[2], int type)
+static int	cknopen(char *file_name, int io_fd[2], int type)
 {
 	if (type == GREAT || type == DGREAT)
 	{
@@ -69,7 +69,18 @@ static int	check_n_open(char *file_name, int io_fd[2], int type)
 	return (true);
 }
 
-int	handle_redir(t_tree_node *pt, int io_fd[2])
+static int	is_ambiguous(char *before, t_list *lst)
+{
+	if (lst->head == NULL || lst->head->next != NULL)
+	{
+		print_err(before, "ambiguous redirect");
+		ft_lstclear(lst);
+		return (true);
+	}
+	return (false);
+}
+
+int	handle_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt, int io_fd[2])
 {
 	int	ret;
 
@@ -78,18 +89,22 @@ int	handle_redir(t_tree_node *pt, int io_fd[2])
 		return (true);
 	if (pt->token_type == REDIRECTION_LIST)
 	{
-		ret = handle_redir(pt->left, io_fd);
+		ret = handle_redir(ps, env, pt->left, io_fd);
 		if (ret == false)
 			return (ret);
-		ret = handle_redir(pt->right, io_fd);
+		ret = handle_redir(ps, env, pt->right, io_fd);
 		if (ret == false)
 			return (ret);
 	}
 	else if (pt->token_type == REDIRECTION_INFO)
 	{
-		ret = check_n_open(pt->right->contents->head->content, io_fd, pt->left->token_type);
+		substitute_words(ps, env, pt->right->contents);
+		if (is_ambiguous(pt->right->contents->head->content, ps->word_lst))
+			return (false);
+		ret = cknopen(ps->word_lst->head->content, io_fd, pt->left->token_type);
 		if (!ret)
 			return (ret);
+		ft_lstclear(ps->word_lst);
 	}
 	return (true);
 }

@@ -29,7 +29,7 @@ char	*make_binpath(char *cmd, t_envnode *path_node)
 	char		*tmp;
 	char		*command;
 
-	if (!path_node)
+	if (!path_node || path_node->value == NULL)
 		return (NULL);
 	path = ft_oldsplit(path_node->value, ':');
 	tmp = ft_strjoin("/", cmd);

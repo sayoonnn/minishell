@@ -47,7 +47,6 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst)
 	save_fd[1] = dup(STDOUT_FILENO);
 	dup2(node->fd[0], STDIN_FILENO);
 	dup2(node->fd[1], STDOUT_FILENO);
-	printf("%s\n", argv[0]);
 	if (is_builtin(argv[0]))
 		exec_builtin(argv[0], argv, env);
 	else

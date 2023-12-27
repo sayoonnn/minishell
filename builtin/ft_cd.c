@@ -21,6 +21,11 @@ static int	cd_home(t_envtree *env)
 	if (!pwd)
 		exit(1);
 	tmp = find_envnode(env->root, "HOME");
+	if (!tmp)
+	{
+		print_err("cd", "no home directory");
+		return (fail);
+	}
 	if (chdir(tmp->value) < 0)
 	{
 		print_err_builtin("cd", ERR_NO_DIR_FILE, tmp->value);

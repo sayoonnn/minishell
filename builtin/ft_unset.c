@@ -16,11 +16,14 @@ int	ft_unset(t_envtree *env, char *arg[])
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (arg[i])
 	{
-		delete_envnode(env->root, arg[i]);
-		env->num_nodes--;
+		if (find_envnode(env->root, arg[i]))
+		{
+			env->num_nodes--;
+			env->root = delete_envnode(env->root, arg[i]);
+		}
 		i++;
 	}
 	return (success);

@@ -39,6 +39,8 @@ static void	make_arr(t_envtree *tree, t_envnode *env, char **envp)
 {
 	static int	i = 0;
 
+	if (tree->num_nodes == 0)
+		return ;
 	if (tree->root == env)
 		i = 0;
 	if (env == NULL)

@@ -14,6 +14,14 @@
 
 int	is_builtin(char *cmd)
 {
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		cmd[i] = ft_tolower(cmd[i]);
+		i++;
+	}
 	if (!ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "echo") || \
 	!ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit") || \
 	!ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "pwd") || \

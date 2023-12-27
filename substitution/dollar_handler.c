@@ -62,7 +62,7 @@ int	handle_dollar_in_wd(t_parsing *ps, t_envtree *env, char *word, size_t *idx)
 
 	if (is_quote(word[++(*idx)]))
 		return (0);
-	if (word[*idx] == 0)
+	if (word[*idx] == '?' || word[*idx] == 0)
 		return (handle_special_dollar(ps, word, idx));
 	tmp_idx = (*idx);
 	while (word[tmp_idx] != 0 && word[tmp_idx] != '$'
@@ -103,7 +103,7 @@ int	handle_wd(t_parsing *ps, t_envtree *env, char *word, size_t *idx)
 		}
 		tmp_idx++;
 	}
-	sliced = make_word(word, &tmp_idx, tmp_idx - *idx);
+	sliced = make_word(word, &tmp_idx, tmp_idx - *idx); 
 	(*idx) = tmp_idx;
 	return (link_argv(ps, sliced));
 }

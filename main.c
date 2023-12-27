@@ -19,36 +19,32 @@ void	free_minishell_data(t_envnode *env, t_parsing *parsing)
 	clear_node(env);
 	free_parsing(parsing);
 	free(parsing);
-	free(env);
 }
 
 int main(void)
 {
 	char		*line;
-	t_tree_node	*parse_tree;
 	t_envtree	*env;
 	t_parsing	*parsing;
 	extern char	**environ;
 
-	startup_minishell();
+	// startup_minishell();
 	set_signal();
 	env = init_envp(environ);
 	parsing = init_parsing_tool();
-	line = readline("$> ");
-	while (line)
+	while (true)
 	{
-		if (line != NULL)
-		{
-			parse_line(line, parsing);
-			excute_hub(parsing, env);
-			clean_parsing_tools(parsing);
-			parse_tree = NULL;
-			if (ft_strncmp(line, "", 1))
-				add_history(line);
-			free(line);
-		}
 		line = readline("$> ");
+		if (!line)
+			break ;
+		if (!parse_line(line, parsing))
+			continue ;
+		excute_hub(parsing, env);
+		clean_parsing_tools(parsing);
+		add_history(line);
+		free(line);
 	}
 	free_minishell_data(env->root, parsing);
-	return (EXIT_SUCCESS);
+	free(env);
+	exit(err_code);
 }

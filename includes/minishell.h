@@ -46,7 +46,7 @@ char		*make_binpath(char *cmd, t_envnode *path_node);
 void		exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst);
 int			exec_bin(char **argv, t_envtree *env);
 void		excute_hub(t_parsing *ps, t_envtree *env);
-void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int n);
+void		exec_pipe_cmd(t_tree_node *node, t_envtree *env, int saved_fd[2]);
 void		sub_redir_exec(t_tree_node *node, t_envtree *env, int is_pipe, int cnt);
 
 int			*get_fd(void);
@@ -61,6 +61,7 @@ void	signal_handler(int signal);
 
 int			is_builtin(char *cmd);
 void		exec_builtin(char *cmd, char *argv[], t_envtree *env);
+int			exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env);
 void		reset_io(int save[2]);
 void		free_arr(char **arr);
 
@@ -68,9 +69,8 @@ void		free_arr(char **arr);
 int		open_in_file(char *file_name);
 int		open_out_file(char *file_name, int opt);
 int		get_heredoc_fd(char *delimiter);
-int		handle_redir(t_tree_node *pt, int io_fd[2]);
-void	trave_redir(t_tree_node *pt);
-
+int		handle_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt, int io_fd[2]);
+void	trave_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt);
 
 char			*make_tmpfile(char *end);
 void			handle_heredoc(char *file_name);
