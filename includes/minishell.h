@@ -68,8 +68,10 @@ void		free_arr(char **arr);
 int		open_in_file(char *file_name);
 int		open_out_file(char *file_name, int opt);
 int		get_heredoc_fd(char *delimiter);
-int		handle_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt, int io_fd[2]);
-int		trave_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt);
+int		handle_other_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt);
+int		handle_other_redirs(t_parsing *ps, t_envtree *env, t_tree_node *pt);
+int		handle_heredoc_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt);
+int		handle_heredoc_first(t_parsing *ps, t_envtree *env, t_tree_node *pt);
 
 char			*make_tmpfile(char *end);
 void			handle_heredoc(char *file_name);

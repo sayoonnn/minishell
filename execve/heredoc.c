@@ -55,19 +55,28 @@ int	get_heredoc_fd(char *delimiter)
 	return (pipe_fd[0]);
 }
 
-int	trave_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt)
+int	handle_heredoc_first(t_parsing *ps, t_envtree *env, t_tree_node *pt)
 {
 	if (pt == NULL)
 		return (true);
 	if (pt->token_type == CMD)
-	{
-		pt->fd[0] = 0;
-		pt->fd[1] = 1;
-		return (handle_redir(ps, env, pt->right, pt->fd));
-	}
-	if (!trave_redir(ps, env, pt->left))
+		return (handle_heredoc_redir(ps, env, pt->right));
+	if (!handle_heredoc_first(ps, env, pt->left))
 		return (false);
-	if (!trave_redir(ps, env, pt->right))
+	if (!handle_heredoc_first(ps, env, pt->right))
+		return (false);
+	return (true);
+}
+
+int	handle_other_redirs(t_parsing *ps, t_envtree *env, t_tree_node *pt)
+{
+	if (pt == NULL)
+		return (true);
+	if (pt->token_type == CMD)
+		return (handle_other_redir(ps, env, pt->right));
+	if (!handle_other_redirs(ps, env, pt->left))
+		return (false);
+	if (!handle_other_redirs(ps, env, pt->right))
 		return (false);
 	return (true);
 }

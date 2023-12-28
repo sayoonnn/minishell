@@ -38,6 +38,19 @@ static void	todo_parent(pid_t pid)
 	set_signal();
 }
 
+static void	find_fd(t_tree_node *node, int fd[2])
+{
+	if (node == NULL)
+		return ;
+	if (node->token_type == REDIRECTION_INFO)
+	{
+		fd[0] = node->fd[0];
+		fd[1] = node->fd[1];
+	}
+	find_fd(node->left, fd);
+	find_fd(node->right, fd);
+}
+
 void	exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst)
 {
 	int		save_fd[2];
@@ -45,6 +58,7 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst)
 	pid_t	pid;
 
 	argv = convert_word_lst_to_array(lst);
+	find_fd(node->right, node->fd);
 	save_fd[0] = dup(STDIN_FILENO);
 	save_fd[1] = dup(STDOUT_FILENO);
 	dup2(node->fd[0], STDIN_FILENO);

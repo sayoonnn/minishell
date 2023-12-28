@@ -40,14 +40,14 @@ int	select_word_token_type(t_parsing *parsing)
 	int	token_type;
 
 	token_type = CMD;
-	if (deque_empty(parsing->tokens) || parsing->cmd_flag == 0)
+	if (!deque_empty(parsing->tokens) && deque_back(parsing->tokens) == REDIRECTION)
+		token_type = FILENAME;
+	else if (parsing->cmd_flag == 0)
 	{
 		parsing->cmd_flag = 1;
 		token_type = CMD;
 	}
-	else if (deque_back(parsing->tokens) == REDIRECTION)
-		token_type = FILENAME;
-	else if (parsing->cmd_flag)
+	else if (parsing->cmd_flag == 1)
 		token_type = ARGV;
 	return (token_type);
 }

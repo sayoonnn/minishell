@@ -23,6 +23,11 @@ int parse_line(char *line, t_parsing *parsing)
 	flag = analyze_syntax(parsing);
 	if (flag == 1)
 		exit(1);
+	if (flag == 258)
+	{
+		clean_parsing_tools(parsing);
+		return (false);
+	}
 	parsing->detach = 0;
 	return (true);
 }

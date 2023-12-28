@@ -19,9 +19,9 @@ void	sub_redir_exec_single(t_parsing *ps, t_envtree *env)
 	node = ps->root;
 	node->fd[0] = 0;
 	node->fd[1] = 1;
-	if (!handle_redir(ps, env, node->right, node->fd))
+	if (!handle_other_redir(ps, env, node->right))
 	{
-		g_errcode = 1 << 8;
+		g_errcode = 1;
 		return ;
 	}
 	substitute_words(ps, env, ps->root->left->contents);
@@ -52,6 +52,8 @@ static void	reset_setting(int saved_fd[2])
 static void	exchange_lst(t_parsing *ps, t_tree_node *node, \
 						t_envtree *env, int n)
 {
+	if (node == NULL)
+		return ;
 	node->cmd_cnt = n;
 	substitute_words(ps, env, node->left->contents);
 	ft_lstclear(node->left->contents);
@@ -73,7 +75,7 @@ void	sub_redir_exec_pipe(t_parsing *ps, t_tree_node *node, \
 	if (node->left->token_type == PIPE)
 	{
 		sub_redir_exec_pipe(ps, node->left, env, n + 1);
-		exchange_lst(ps, node, env, n);
+		exchange_lst(ps, node->right, env, n);
 		exec_pipe_cmd(node->right, env, saved_fd);
 	}
 	else
@@ -89,11 +91,19 @@ void	sub_redir_exec_pipe(t_parsing *ps, t_tree_node *node, \
 
 void	excute_hub(t_parsing *ps, t_envtree *env)
 {
+	if (ps->root == NULL)
+		return ;
 	if (ps->root->token_type == CMD)
+	{
+		if (!handle_heredoc_first(ps, env, ps->root))
+			return ;
 		sub_redir_exec_single(ps, env);
+	}
 	else
 	{
-		if (!trave_redir(ps, env, ps->root))
+		if (!handle_heredoc_first(ps, env, ps->root))
+			return ;
+		if (!handle_other_redirs(ps, env, ps->root))
 			return ;
 		sub_redir_exec_pipe(ps, ps->root, env, 0);
 	}

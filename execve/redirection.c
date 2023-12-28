@@ -80,7 +80,7 @@ static int	is_ambiguous(char *before, t_list *lst)
 	return (false);
 }
 
-int	handle_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt, int io_fd[2])
+int	handle_heredoc_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt)
 {
 	int	ret;
 
@@ -89,19 +89,55 @@ int	handle_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt, int io_fd[2])
 		return (true);
 	if (pt->token_type == REDIRECTION_LIST)
 	{
-		ret = handle_redir(ps, env, pt->left, io_fd);
+		pt->left->fd[0] = 0;
+		pt->left->fd[1] = 1;
+		ret = handle_heredoc_redir(ps, env, pt->left);
 		if (ret == false)
 			return (ret);
-		ret = handle_redir(ps, env, pt->right, io_fd);
+		ret = handle_heredoc_redir(ps, env, pt->right);
 		if (ret == false)
 			return (ret);
 	}
-	else if (pt->token_type == REDIRECTION_INFO)
+	else if (pt->token_type == REDIRECTION_INFO && pt->left->token_type == DLESS)
 	{
 		substitute_words(ps, env, pt->right->contents);
 		if (is_ambiguous(pt->right->contents->head->content, ps->word_lst))
 			return (false);
-		ret = cknopen(ps->word_lst->head->content, io_fd, pt->left->token_type);
+		ret = make_input(ps->word_lst->head->content, pt->fd, pt->left->token_type);
+		ft_lstclear(ps->word_lst);
+		if (!ret)
+			return (ret);
+	}
+	return (true);
+}
+
+int	handle_other_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt)
+{
+	int	ret;
+
+	ret = false;
+	if (pt == NULL)
+		return (true);
+	if (pt->token_type == REDIRECTION_LIST)
+	{
+		if (pt->left->left->token_type != DLESS)
+		{
+			pt->left->fd[0] = 0;
+			pt->left->fd[1] = 1;
+			ret = handle_other_redir(ps, env, pt->left);
+			if (ret == false)
+				return (ret);
+		}
+		ret = handle_other_redir(ps, env, pt->right);
+		if (ret == false)
+			return (ret);
+	}
+	else if (pt->token_type == REDIRECTION_INFO && pt->left->token_type != DLESS)
+	{
+		substitute_words(ps, env, pt->right->contents);
+		if (is_ambiguous(pt->right->contents->head->content, ps->word_lst))
+			return (false);
+		ret = cknopen(ps->word_lst->head->content, pt->fd, pt->left->token_type);
 		ft_lstclear(ps->word_lst);
 		if (!ret)
 			return (ret);
