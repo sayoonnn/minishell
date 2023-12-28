@@ -20,7 +20,7 @@ int	handle_special_dollar(t_parsing *parsing, char *word, size_t *idx)
 	if (word[*idx] == 0 || is_quote(word[*idx]) || is_white(word[*idx]))
 		res = make_word(word, idx, 1);
 	else if (word[(*idx)++] == '?')
-		res = ft_itoa(err_code);
+		res = ft_itoa(g_errcode);
 	if (res == NULL)
 		return (1);
 	if (link_argv(parsing, res))

@@ -21,7 +21,7 @@ void	sub_redir_exec_single(t_parsing *ps, t_envtree *env)
 	node->fd[1] = 1;
 	if (!handle_redir(ps, env, node->right, node->fd))
 	{
-		err_code = 1 << 8;
+		g_errcode = 1 << 8;
 		return ;
 	}
 	substitute_words(ps, env, ps->root->left->contents);
@@ -31,17 +31,17 @@ void	sub_redir_exec_single(t_parsing *ps, t_envtree *env)
 static void	reset_setting(int saved_fd[2])
 {
 	signal(SIGINT, SIG_IGN);
-	while (wait(&err_code) != -1)
+	while (wait(&g_errcode) != -1)
 		;
-	if (WIFSIGNALED(err_code))
+	if (WIFSIGNALED(g_errcode))
 	{
-		if (WTERMSIG(err_code) == SIGQUIT)
+		if (WTERMSIG(g_errcode) == SIGQUIT)
 			printf("Quit: 3");
 		printf("\n");
-		err_code = (128 + WTERMSIG(err_code)) << 8;
+		g_errcode = (128 + WTERMSIG(g_errcode));
 	}
 	else
-		err_code = err_code >> 8;
+		g_errcode = WEXITSTATUS(g_errcode);
 	set_signal();
 	dup2(saved_fd[0], STDIN_FILENO);
 	dup2(saved_fd[1], STDOUT_FILENO);
@@ -93,7 +93,8 @@ void	excute_hub(t_parsing *ps, t_envtree *env)
 		sub_redir_exec_single(ps, env);
 	else
 	{
-		trave_redir(ps, env, ps->root);
+		if (!trave_redir(ps, env, ps->root))
+			return ;
 		sub_redir_exec_pipe(ps, ps->root, env, 0);
 	}
 }

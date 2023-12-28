@@ -27,8 +27,7 @@ DEQUE	= deque/deque.a
 LIST	= list/list.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra 
-# -g -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra -g -fsanitize=address
 
 all :
 	@make $(NAME) -j4

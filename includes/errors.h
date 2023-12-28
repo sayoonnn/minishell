@@ -35,6 +35,6 @@ void	print_err_builtin(char *func_name ,char *pname, char *str_err);
 int		print_syntax_token_error(char *content);
 int		print_syntax_unmatched_error(char ch);
 
-extern int	err_code;
+extern int	g_errcode;
 
 #endif

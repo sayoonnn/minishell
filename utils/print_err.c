@@ -21,7 +21,7 @@ void	print_err(char *pname, char *str_err)
 	write(STDERR_FILENO, "\n", 1);
 }
 
-void	print_err_builtin(char *func_name ,char *pname, char *str_err)
+void	print_err_builtin(char *func_name, char *pname, char *str_err)
 {
 	write(STDERR_FILENO, "minishell: ", 11);
 	write(STDERR_FILENO, func_name, ft_strlen(func_name));

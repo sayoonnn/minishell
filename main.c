@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	err_code = 0;
+int	g_errcode = 0;
 
 void	free_minishell_data(t_envnode *env, t_parsing *parsing)
 {
@@ -44,7 +44,8 @@ int main(void)
 		add_history(line);
 		free(line);
 	}
+	set_child_signal();
 	free_minishell_data(env->root, parsing);
 	free(env);
-	exit(err_code);
+	exit(g_errcode);
 }

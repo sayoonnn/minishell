@@ -25,16 +25,16 @@ static void	todo_parent(pid_t pid)
 {	
 	(void)pid;
 	signal(SIGINT, SIG_IGN);
-	wait(&err_code);
-	if (WIFSIGNALED(err_code))
+	wait(&g_errcode);
+	if (WIFSIGNALED(g_errcode))
 	{
-		if (WTERMSIG(err_code) == SIGQUIT)
+		if (WTERMSIG(g_errcode) == SIGQUIT)
 			printf("Quit: 3");
 		printf("\n");
-		err_code = (128 + WTERMSIG(err_code)) << 8;
+		g_errcode = (128 + WTERMSIG(g_errcode));
 	}
 	else
-		err_code = err_code >> 8;
+		g_errcode = WEXITSTATUS(g_errcode);
 	set_signal();
 }
 

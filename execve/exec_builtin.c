@@ -33,19 +33,19 @@ int	is_builtin(char *cmd)
 void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 {
 	if (!ft_strcmp(cmd, "cd"))
-		err_code = ft_cd(argv, env) << 8;
+		g_errcode = ft_cd(argv, env) << 8;
 	if (!ft_strcmp(cmd, "echo"))
-		err_code = ft_echo(argv) << 8;
+		g_errcode = ft_echo(argv) << 8;
 	if (!ft_strcmp(cmd, "env"))
-		err_code = ft_env(env->root) << 8;
+		g_errcode = ft_env(env->root) << 8;
 	if (!ft_strcmp(cmd, "exit"))
-		err_code = ft_exit(argv, false) << 8;
+		g_errcode = ft_exit(argv, false) << 8;
 	if (!ft_strcmp(cmd, "export"))
-		err_code = ft_export(argv, env) << 8;
+		g_errcode = ft_export(argv, env) << 8;
 	if (!ft_strcmp(cmd, "pwd"))
-		err_code = ft_pwd() << 8;
+		g_errcode = ft_pwd() << 8;
 	if (!ft_strcmp(cmd, "unset"))
-		err_code = ft_unset(env, argv) << 8;
+		g_errcode = ft_unset(env, argv) << 8;
 }
 
 int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)

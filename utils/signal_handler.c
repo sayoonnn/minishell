@@ -38,7 +38,6 @@ void	set_child_signal(void)
 	signal(SIGQUIT, SIG_DFL);
 }
 
-
 void	signal_handler(int signal)
 {
 	if (signal == SIGINT)

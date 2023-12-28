@@ -32,7 +32,7 @@ static int	get_status(int argc, char **argv)
 {
 	int			status;
 
-	status = err_code;
+	status = g_errcode;
 	if (argc >= 2)
 	{
 		if (!ft_isnumber(argv[1]))

@@ -102,9 +102,9 @@ int	handle_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt, int io_fd[2])
 		if (is_ambiguous(pt->right->contents->head->content, ps->word_lst))
 			return (false);
 		ret = cknopen(ps->word_lst->head->content, io_fd, pt->left->token_type);
+		ft_lstclear(ps->word_lst);
 		if (!ret)
 			return (ret);
-		ft_lstclear(ps->word_lst);
 	}
 	return (true);
 }
