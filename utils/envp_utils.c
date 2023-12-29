@@ -46,7 +46,8 @@ static void	make_arr(t_envtree *tree, t_envnode *env, char **envp)
 	if (env == NULL)
 		return ;
 	make_arr(tree, env->left, envp);
-	envp[i++] = env->forarr;
+	if (env->value != NULL)
+		envp[i++] = env->forarr;
 	make_arr(tree, env->right, envp);
 }
 
@@ -54,7 +55,7 @@ char	**tree_2_envp(t_envtree *env)
 {
 	char	**tmp;
 
-	tmp = malloc(sizeof(char *) * (env->num_nodes + 1));
+	tmp = ft_calloc(sizeof(char *), (env->num_nodes + 1));
 	if (!tmp)
 		exit(1);
 	make_arr(env, env->root, tmp);

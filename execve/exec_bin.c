@@ -37,19 +37,19 @@ static int	check_err(char *bin_path, char *cmd, t_envtree *env)
 	{
 		if (!find_envnode(env->root, "PATH") || \
 		find_envnode(env->root, "PATH")->value == NULL)
-			print_err(cmd, ERR_NO_DIR_FILE);
+			ft_printf(2, "minishell: %s: %s\n", cmd, ERR_NO_DIR_FILE);
 		else
-			print_err(cmd, ERR_CMD_NOT_FOUND);
+			ft_printf(2, "minishell: %s: %s\n", cmd, ERR_CMD_NOT_FOUND);
 		return (CODE_CMD_NOT_FOUND);
 	}
 	if (is_directory(bin_path))
 	{
-		print_err(bin_path, "is directory");
+		ft_printf(2, "minishell: %s: %s\n", bin_path, "is directory\n");
 		return (CODE_PERM_DENIED);
 	}
 	if (access(bin_path, X_OK) != 0)
 	{
-		print_err("permission denied", bin_path);
+		ft_printf(2, "minishell: %s: %s\n", bin_path, "permission denied\n");
 		return (CODE_PERM_DENIED);
 	}
 	return (0);

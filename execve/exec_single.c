@@ -58,6 +58,8 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst)
 	pid_t	pid;
 
 	argv = convert_word_lst_to_array(lst);
+	if (*argv == NULL)
+		return ;
 	find_fd(node->right, node->fd);
 	save_fd[0] = dup(STDIN_FILENO);
 	save_fd[1] = dup(STDOUT_FILENO);

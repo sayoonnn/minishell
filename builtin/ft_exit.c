@@ -37,12 +37,12 @@ static int	get_status(int argc, char **argv)
 	{
 		if (!ft_isnumber(argv[1]))
 		{
-			print_err_builtin("exit", argv[1], "numeric argument required");
+			ft_printf(2, "minishell: exit: %s: numeric argumet required\n", argv[1]);
 			status = 2;
 		}
 		else if (argc > 2)
 		{
-			print_err("exit", "too many arguments");
+			ft_printf(2, "minishell: exit: too many arguments\n");
 			status = 255;
 		}
 		else

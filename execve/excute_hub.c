@@ -17,8 +17,6 @@ void	sub_redir_exec_single(t_parsing *ps, t_envtree *env)
 	t_tree_node	*node;
 
 	node = ps->root;
-	node->fd[0] = 0;
-	node->fd[1] = 1;
 	if (!handle_other_redir(ps, env, node->right))
 	{
 		g_errcode = 1;

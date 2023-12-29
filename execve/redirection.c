@@ -73,7 +73,7 @@ static int	is_ambiguous(char *before, t_list *lst)
 {
 	if (lst->head == NULL || lst->head->next != NULL)
 	{
-		print_err(before, "ambiguous redirect");
+		ft_printf(2, "minishell: %s: ambiguous redirect\n", before);
 		ft_lstclear(lst);
 		return (true);
 	}
@@ -89,8 +89,6 @@ int	handle_heredoc_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt)
 		return (true);
 	if (pt->token_type == REDIRECTION_LIST)
 	{
-		pt->left->fd[0] = 0;
-		pt->left->fd[1] = 1;
 		ret = handle_heredoc_redir(ps, env, pt->left);
 		if (ret == false)
 			return (ret);
@@ -120,14 +118,9 @@ int	handle_other_redir(t_parsing *ps, t_envtree *env, t_tree_node *pt)
 		return (true);
 	if (pt->token_type == REDIRECTION_LIST)
 	{
-		if (pt->left->left->token_type != DLESS)
-		{
-			pt->left->fd[0] = 0;
-			pt->left->fd[1] = 1;
-			ret = handle_other_redir(ps, env, pt->left);
-			if (ret == false)
-				return (ret);
-		}
+		ret = handle_other_redir(ps, env, pt->left);
+		if (ret == false)
+			return (ret);
 		ret = handle_other_redir(ps, env, pt->right);
 		if (ret == false)
 			return (ret);

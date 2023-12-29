@@ -33,6 +33,8 @@ t_tree_node	*create_tree_node(int token_type)
 	syntax_node->contents = NULL;
 	syntax_node->left = NULL;
 	syntax_node->right = NULL;
+	syntax_node->fd[0] = 0;
+	syntax_node->fd[1] = 1;
 	return (syntax_node);
 }
 

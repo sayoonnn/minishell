@@ -34,6 +34,7 @@ static void	redirect_io(t_tree_node *node, int pipe_fd[2], int saved_fd[2])
 	{
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
 	}
 	if (node->fd[0] == -1 || node->fd[1] == -1)
 		exit(EXIT_FAILURE);
@@ -67,6 +68,7 @@ static void	todo_parent(int pipe_fd[2], int n)
 	{
 		close(pipe_fd[1]);
 		dup2(pipe_fd[0], STDIN_FILENO);
+		close(pipe_fd[0]);
 	}
 }
 
@@ -75,13 +77,13 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, int saved_fd[2])
 	pid_t	pid;
 	int		pipe_fd[2];
 
+	if (node->left->contents->head == NULL)
+		return ;
 	if (node->cmd_cnt != 0)
 	{
 		if (pipe(pipe_fd) < 0)
 			exit(1);
 	}
-	if (node->left->contents->head == NULL)
-		return ;
 	pid = fork();
 	if (pid == -1)
 		exit(1);

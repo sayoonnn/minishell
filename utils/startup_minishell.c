@@ -15,17 +15,17 @@
 void	startup_minishell(void)
 {
 	int		fd;
-	char	*buffer;
+	char	buffer;
+	int		read_bytes;
 
 	fd = open("./utils/startup.txt", O_RDONLY);
 	if (fd < 0)
 		exit(1);
-	buffer = get_next_line(fd);
-	while (buffer)
+	read_bytes = read(fd, &buffer, 1);
+	while (read_bytes > 0)
 	{
-		printf("\033[0;32m%s\033[0;38m", buffer);
-		free(buffer);
-		buffer = get_next_line(fd);
+		write(1, &buffer, 1);
+		read_bytes = read(fd, &buffer, 1);	
 	}
 	close(fd);
 }

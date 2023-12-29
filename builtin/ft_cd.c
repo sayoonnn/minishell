@@ -23,13 +23,13 @@ static int	cd_home(t_envtree *env)
 	tmp = find_envnode(env->root, "HOME");
 	if (!tmp)
 	{
-		print_err("cd", "no home directory");
+		ft_printf(2, "minishell: cd: no home directory\n");
 		g_errcode = 1;
 		return (fail);
 	}
 	if (chdir(tmp->value) < 0)
 	{
-		print_err_builtin("cd", tmp->value, ERR_NO_DIR_FILE);
+		ft_printf(2, "minishell: cd: %s: %s\n", tmp->value, ERR_NO_DIR_FILE);
 		g_errcode = 1;
 		return (fail);
 	}
@@ -51,7 +51,7 @@ static int	cd_oldpwd(t_envtree *env)
 	{
 		if (chdir(old->value) < 0)
 		{
-			print_err_builtin("cd", old->value, ERR_NO_DIR_FILE);
+			ft_printf(2, "minishell: cd: %s: %s\n", old->value, ERR_NO_DIR_FILE);
 			g_errcode = 1;
 			return (fail);
 		}
@@ -77,7 +77,7 @@ int	ft_cd(char *arg[], t_envtree *env)
 	{
 		if (chdir(arg[1]) < 0)
 		{
-			print_err_builtin("cd", ERR_NO_DIR_FILE, arg[1]);
+			ft_printf(2, "minishell: cd: %s: %s\n", arg[1], ERR_NO_DIR_FILE);
 			return (fail);
 		}
 		add_env(env, make_envnode("OLDPWD", cur));

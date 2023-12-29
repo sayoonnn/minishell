@@ -74,7 +74,7 @@ int	handle_dollar_in_wd(t_parsing *ps, t_envtree *env, char *word, size_t *idx)
 	envnode = find_envnode(env->root, key);
 	free(key);
 	(*idx) = tmp_idx;
-	if (envnode != NULL)
+	if (envnode != NULL && envnode->value != NULL)
 	{
 		strs = ft_split(envnode->value);
 		return (link_argv_to_word_lst(ps, strs, envnode->value));

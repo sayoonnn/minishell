@@ -15,14 +15,14 @@
 
 int	print_syntax_token_error(char *content)
 {
-	printf("bash: syntax error near unexpected token `%s'\n", content);
-	g_errcode = 258;
+	ft_printf(2, "bash: syntax error near unexpected token `%s'\n", content);
+	g_errcode = CODE_SYNTAX_ERROR;
 	return (CODE_SYNTAX_ERROR);
 }
 
 int	print_syntax_unmatched_error(char ch)
 {
-	printf("bash: syntax error: not matched `%c'\n", ch);
-	g_errcode = 258;
+	ft_printf(2, "bash: syntax error: not matched `%c'\n", ch);
+	g_errcode = CODE_SYNTAX_ERROR;
 	return (CODE_SYNTAX_ERROR);
 }

@@ -101,7 +101,7 @@ int	ft_export(char *arg[], t_envtree *env)
 		value = ft_strchr(arg[i], '=');
 		if (!check_is_valid(key))
 		{
-			print_err(key, "not a valid identifier");
+			ft_printf(2, "minishell: export: `%s': not a valid identifier\n", key);
 			ret = fail;
 			continue ;
 		}

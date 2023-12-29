@@ -14,7 +14,11 @@
 # define LIBFT_H
 
 # include <stddef.h>
-# include "get_next_line.h"
+# include <stddef.h>
+# include <stdarg.h>
+# include <unistd.h>
+
+# define FAIL -1
 
 void	ft_bzero(void *s, size_t n);
 int		ft_isalnum(int c);
@@ -53,5 +57,19 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_itoa(int n);
 char	**ft_oldsplit(char const *s, char c);
+
+// printf
+int		ft_printf(int fd, const char *str, ...);
+int		ft_doprnt(int fd, va_list ap, const char *str);
+int		ft_print_percent(int fd);
+void	ft_init_func(int (*print_func[9]));
+int		ft_chk_and_print(int fd, const char *tok, va_list ap);
+int		ft_doprnt(int fd, va_list ap, const char *str);
+int		ft_print_c(int fd, va_list ap);
+int		ft_print_s(int fd, va_list ap);
+int		ft_print_p(int fd, va_list ap);
+int		ft_print_di(int fd, va_list ap);
+int		ft_print_u(int fd, va_list ap);
+int		ft_print_x(int fd, va_list ap, char is_upper);
 
 #endif
