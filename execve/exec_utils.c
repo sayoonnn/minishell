@@ -12,16 +12,6 @@
 
 #include "minishell.h"
 
-void	free_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
 char	*make_binpath(char *cmd, t_envnode *path_node)
 {
 	int			i;
@@ -40,13 +30,13 @@ char	*make_binpath(char *cmd, t_envnode *path_node)
 		if (!access(command, F_OK))
 		{
 			free(tmp);
-			free_arr(path);
+			free_perfectly_split(path);
 			return (command);
 		}
 		free(command);
 	}
 	free(tmp);
-	free_arr(path);
+	free_perfectly_split(path);
 	return (NULL);
 }
 

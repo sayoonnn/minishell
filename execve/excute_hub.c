@@ -37,10 +37,7 @@ static void	reset_iofd(int saved_fd[2], pid_t last_pid)
 	}
 	else
 		g_errcode = WEXITSTATUS(g_errcode);
-	dup2(saved_fd[0], STDIN_FILENO);
-	dup2(saved_fd[1], STDOUT_FILENO);
-	close(saved_fd[0]);
-	close(saved_fd[1]);
+	reset_io(saved_fd);
 	saved_fd[0] = -1;
 	saved_fd[1] = -1;
 	set_signal();
@@ -59,11 +56,14 @@ void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 	if (node->left->token_type == PIPE)
 	{
 		sub_redir_exec_pipe(node->left, env, n + 1);
+		node->right->cmd_cnt = n;
 		exec_pipe_cmd(node->right, env, saved_fd, &last_pid);
 	}
 	else
 	{
+		node->right->cmd_cnt = n + 1;
 		exec_pipe_cmd(node->left, env, saved_fd, &last_pid);
+		node->right->cmd_cnt = n;
 		exec_pipe_cmd(node->right, env, saved_fd, &last_pid);
 	}
 	if (n == 0)

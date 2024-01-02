@@ -28,7 +28,8 @@ INC		= ./includes
 LIBFT	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra -g 
+CFLAGS	= -Wall -Werror -Wextra 
+#-g 
 #-fsanitize=address
 
 all :

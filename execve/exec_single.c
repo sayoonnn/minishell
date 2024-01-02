@@ -35,13 +35,15 @@ static void	todo_parent(char **argv, int save_fd[2])
 	else
 		g_errcode = WEXITSTATUS(g_errcode);
 	set_signal();
-	free_arr(argv);
+	free_perfectly_split(argv);
 	reset_io(save_fd);
 }
 
 static void	change_fd(t_tree_node *node, int save_fd[2])
 {
 	find_fd(node->right, node->fd);
+	save_fd[0] = 0;
+	save_fd[1] = 1;
 	if (node->fd[0] != 0)
 	{
 		save_fd[0] = dup(STDIN_FILENO);

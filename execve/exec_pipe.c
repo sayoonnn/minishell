@@ -21,14 +21,21 @@ static void	redirect_io(t_tree_node *node, int pipe_fd[2], int saved_fd[2])
 	{
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], STDOUT_FILENO);
+		printf("aaaa\n");
 		close(pipe_fd[1]);
 	}
 	if (node->fd[0] == -1 || node->fd[1] == -1)
 		exit(EXIT_FAILURE);
 	if (node->fd[0] != 0)
+	{
 		dup2(node->fd[0], STDIN_FILENO);
+		close(node->fd[0]);
+	}
 	if (node->fd[1] != 1)
+	{
 		dup2(node->fd[1], STDOUT_FILENO);
+		close(node->fd[1]);
+	}
 }
 
 static void	todo_chid(t_tree_node *node, t_envtree *env, \
@@ -46,6 +53,7 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, \
 		exit(exit_code);
 	}
 	exit_code = exec_bin(argv, env);
+	free_perfectly_split(argv);
 	exit(exit_code);
 }
 
@@ -67,7 +75,7 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \
 	pid_t	pid;
 	int		pipe_fd[2];
 
-	if (!handle_other_redirs(node, env))
+	if (!handle_other_redirs(node->right, env))
 		return ;
 	if (node->left->contents->head == NULL)
 		return ;

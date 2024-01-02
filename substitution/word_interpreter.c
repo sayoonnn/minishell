@@ -17,7 +17,7 @@ char	*handle_dollar_special(char *content, size_t *idx)
 	char	*res;
 
 	res = NULL;
-	if (content[*idx] == 0)
+	if (content[*idx] == 0 || is_bracket(content[*idx]))
 		res = ft_strdup("$");
 	else if (content[*idx] == '$' || ft_isdigit(content[*idx]))
 	{
@@ -45,7 +45,7 @@ char	*handle_dollar(char *cnt, t_envtree *env, size_t *idx)
 
 	tmp_idx = ++(*idx);
 	if (is_quote(cnt[tmp_idx]) || cnt[tmp_idx] == 0 || ft_isdigit(cnt[tmp_idx])
-		|| cnt[tmp_idx] == '?' || cnt[tmp_idx] == '$')
+		|| cnt[tmp_idx] == '?' || cnt[tmp_idx] == '$' || is_bracket(cnt[tmp_idx]))
 		return (handle_dollar_special(cnt, idx));
 	while (cnt[tmp_idx] != 0 && cnt[tmp_idx] != '$'
 		&& !is_quote(cnt[tmp_idx]) && !is_bracket(cnt[tmp_idx]))
@@ -91,18 +91,32 @@ int	refine_content(char *content, t_envtree *env, char **refine, size_t *idx)
 	return (0);
 }
 
+static void	is_single(char ch, int *single_flag)
+{
+	if (ch == '\'')
+	{
+		if (*single_flag)
+			*single_flag = 0;
+		else
+			*single_flag = 1;
+	}
+}
+
 int	substitute_dollar(t_list *res, char *content, t_envtree *env, char **ref)
 {
 	size_t	idx;
 	size_t	s;
+	int		single_flag;
 
 	if (*ref == NULL)
 		return (1);
 	idx = 0;
 	s = 0;
+	single_flag = 0;
 	while (content[idx])
 	{
-		if (content[idx] == '$')
+		is_single(content[idx], &single_flag);
+		if (content[idx] == '$' && !single_flag)
 		{
 			if (ft_strjoin_in_depend(ref, content, &s, &idx))
 				return (1);

@@ -16,4 +16,8 @@ void	reset_io(int save[2])
 {
 	dup2(save[0], STDIN_FILENO);
 	dup2(save[1], STDOUT_FILENO);
+	if (save[0] != 0)
+		close(save[0]);
+	if (save[1] != 1)
+		close(save[1]);
 }
