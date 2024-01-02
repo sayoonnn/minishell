@@ -12,76 +12,54 @@
 
 #include "minishell.h"
 
-static int	cd_home(t_envtree *env)
-{
-	t_envnode	*tmp;
-	char		*pwd;
+#ifndef PATH_MAX
+# define PATH_MAX 1024
+#endif
 
-	pwd = getcwd(NULL, PATH_MAX);
-	if (!pwd)
-		exit(1);
-	tmp = find_envnode(env->root, "HOME");
-	if (!tmp)
-	{
-		ft_printf(2, "minishell: cd: no home directory\n");
-		g_errcode = 1;
-		return (fail);
-	}
-	if (chdir(tmp->value) < 0)
-	{
-		ft_printf(2, "minishell: cd: %s: %s\n", tmp->value, ERR_NO_DIR_FILE);
-		g_errcode = 1;
-		return (fail);
-	}
-	add_env(env, make_envnode("OLDPWD", pwd));
-	free(pwd);
-	return (success);
+static int	is_directory(char *dir)
+{
+	struct stat	file_info;
+
+	if (stat(dir, &file_info) == -1)
+		return (false);
+	if (S_ISDIR(file_info.st_mode))
+		return (true);
+	return (false);
 }
 
-static int	cd_oldpwd(t_envtree *env)
+static void	print_errs(char *dir)
 {
-	t_envnode	*old;
-	char		*pwd;
-
-	pwd = getcwd(NULL, PATH_MAX);
-	if (!pwd)
-		exit(1);
-	old = find_envnode(env->root, "OLDPWD");
-	if (old)
-	{
-		if (chdir(old->value) < 0)
-		{
-			ft_printf(2, "minishell: cd: %s: %s\n", old->value, ERR_NO_DIR_FILE);
-			g_errcode = 1;
-			return (fail);
-		}
-	}
-	printf("%s\n", old->value);
-	add_env(env, make_envnode("OLDPWD", pwd));
-	free(pwd);
-	return (success);
+	if (access(dir, F_OK) < 0)
+		ft_printf(2, "minishell: cd: %s: %s\n", dir, ERR_NO_DIR_FILE);
+	else if (!is_directory(dir))
+		ft_printf(2, "minishell: cd: %s: Not a directory\n", dir);
+	else if (access(dir, X_OK | W_OK | R_OK) < 0)
+		ft_printf(2, "minishell: cd: %s: Permission denied\n", dir);
+	else
+		ft_printf(2, "minishell: cd: %s: %s\n", dir, ERR_NO_DIR_FILE);
 }
 
-int	ft_cd(char *arg[], t_envtree *env)
+int	ft_cd(char *arg[])
 {
 	char	*cur;
+	int		status;
 
+	if (arg[1] == NULL)
+		return (success);
+	status = success;
 	cur = getcwd(NULL, PATH_MAX);
 	if (!cur)
 		exit(1);
-	if (arg[1] == NULL || !ft_strncmp(arg[1], "~", 2))
-		return (cd_home(env));
-	else if (!ft_strncmp(arg[1], "-", 2))
-		return (cd_oldpwd(env));
-	else
+	if (ft_strlen(arg[1]) > PATH_MAX)
 	{
-		if (chdir(arg[1]) < 0)
-		{
-			ft_printf(2, "minishell: cd: %s: %s\n", arg[1], ERR_NO_DIR_FILE);
-			return (fail);
-		}
-		add_env(env, make_envnode("OLDPWD", cur));
-		free(cur);
+		ft_printf(2, "minishell: cd: %s: File name too long\n", arg[1]);
+		status = fail;
 	}
-	return (success);
+	else if (chdir(arg[1]) < 0)
+	{
+		print_errs(arg[1]);
+		status = fail;
+	}
+	free(cur);
+	return (status);
 }

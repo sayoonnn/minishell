@@ -6,7 +6,7 @@
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:30:47 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/26 14:42:09 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/02 12:24:47 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ int	check_rquote(char *cmd, size_t *idx, size_t *new_len)
 	return (0);
 }
 
-int	select_word_token_type(t_parsing *parsing)
+int	select_word_token_type(t_deque *tokens, int *cmd_flag)
 {
 	int	token_type;
 
 	token_type = CMD;
-	if (!deque_empty(parsing->tokens) && deque_back(parsing->tokens) == REDIRECTION)
+	if (!deque_empty(tokens) && deque_back(tokens) == REDIRECTION)
 		token_type = FILENAME;
-	else if (parsing->cmd_flag == 0)
+	else if (*cmd_flag == 0)
 	{
-		parsing->cmd_flag = 1;
+		*cmd_flag = 1;
 		token_type = CMD;
 	}
-	else if (parsing->cmd_flag == 1)
+	else if (*cmd_flag == 1)
 		token_type = ARGV;
 	return (token_type);
 }

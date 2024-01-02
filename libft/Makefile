@@ -20,20 +20,24 @@ SRC		= ft_atoi.c ft_bzero.c ft_calloc.c \
 		  ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c\
 		  ft_strcmp.c\
 		  ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c\
-		  ft_print_chars.c ft_print_diu.c ft_print_p.c ft_print_x.c ft_printf.c
+		  ft_print_chars.c ft_print_diu.c ft_print_p.c ft_print_x.c ft_printf.c\
+		  \
+		  deque/deque_back.c deque/deque_clear.c deque/deque_clear.c deque/deque_create.c\
+		  deque/deque_create_node.c deque/deque_empty.c deque/deque_front.c\
+		  deque/deque_pop_back.c deque/deque_pop_front.c deque/deque_push_front.c\
+		  deque/deque_push_back.c\
+		  \
+		  list/ft_lstadd_back.c list/ft_lstclear.c list/ft_lstcreate.c\
+		  list/ft_lstdelone.c list/ft_lstlast.c list/ft_lstnew.c list/ft_lstsize.c\
+		  list/ft_split.c
 
 OBJ		= $(SRC:.c=.o)
-
-# B_SRC	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c\
-# 		  ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
-
-# B_OBJ	= $(B_SRC:.c=.o)
 
 CC 		= cc
 AR		= ar
 
 CFLAGS	= -Wall -Wextra -Werror
-ARFLAGS	= rc
+ARFLAGS	= rcs
 
 all: $(NAME)
 

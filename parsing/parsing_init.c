@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 19:10:15 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/26 18:54:42 by jonghopa         ###   ########.fr       */
+/*   Updated: 2024/01/02 00:24:27 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ t_parsing	*init_parsing_tool(void)
 	if (parsing == NULL)
 		exit(1);
 	parsing->tokens = deque_create();
-	parsing->word_lst = ft_lstcreate();
-	if (!(parsing->tokens) || !(parsing->word_lst))
+	if (parsing->tokens == NULL)
 		exit(1);
-	parsing->detach = 0;
 	parsing->cmd_flag = 0;
 	parsing->root = NULL;
 	parsing->cmd_info_ptr = NULL;

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 #include <stdint.h>
 
 static int	ft_print_addr(int fd, uintptr_t num, int *cnt)

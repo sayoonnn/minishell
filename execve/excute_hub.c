@@ -3,33 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   excute_hub.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:00:10 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/05 16:00:10 by sayoon           ###   ########.fr       */
+/*   Updated: 2024/01/01 21:27:48 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sub_redir_exec_single(t_parsing *ps, t_envtree *env)
+void	sub_redir_exec_single(t_tree_node *node, t_envtree *env)
 {
-	t_tree_node	*node;
-
-	node = ps->root;
-	if (!handle_other_redir(ps, env, node->right))
+	if (!handle_other_redir(node->right, env))
 	{
 		g_errcode = 1;
 		return ;
 	}
-	substitute_words(ps, env, ps->root->left->contents);
-	exec_single_cmd(node, env, ps->word_lst);
+	exec_single_cmd(node, env);
 }
 
-static void	reset_setting(int saved_fd[2])
+static void	reset_iofd(int saved_fd[2], pid_t last_pid)
 {
 	signal(SIGINT, SIG_IGN);
-	while (wait(&g_errcode) != -1)
+	waitpid(last_pid, &g_errcode, 0);
+	while (wait(NULL) != -1)
 		;
 	if (WIFSIGNALED(g_errcode))
 	{
@@ -40,30 +37,35 @@ static void	reset_setting(int saved_fd[2])
 	}
 	else
 		g_errcode = WEXITSTATUS(g_errcode);
-	set_signal();
 	dup2(saved_fd[0], STDIN_FILENO);
 	dup2(saved_fd[1], STDOUT_FILENO);
 	saved_fd[0] = -1;
 	saved_fd[1] = -1;
+	set_signal();
 }
 
-static void	exchange_lst(t_parsing *ps, t_tree_node *node, \
-						t_envtree *env, int n)
-{
-	if (node == NULL)
-		return ;
-	node->cmd_cnt = n;
-	substitute_words(ps, env, node->left->contents);
-	ft_lstclear(node->left->contents);
-	node->left->contents->head = ps->word_lst->head;
-	ps->word_lst->head = NULL;
-	ps->word_lst->tail = NULL;
-}
+/*
+	t_parsing 구조체의 word_lst 리스트 변수 안에 bash 체제에 맞춘 환경변수 치환 결과를 담는 대신,
+	치환 결과를 리스트로 반환하는 함수로 변경했기 때문에 아래 함수의 57번째 줄 제외하고 나머지 내용 삭제 예정
+*/
 
-void	sub_redir_exec_pipe(t_parsing *ps, t_tree_node *node, \
-							t_envtree *env, int n)
+// static void	exchange_lst(t_parsing *ps, t_tree_node *node, \
+// 						t_envtree *env, int n)
+// {
+// 	if (node == NULL)
+// 		return ;
+// 	node->cmd_cnt = n;
+// 	substitute_words(ps, env, node->left->contents);
+// 	ft_lstclear(node->left->contents);
+// 	node->left->contents->head = ps->word_lst->head;
+// 	ps->word_lst->head = NULL;
+// 	ps->word_lst->tail = NULL;
+// }
+
+void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 {
-	static int	saved_fd[2] = {-1, -1};
+	static int		saved_fd[2] = {-1, -1};
+	static pid_t	last_pid = -1;
 
 	if (saved_fd[0] == -1 && saved_fd[1] == -1)
 	{
@@ -72,37 +74,26 @@ void	sub_redir_exec_pipe(t_parsing *ps, t_tree_node *node, \
 	}
 	if (node->left->token_type == PIPE)
 	{
-		sub_redir_exec_pipe(ps, node->left, env, n + 1);
-		exchange_lst(ps, node->right, env, n);
-		exec_pipe_cmd(node->right, env, saved_fd);
+		sub_redir_exec_pipe(node->left, env, n + 1);
+		exec_pipe_cmd(node->right, env, saved_fd, &last_pid);
 	}
 	else
 	{
-		exchange_lst(ps, node->left, env, n + 1);
-		exec_pipe_cmd(node->left, env, saved_fd);
-		exchange_lst(ps, node->right, env, n);
-		exec_pipe_cmd(node->right, env, saved_fd);
+		exec_pipe_cmd(node->left, env, saved_fd, &last_pid);
+		exec_pipe_cmd(node->right, env, saved_fd, &last_pid);
 	}
 	if (n == 0)
-		reset_setting(saved_fd);
+		reset_iofd(saved_fd, last_pid);
 }
 
-void	excute_hub(t_parsing *ps, t_envtree *env)
+void	excute_hub(t_tree_node *root, t_envtree *env)
 {
-	if (ps->root == NULL)
+	if (root == NULL)
 		return ;
-	if (ps->root->token_type == CMD)
-	{
-		if (!handle_heredoc_first(ps, env, ps->root))
-			return ;
-		sub_redir_exec_single(ps, env);
-	}
+	if (!handle_heredoc_first(root, env))
+		return ;
+	if (root->token_type == CMD)
+		sub_redir_exec_single(root, env);
 	else
-	{
-		if (!handle_heredoc_first(ps, env, ps->root))
-			return ;
-		if (!handle_other_redirs(ps, env, ps->root))
-			return ;
-		sub_redir_exec_pipe(ps, ps->root, env, 0);
-	}
+		sub_redir_exec_pipe(root, env, 0);
 }

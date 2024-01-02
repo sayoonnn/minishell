@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 19:34:56 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/26 18:48:01 by jonghopa         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:59:37 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ int main(void)
 	t_parsing	*parsing;
 	extern char	**environ;
 
-	//startup_minishell();
+	startup_minishell();
 	set_signal();
 	env = init_envp(environ);
 	parsing = init_parsing_tool();
 	while (true)
 	{
 		line = readline("$> ");
+		add_history(line);
 		if (!line)
 			break ;
 		if (!parse_line(line, parsing))
 			continue ;
 		excute_hub(parsing, env);
 		clean_parsing_tools(parsing);
-		add_history(line);
 		free(line);
 	}
 	set_child_signal();

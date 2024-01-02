@@ -6,7 +6,7 @@
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 22:02:00 by jonghopa          #+#    #+#             */
-/*   Updated: 2023/12/26 11:08:00 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/02 12:40:34 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,41 +24,31 @@ int	is_quote(char ch)
 
 int	is_operator(char ch)
 {
-	if (ch == '<' || ch == '>' || ch == '|')
-		return (1);
-	return (0);
+	return (ch == '<' || ch == '>' || ch == '|');
 }
 
-int	free_perfectly_split(char **strs)
+int	is_bracket(char ch)
 {
-	size_t	idx;
-
-	idx = 0;
-	while (strs[idx] != NULL)
-	{
-		free(strs[idx]);
-		idx++;
-	}
-	free(strs);
-	return (1);
+	return (ch == '(' || ch == ')' || ch == '{' || ch == '}'
+			|| ch == '[' || ch == ']');
 }
 
-char	*make_word(char *cmd, size_t *idx, size_t len)
-{
-	char	*res;
-	size_t	i;
+// char	*make_word(char *cmd, size_t *idx, size_t len)
+// {
+// 	char	*res;
+// 	size_t	i;
 
-	if (cmd == NULL)
-		return (NULL);
-	res = (char *)malloc(sizeof(char) * (len + 1));
-	if (res == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		res[i] = cmd[*idx - (len - i)];
-		i++;
-	}
-	res[i] = 0;
-	return (res);
-}
+// 	if (cmd == NULL)
+// 		return (NULL);
+// 	res = (char *)malloc(sizeof(char) * (len + 1));
+// 	if (res == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	while (i < len)
+// 	{
+// 		res[i] = cmd[*idx - (len - i)];
+// 		i++;
+// 	}
+// 	res[i] = 0;
+// 	return (res);
+// }

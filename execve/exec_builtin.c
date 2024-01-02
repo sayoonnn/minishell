@@ -33,7 +33,7 @@ int	is_builtin(char *cmd)
 void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 {
 	if (!ft_strcmp(cmd, "cd"))
-		g_errcode = ft_cd(argv, env);
+		g_errcode = ft_cd(argv);
 	if (!ft_strcmp(cmd, "echo"))
 		g_errcode = ft_echo(argv);
 	if (!ft_strcmp(cmd, "env"))
@@ -53,7 +53,7 @@ int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)
 	int	ret;
 
 	if (!ft_strcmp(cmd, "cd"))
-		ret = ft_cd(argv, env);
+		ret = ft_cd(argv);
 	if (!ft_strcmp(cmd, "echo"))
 		ret = ft_echo(argv);
 	if (!ft_strcmp(cmd, "env"))

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execve.c                                           :+:      :+:    :+:   */
+/*   exec_single.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 20:12:11 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/04 20:12:12 by sayoon           ###   ########.fr       */
+/*   Updated: 2024/01/01 21:07:22 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ static void	todo_child(char *argv[], t_envtree *env)
 	exit(ret);
 }
 
-static void	todo_parent(pid_t pid)
-{	
-	(void)pid;
+static void	todo_parent(void)
+{
 	signal(SIGINT, SIG_IGN);
 	wait(&g_errcode);
 	if (WIFSIGNALED(g_errcode))
@@ -38,33 +37,31 @@ static void	todo_parent(pid_t pid)
 	set_signal();
 }
 
-static void	find_fd(t_tree_node *node, int fd[2])
+static void	change_fd(t_tree_node *node, int save_fd[2])
 {
-	if (node == NULL)
-		return ;
-	if (node->token_type == REDIRECTION_INFO)
+	find_fd(node->right, node->fd);
+	if (node->fd[0] != 0)
 	{
-		fd[0] = node->fd[0];
-		fd[1] = node->fd[1];
+		save_fd[0] = dup(STDIN_FILENO);
+		dup2(node->fd[0], STDIN_FILENO);
 	}
-	find_fd(node->left, fd);
-	find_fd(node->right, fd);
+	if (node->fd[1] != 1)
+	{
+		save_fd[1] = dup(STDOUT_FILENO);
+		dup2(node->fd[1], STDOUT_FILENO);
+	}
 }
 
-void	exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst)
+void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 {
 	int		save_fd[2];
 	char	**argv;
 	pid_t	pid;
 
-	argv = convert_word_lst_to_array(lst);
+	argv = convert_word_lst_to_array(node->contents);
 	if (*argv == NULL)
 		return ;
-	find_fd(node->right, node->fd);
-	save_fd[0] = dup(STDIN_FILENO);
-	save_fd[1] = dup(STDOUT_FILENO);
-	dup2(node->fd[0], STDIN_FILENO);
-	dup2(node->fd[1], STDOUT_FILENO);
+	change_fd(node, save_fd);
 	if (is_builtin(argv[0]))
 		exec_builtin(argv[0], argv, env);
 	else
@@ -75,7 +72,8 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env, t_list *lst)
 		else if (pid == 0)
 			todo_child(argv, env);
 		else
-			todo_parent(pid);
+			todo_parent();
 	}
+	free_arr(argv);
 	reset_io(save_fd);
 }

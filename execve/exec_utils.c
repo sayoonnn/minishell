@@ -49,3 +49,18 @@ char	*make_binpath(char *cmd, t_envnode *path_node)
 	free_arr(path);
 	return (NULL);
 }
+
+void	find_fd(t_tree_node *node, int fd[2])
+{
+	if (node == NULL)
+		return ;
+	if (node->token_type == REDIRECTION_INFO)
+	{
+		if (node->fd[0] != 0)
+			fd[0] = node->fd[0];
+		if (node->fd[1] != 1)
+			fd[1] = node->fd[1];
+	}
+	find_fd(node->left, fd);
+	find_fd(node->right, fd);
+}

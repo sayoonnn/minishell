@@ -31,28 +31,29 @@ static int	is_directory(char *bin_path)
 	return (0);
 }
 
-static int	check_err(char *bin_path, char *cmd, t_envtree *env)
+static int	check_err(char *bin_path, char *cmd)
 {
 	if (bin_path == NULL)
 	{
-		if (!find_envnode(env->root, "PATH") || \
-		find_envnode(env->root, "PATH")->value == NULL)
-			ft_printf(2, "minishell: %s: %s\n", cmd, ERR_NO_DIR_FILE);
-		else
-			ft_printf(2, "minishell: %s: %s\n", cmd, ERR_CMD_NOT_FOUND);
+		ft_printf(2, "minishell: %s: %s\n", cmd, ERR_CMD_NOT_FOUND);
 		return (CODE_CMD_NOT_FOUND);
 	}
-	if (is_directory(bin_path))
+	else if (access(bin_path, F_OK))
 	{
-		ft_printf(2, "minishell: %s: %s\n", bin_path, "is directory\n");
+		ft_printf(2, "minishell: %s: %s\n", cmd, ERR_NO_DIR_FILE);
+		return (CODE_CMD_NOT_FOUND);
+	}
+	else if (is_directory(bin_path))
+	{
+		ft_printf(2, "minishell: %s: %s\n", bin_path, "is directory");
 		return (CODE_PERM_DENIED);
 	}
-	if (access(bin_path, X_OK) != 0)
+	else if (access(bin_path, X_OK) != 0)
 	{
-		ft_printf(2, "minishell: %s: %s\n", bin_path, "permission denied\n");
+		ft_printf(2, "minishell: %s: %s\n", bin_path, "permission denied");
 		return (CODE_PERM_DENIED);
 	}
-	return (0);
+	return (success);
 }
 
 int	exec_bin(char **argv, t_envtree *env)
@@ -62,7 +63,7 @@ int	exec_bin(char **argv, t_envtree *env)
 	char	**envp;
 
 	bin_path = find_path(argv[0], env);
-	ret = check_err(bin_path, argv[0], env);
+	ret = check_err(bin_path, argv[0]);
 	if (ret)
 	{
 		free(bin_path);

@@ -13,7 +13,7 @@
 #ifndef BUILT_IN_FUNC_H
 # define BUILT_IN_FUNC_H
 
-int		ft_cd(char *arg[], t_envtree *env);
+int		ft_cd(char *arg[]);
 int		ft_echo(char *arg[]);
 int		ft_env(t_envnode *envp);
 int		ft_exit(char **argv, int is_pipe);

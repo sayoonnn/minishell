@@ -15,6 +15,7 @@
 
 # define ERR_NO_DIR_FILE	"No such file or directory"
 # define ERR_CMD_NOT_FOUND	"command not found"
+# define ERR_IDENIFIER	"not a valid identifier"
 
 # define CODE_AMBIGUOUS_RD	1
 # define CODE_PERM_DENIED	126
@@ -23,12 +24,6 @@
 
 # include <unistd.h>
 # include "libft.h"
-
-enum	e_success
-{
-	success,
-	fail
-};
 
 int		print_syntax_token_error(char *content);
 int		print_syntax_unmatched_error(char ch);

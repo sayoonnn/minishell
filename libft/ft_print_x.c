@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 static int	ft_print_hex(int fd, unsigned int num, int *cnt, char *hex)
 {

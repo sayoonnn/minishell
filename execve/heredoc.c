@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:27:47 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/20 16:27:48 by sayoon           ###   ########.fr       */
+/*   Updated: 2024/01/01 22:06:06 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,28 @@ int	get_heredoc_fd(char *delimiter)
 	return (pipe_fd[0]);
 }
 
-int	handle_heredoc_first(t_parsing *ps, t_envtree *env, t_tree_node *pt)
+int	handle_heredoc_first(t_tree_node *pt, t_envtree *env)
 {
 	if (pt == NULL)
 		return (true);
 	if (pt->token_type == CMD)
-		return (handle_heredoc_redir(ps, env, pt->right));
-	if (!handle_heredoc_first(ps, env, pt->left))
+		return (handle_heredoc_redir(pt->right, env));
+	if (!handle_heredoc_first(pt->left, env))
 		return (false);
-	if (!handle_heredoc_first(ps, env, pt->right))
+	if (!handle_heredoc_first(pt->right, env))
 		return (false);
 	return (true);
 }
 
-int	handle_other_redirs(t_parsing *ps, t_envtree *env, t_tree_node *pt)
+int	handle_other_redirs(t_tree_node *pt, t_envtree *env)
 {
 	if (pt == NULL)
 		return (true);
 	if (pt->token_type == CMD)
-		return (handle_other_redir(ps, env, pt->right));
-	if (!handle_other_redirs(ps, env, pt->left))
+		return (handle_other_redir(pt->right, env));
+	if (!handle_other_redirs(pt->left, env))
 		return (false);
-	if (!handle_other_redirs(ps, env, pt->right))
+	if (!handle_other_redirs(pt->right, env))
 		return (false);
 	return (true);
 }

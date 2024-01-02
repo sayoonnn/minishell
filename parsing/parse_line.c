@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse_tree.h"
 
 int parse_line(char *line, t_parsing *parsing)
 {

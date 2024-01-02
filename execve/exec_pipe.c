@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execve.c                                           :+:      :+:    :+:   */
+/*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sayoon <sayoon@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 20:12:11 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/04 20:12:12 by sayoon           ###   ########.fr       */
+/*   Updated: 2024/01/01 21:31:55 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	find_fd(t_tree_node *node, int fd[2])
-{
-	if (node == NULL)
-		return ;
-	if (node->token_type == REDIRECTION_INFO)
-	{
-		fd[0] = node->fd[0];
-		fd[1] = node->fd[1];
-	}
-	find_fd(node->left, fd);
-	find_fd(node->right, fd);
-}
 
 static void	redirect_io(t_tree_node *node, int pipe_fd[2], int saved_fd[2])
 {
@@ -58,11 +45,11 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, \
 		exit_code = exec_builtin_pipe(argv[0], argv, env);
 		exit(exit_code);
 	}
-	else if (exec_bin(argv, env))
-		exit(EXIT_FAILURE);
+	exit_code = exec_bin(argv, env);
+	exit(exit_code);
 }
 
-static void	todo_parent(int pipe_fd[2], int n)
+static void	todo_parent(int pipe_fd[2], int n, pid_t pid, pid_t *lastpid)
 {
 	if (n != 0)
 	{
@@ -70,13 +57,18 @@ static void	todo_parent(int pipe_fd[2], int n)
 		dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
 	}
+	else
+		*lastpid = pid;
 }
 
-void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, int saved_fd[2])
+void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \
+						int saved_fd[2], pid_t *last_pid)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
 
+	if (!handle_other_redirs(node, env))
+		return ;
 	if (node->left->contents->head == NULL)
 		return ;
 	if (node->cmd_cnt != 0)
@@ -90,5 +82,5 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, int saved_fd[2])
 	if (pid == 0)
 		todo_chid(node, env, pipe_fd, saved_fd);
 	else
-		todo_parent(pipe_fd, node->cmd_cnt);
+		todo_parent(pipe_fd, node->cmd_cnt, pid, last_pid);
 }

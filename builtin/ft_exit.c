@@ -14,56 +14,94 @@
 
 static int	ft_isnumber(char *str)
 {
-	int	num_cnt;
-
-	num_cnt = 0;
+	if (*str == 0)
+		return (false);
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-' || *str == '+')
+		str++;
 	if (*str == 0)
 		return (false);
 	while (*str)
 	{
-		if (!ft_isdigit(*str))
+		if (!ft_isdigit(*str) && *str != ' ')
 			return (false);
 		str++;
 	}
 	return (true);
 }
 
-static int	get_status(int argc, char **argv)
+static int	ft_myatoi(const char *str, int *is_flowed)
 {
-	int			status;
+	int				sign;
+	int				i;
+	unsigned long	ret;
+	unsigned long	temp;
 
+	i = 0;
+	sign = 1;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-')
+		sign *= -1;
+	i += (str[i] == '+' || str[i] == '-');
+	ret = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		temp = ret * 10 + (str[i] - '0');
+		if (temp > LONG_MAX || ret > temp)
+		{
+			*is_flowed = true;
+			return (-1 + (sign < 0));
+		}
+		ret = temp;
+		i++;
+	}
+	return (ret * sign);
+}
+
+static int	get_status(int argc, char **argv, int *can_exit)
+{
+	int	status;
+	int	is_flowed;
+
+	is_flowed = false;
 	status = g_errcode;
 	if (argc >= 2)
 	{
-		if (!ft_isnumber(argv[1]))
+		status = ft_myatoi(argv[1], &is_flowed);
+		if (!ft_isnumber(argv[1]) || is_flowed)
 		{
-			ft_printf(2, "minishell: exit: %s: numeric argumet required\n", argv[1]);
-			status = 2;
+			ft_printf(2, "minishell: exit: %s: numeric argumet required\n", \
+			argv[1]);
+			status = 255;
 		}
 		else if (argc > 2)
 		{
 			ft_printf(2, "minishell: exit: too many arguments\n");
-			status = 255;
+			*can_exit = false;
+			status = 1;
 		}
-		else
-			status = ft_atoi(argv[1]);
 	}
-	return (status);
+	return ((unsigned char)status);
 }
 
 int	ft_exit(char **argv, int is_pipe)
 {
 	int		status;
-	int		is_errd;
+	int		can_exit;
 	int		i;
 
 	(void)is_pipe;
 	i = 0;
-	is_errd = false;
+	can_exit = true;
 	while (argv[i])
 		i++;
-	status = get_status(i, argv);
-	// if (!is_pipe)
-	// 	ft_putstr_fd("exit\n", STDERR_FILENO);
-	exit(status);
+	status = get_status(i, argv, &can_exit);
+	if (!is_pipe)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+	if (can_exit)
+		exit(status);
+	else
+		return (status);
 }
