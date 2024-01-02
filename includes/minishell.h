@@ -45,6 +45,7 @@ void		reset_io(int save[2]);
 int			is_builtin(char *cmd);
 void		exec_builtin(char *cmd, char *argv[], t_envtree *env);
 int			exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env);
+void		undo_setting(int saved_fd[2], pid_t last_pid, t_tree_node *node);
 
 // signal
 void		set_signal(void);
@@ -61,6 +62,7 @@ int			handle_heredoc_redir(t_tree_node *pt, t_envtree *env);
 int			handle_heredoc_first(t_tree_node *pt, t_envtree *env);
 int			make_output(char *filename, int io_fd[2], int opt);
 int			make_input(char *filename, int io_fd[2], int opt);
+void		close_heredoc(t_tree_node *node);
 
 // utils
 void		free_minishell_data(t_envtree *env, t_parsing *parsing);

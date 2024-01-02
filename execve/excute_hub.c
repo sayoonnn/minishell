@@ -22,27 +22,6 @@ void	sub_redir_exec_single(t_tree_node *node, t_envtree *env)
 	exec_single_cmd(node, env);
 }
 
-static void	reset_iofd(int saved_fd[2], pid_t last_pid)
-{
-	signal(SIGINT, SIG_IGN);
-	waitpid(last_pid, &g_errcode, 0);
-	while (wait(NULL) != -1)
-		;
-	if (WIFSIGNALED(g_errcode))
-	{
-		if (WTERMSIG(g_errcode) == SIGQUIT)
-			printf("Quit: 3");
-		printf("\n");
-		g_errcode = (128 + WTERMSIG(g_errcode));
-	}
-	else
-		g_errcode = WEXITSTATUS(g_errcode);
-	reset_io(saved_fd);
-	saved_fd[0] = -1;
-	saved_fd[1] = -1;
-	set_signal();
-}
-
 void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 {
 	static int		saved_fd[2] = {-1, -1};
@@ -67,7 +46,7 @@ void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 		exec_pipe_cmd(node->right, env, saved_fd, &last_pid);
 	}
 	if (n == 0)
-		reset_iofd(saved_fd, last_pid);
+		undo_setting(saved_fd, last_pid, node);
 }
 
 void	excute_hub(t_tree_node *root, t_envtree *env)

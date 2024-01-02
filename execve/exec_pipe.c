@@ -14,7 +14,6 @@
 
 static void	redirect_io(t_tree_node *node, int pipe_fd[2], int saved_fd[2])
 {
-	find_fd(node->right, node->fd);
 	if (node->cmd_cnt == 0)
 		dup2(saved_fd[1], STDOUT_FILENO);
 	else
@@ -56,7 +55,7 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, \
 	exit(exit_code);
 }
 
-static void	todo_parent(int pipe_fd[2], int n, pid_t pid, pid_t *lastpid)
+static void	todo_parent(int pipe_fd[2], int n)
 {
 	if (n != 0)
 	{
@@ -64,8 +63,6 @@ static void	todo_parent(int pipe_fd[2], int n, pid_t pid, pid_t *lastpid)
 		dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
 	}
-	else
-		*lastpid = pid;
 }
 
 void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \
@@ -76,6 +73,7 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \
 
 	if (!handle_other_redirs(node, env))
 		return ;
+	find_fd(node->right, node->fd);
 	if (node->left->contents->head == NULL)
 		return ;
 	if (node->cmd_cnt != 0)
@@ -89,5 +87,9 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \
 	if (pid == 0)
 		todo_chid(node, env, pipe_fd, saved_fd);
 	else
-		todo_parent(pipe_fd, node->cmd_cnt, pid, last_pid);
+	{
+		todo_parent(pipe_fd, node->cmd_cnt);
+		if (node->cmd_cnt== 0)
+			*last_pid = pid;
+	}
 }

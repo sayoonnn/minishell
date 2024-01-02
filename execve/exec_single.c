@@ -41,7 +41,6 @@ static void	todo_parent(char **argv, int save_fd[2])
 
 static void	change_fd(t_tree_node *node, int save_fd[2])
 {
-	find_fd(node->right, node->fd);
 	save_fd[0] = 0;
 	save_fd[1] = 1;
 	if (node->fd[0] != 0)
@@ -65,6 +64,7 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 	pid_t	pid;
 
 	argv = convert_word_lst_to_array(node->left->contents, env);
+	find_fd(node->right, node->fd);
 	if (*argv == NULL)
 		return ;
 	change_fd(node, save_fd);

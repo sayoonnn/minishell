@@ -62,3 +62,45 @@ void	find_fd(t_tree_node *node, int fd[2])
 	find_fd(node->left, fd);
 	find_fd(node->right, fd);
 }
+
+void	undo_setting(int saved_fd[2], pid_t last_pid, t_tree_node *node)
+{
+	signal(SIGINT, SIG_IGN);
+	waitpid(last_pid, &g_errcode, 0);
+	while (wait(NULL) != -1)
+		;
+	if (WIFSIGNALED(g_errcode))
+	{
+		if (WTERMSIG(g_errcode) == SIGQUIT)
+			printf("Quit: 3");
+		printf("\n");
+		g_errcode = (128 + WTERMSIG(g_errcode));
+	}
+	else
+		g_errcode = WEXITSTATUS(g_errcode);
+	reset_io(saved_fd);
+	saved_fd[0] = -1;
+	saved_fd[1] = -1;
+	set_signal();
+	close_heredoc(node);
+}
+
+void	close_heredoc(t_tree_node *node)
+{
+	if (node == NULL)
+		return ;
+	if (node->token_type == PIPE)
+	{
+		close_heredoc(node->left);
+		close_heredoc(node->right);
+
+	}
+	else if (node->token_type == CMD)
+	{
+		if (node->fd[0] != 0)
+			close(node->fd[0]);
+		if (node->fd[1] != 1)
+			close(node->fd[1]);
+	}
+	return ;
+}
