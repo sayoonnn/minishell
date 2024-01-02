@@ -55,7 +55,7 @@ char	*handle_dollar(char *cnt, t_envtree *env, size_t *idx)
 		return (NULL);
 	node = find_envnode(env->root, key);
 	free(key);
-	if (node != NULL)
+	if (node != NULL && node->value != NULL)
 		res = ft_strdup(node->value);
 	else
 		res = ft_strdup("");

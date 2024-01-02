@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 static int	find_start_idx(char *argv[], int *nflag)
 {

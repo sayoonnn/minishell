@@ -42,9 +42,10 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
+		g_errcode = 1;
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		rl_replace_line("", 1);
 		rl_redisplay();
 	}
 }

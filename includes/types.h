@@ -51,7 +51,7 @@ typedef struct s_list
 	t_node	*tail;
 }				t_list;
 
-typedef struct	s_envnode
+typedef struct s_envnode
 {
 	char				*key;
 	char				*value;
@@ -60,7 +60,7 @@ typedef struct	s_envnode
 	struct s_envnode	*right;
 }				t_envnode;
 
-typedef struct	s_envtree
+typedef struct s_envtree
 {
 	int			num_nodes;
 	t_envnode	*root;

@@ -51,7 +51,7 @@ static int	ft_myatoi(const char *str, int *is_flowed)
 		temp = ret * 10 + (str[i] - '0');
 		if (temp > LONG_MAX || ret > temp)
 		{
-			*is_flowed = true;
+			*is_flowed = true - (temp == (unsigned long)-LONG_MIN && sign < 0);
 			return (-1 + (sign < 0));
 		}
 		ret = temp;
@@ -83,7 +83,7 @@ static int	get_status(int argc, char **argv, int *can_exit)
 			status = 1;
 		}
 	}
-	return ((unsigned char)status);
+	return (status);
 }
 
 int	ft_exit(char **argv, int is_pipe)
@@ -97,9 +97,9 @@ int	ft_exit(char **argv, int is_pipe)
 	can_exit = true;
 	while (argv[i])
 		i++;
-	status = get_status(i, argv, &can_exit);
 	if (!is_pipe)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
+	status = get_status(i, argv, &can_exit);
 	if (can_exit)
 		exit(status);
 	else

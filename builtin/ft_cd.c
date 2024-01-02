@@ -44,7 +44,7 @@ int	ft_cd(char *arg[])
 	char	*cur;
 	int		status;
 
-	if (arg[1] == NULL)
+	if (arg[1] == NULL || *arg[1] == 0)
 		return (success);
 	status = success;
 	cur = getcwd(NULL, PATH_MAX);

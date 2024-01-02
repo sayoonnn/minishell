@@ -33,12 +33,6 @@
 # include "substitution.h"
 # include "types.h"
 
-// start
-void		startup_minishell(void);
-t_envtree	*init_envp(char *envp[]);
-char		**tree_2_envp(t_envtree *env);
-void		cut_tree(t_tree_node *root);
-
 // exec
 void		excute_hub(t_tree_node *root, t_envtree *env);
 void		exec_single_cmd(t_tree_node *node, t_envtree *env);
@@ -48,7 +42,6 @@ int			exec_bin(char **argv, t_envtree *env);
 char		*make_binpath(char *cmd, t_envnode *path_node);
 void		find_fd(t_tree_node *node, int fd[2]);
 void		reset_io(int save[2]);
-
 int			is_builtin(char *cmd);
 void		exec_builtin(char *cmd, char *argv[], t_envtree *env);
 int			exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env);
@@ -66,6 +59,15 @@ int			handle_other_redir(t_tree_node *pt, t_envtree *env);
 int			handle_other_redirs(t_tree_node *pt, t_envtree *env);
 int			handle_heredoc_redir(t_tree_node *pt, t_envtree *env);
 int			handle_heredoc_first(t_tree_node *pt, t_envtree *env);
-// void		handle_heredoc(char *file_name);
+int			make_output(char *filename, int io_fd[2], int opt);
+int			make_input(char *filename, int io_fd[2], int opt);
+
+// utils
+void		free_minishell_data(t_envtree *env, t_parsing *parsing);
+char		*get_input(void);
+void		startup_minishell(void);
+t_envtree	*init_envp(char *envp[]);
+char		**tree_2_envp(t_envtree *env);
+void		cut_tree(t_tree_node *root);
 
 #endif

@@ -69,7 +69,10 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 		return ;
 	change_fd(node, save_fd);
 	if (is_builtin(argv[0]))
+	{
 		exec_builtin(argv[0], argv, env);
+		reset_io(save_fd);
+	}
 	else
 	{
 		pid = fork();

@@ -25,7 +25,23 @@ void	startup_minishell(void)
 	while (read_bytes > 0)
 	{
 		write(1, &buffer, 1);
-		read_bytes = read(fd, &buffer, 1);	
+		read_bytes = read(fd, &buffer, 1);
 	}
 	close(fd);
+}
+
+void	free_minishell_data(t_envtree *env, t_parsing *parsing)
+{
+	clear_node(env->root);
+	free(env);
+	free_parsing(parsing);
+	free(parsing);
+}
+
+char	*get_input(void)
+{
+	if (g_errcode)
+		return (readline("\033[0;31m✘ \033[0\033[0;34mminishell$ \033[0m"));
+	else
+		return (readline("\033[0;34mminishell$ \033[0m"));
 }

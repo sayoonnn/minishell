@@ -74,7 +74,7 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \
 	pid_t	pid;
 	int		pipe_fd[2];
 
-	if (!handle_other_redirs(node->right, env))
+	if (!handle_other_redirs(node, env))
 		return ;
 	if (node->left->contents->head == NULL)
 		return ;
