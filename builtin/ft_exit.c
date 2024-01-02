@@ -92,7 +92,6 @@ int	ft_exit(char **argv, int is_pipe)
 	int		can_exit;
 	int		i;
 
-	(void)is_pipe;
 	i = 0;
 	can_exit = true;
 	while (argv[i])
