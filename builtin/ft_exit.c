@@ -98,7 +98,7 @@ int	ft_exit(char **argv, int is_pipe)
 	while (argv[i])
 		i++;
 	if (!is_pipe)
-		ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_printf(2, "exit\n");
 	status = get_status(i, argv, &can_exit);
 	if (can_exit)
 		exit(status);
