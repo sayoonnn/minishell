@@ -21,7 +21,6 @@ static void	redirect_io(t_tree_node *node, int pipe_fd[2], int saved_fd[2])
 	{
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], STDOUT_FILENO);
-		printf("aaaa\n");
 		close(pipe_fd[1]);
 	}
 	if (node->fd[0] == -1 || node->fd[1] == -1)

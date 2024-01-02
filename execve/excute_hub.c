@@ -61,7 +61,7 @@ void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 	}
 	else
 	{
-		node->right->cmd_cnt = n + 1;
+		node->left->cmd_cnt = n + 1;
 		exec_pipe_cmd(node->left, env, saved_fd, &last_pid);
 		node->right->cmd_cnt = n;
 		exec_pipe_cmd(node->right, env, saved_fd, &last_pid);
