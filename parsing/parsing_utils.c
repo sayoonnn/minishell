@@ -32,23 +32,3 @@ int	is_bracket(char ch)
 	return (ch == '(' || ch == ')' || ch == '{' || ch == '}'
 			|| ch == '[' || ch == ']');
 }
-
-// char	*make_word(char *cmd, size_t *idx, size_t len)
-// {
-// 	char	*res;
-// 	size_t	i;
-
-// 	if (cmd == NULL)
-// 		return (NULL);
-// 	res = (char *)malloc(sizeof(char) * (len + 1));
-// 	if (res == NULL)
-// 		return (NULL);
-// 	i = 0;
-// 	while (i < len)
-// 	{
-// 		res[i] = cmd[*idx - (len - i)];
-// 		i++;
-// 	}
-// 	res[i] = 0;
-// 	return (res);
-// }

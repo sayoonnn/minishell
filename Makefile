@@ -8,13 +8,16 @@ SRC		=	builtin/ft_cd.c builtin/ft_echo.c builtin/ft_env.c builtin/ft_exit.c\
 			\
 			parsing/parsing_init.c parsing/parsing_cleaner.c\
 			parsing/parse_line.c parsing/parsing_utils.c\
-			parsing/syntax_analyzer.c parsing/syntax_analyzer_utils.c\
+			parsing/syntax_analyzer.c parsing/syntax_analyzer2.c\
+			parsing/syntax_analyzer_utils.c\
 			parsing/syntax_error.c parsing/tokenizer.c parsing/tokenizer_utils.c\
 			\
 			utils/envp_utils.c utils/envtree_func.c utils/envtree_func2.c\
 			utils/reset_io.c utils/signal_handler.c utils/startup_minishell.c\
 			\
-			substitution/cmd_argv_analyzer.c substitution/dollar_handler.c substitution/meta_character_utils.c\
+			substitution/convert_word_lst_to_array.c substitution/ft_split_white.c\
+			substitution/quotes_remover.c substitution/word_interpreter_utils.c\
+			substitution/word_interpreter.c\
 			\
 			main.c
 
@@ -25,8 +28,8 @@ INC		= ./includes
 LIBFT	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra 
-#-g -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra -g 
+#-fsanitize=address
 
 all :
 	@make $(NAME) -j4

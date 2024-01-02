@@ -37,7 +37,7 @@ static char	**make_string_array(t_list *argv_lst, int argv_cnt)
 	return (argvs);
 }
 
-char	**convert_argv_lst_to_array(t_list *contents, t_envtree *env)
+char	**convert_word_lst_to_array(t_list *contents, t_envtree *env)
 {
 	char	**argvs;
 	int		argv_cnt;

@@ -50,13 +50,13 @@ char	*handle_dollar(char *cnt, t_envtree *env, size_t *idx)
 	while (cnt[tmp_idx] != 0 && cnt[tmp_idx] != '$'
 		&& !is_quote(cnt[tmp_idx]) && !is_bracket(cnt[tmp_idx]))
 		tmp_idx++;
-	key = ft_substr(cnt + *idx, *idx, tmp_idx - *idx);
+	key = ft_substr(cnt, *idx, tmp_idx - *idx);
 	if (key == NULL)
 		return (NULL);
 	node = find_envnode(env->root, key);
 	free(key);
 	if (node != NULL)
-		res = node->value;
+		res = ft_strdup(node->value);
 	else
 		res = ft_strdup("");
 	if (res == NULL)
@@ -95,7 +95,6 @@ int	substitute_dollar(t_list *res, char *content, t_envtree *env, char **ref)
 {
 	size_t	idx;
 	size_t	s;
-	char	*sliced;
 
 	if (*ref == NULL)
 		return (1);

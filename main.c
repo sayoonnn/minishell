@@ -14,9 +14,10 @@
 
 int	g_errcode = 0;
 
-void	free_minishell_data(t_envnode *env, t_parsing *parsing)
+void	free_minishell_data(t_envtree *env, t_parsing *parsing)
 {
-	clear_node(env);
+	clear_node(env->root);
+	free(env);
 	free_parsing(parsing);
 	free(parsing);
 }
@@ -40,12 +41,11 @@ int main(void)
 			break ;
 		if (!parse_line(line, parsing))
 			continue ;
-		excute_hub(parsing, env);
+		excute_hub(parsing->root, env);
 		clean_parsing_tools(parsing);
 		free(line);
 	}
 	set_child_signal();
-	free_minishell_data(env->root, parsing);
-	free(env);
+	free_minishell_data(env, parsing);
 	exit(g_errcode);
 }

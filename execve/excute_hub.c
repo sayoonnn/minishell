@@ -39,28 +39,12 @@ static void	reset_iofd(int saved_fd[2], pid_t last_pid)
 		g_errcode = WEXITSTATUS(g_errcode);
 	dup2(saved_fd[0], STDIN_FILENO);
 	dup2(saved_fd[1], STDOUT_FILENO);
+	close(saved_fd[0]);
+	close(saved_fd[1]);
 	saved_fd[0] = -1;
 	saved_fd[1] = -1;
 	set_signal();
 }
-
-/*
-	t_parsing 구조체의 word_lst 리스트 변수 안에 bash 체제에 맞춘 환경변수 치환 결과를 담는 대신,
-	치환 결과를 리스트로 반환하는 함수로 변경했기 때문에 아래 함수의 57번째 줄 제외하고 나머지 내용 삭제 예정
-*/
-
-// static void	exchange_lst(t_parsing *ps, t_tree_node *node, \
-// 						t_envtree *env, int n)
-// {
-// 	if (node == NULL)
-// 		return ;
-// 	node->cmd_cnt = n;
-// 	substitute_words(ps, env, node->left->contents);
-// 	ft_lstclear(node->left->contents);
-// 	node->left->contents->head = ps->word_lst->head;
-// 	ps->word_lst->head = NULL;
-// 	ps->word_lst->tail = NULL;
-// }
 
 void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 {

@@ -12,16 +12,6 @@
 
 #include "substitution.h"
 
-static void	free_perfectly_split(char **words)
-{
-	size_t	i;
-
-	i = 0;
-	while (words[i])
-		free(words[i++]);
-	free(words);
-}
-
 static void	check_quote_flag(char const *s, size_t *idx, int *flag, char *quote)
 {
 	if (is_quote(s[*idx]) && !(*flag))

@@ -21,7 +21,7 @@ static void	todo_child(char *argv[], t_envtree *env)
 	exit(ret);
 }
 
-static void	todo_parent(void)
+static void	todo_parent(char **argv, int save_fd[2])
 {
 	signal(SIGINT, SIG_IGN);
 	wait(&g_errcode);
@@ -35,6 +35,8 @@ static void	todo_parent(void)
 	else
 		g_errcode = WEXITSTATUS(g_errcode);
 	set_signal();
+	free_arr(argv);
+	reset_io(save_fd);
 }
 
 static void	change_fd(t_tree_node *node, int save_fd[2])
@@ -44,11 +46,13 @@ static void	change_fd(t_tree_node *node, int save_fd[2])
 	{
 		save_fd[0] = dup(STDIN_FILENO);
 		dup2(node->fd[0], STDIN_FILENO);
+		close(node->fd[0]);
 	}
 	if (node->fd[1] != 1)
 	{
 		save_fd[1] = dup(STDOUT_FILENO);
 		dup2(node->fd[1], STDOUT_FILENO);
+		close(node->fd[1]);
 	}
 }
 
@@ -58,7 +62,7 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 	char	**argv;
 	pid_t	pid;
 
-	argv = convert_word_lst_to_array(node->contents);
+	argv = convert_word_lst_to_array(node->left->contents, env);
 	if (*argv == NULL)
 		return ;
 	change_fd(node, save_fd);
@@ -72,8 +76,6 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 		else if (pid == 0)
 			todo_child(argv, env);
 		else
-			todo_parent();
+			todo_parent(argv, save_fd);
 	}
-	free_arr(argv);
-	reset_io(save_fd);
 }

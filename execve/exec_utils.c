@@ -57,9 +57,17 @@ void	find_fd(t_tree_node *node, int fd[2])
 	if (node->token_type == REDIRECTION_INFO)
 	{
 		if (node->fd[0] != 0)
+		{
+			if (fd[0] != 0)
+				close(fd[0]);
 			fd[0] = node->fd[0];
+		}
 		if (node->fd[1] != 1)
+		{
+			if (fd[1] != 1)
+				close(fd[1]);
 			fd[1] = node->fd[1];
+		}
 	}
 	find_fd(node->left, fd);
 	find_fd(node->right, fd);

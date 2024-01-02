@@ -28,6 +28,5 @@ int parse_line(char *line, t_parsing *parsing)
 		clean_parsing_tools(parsing);
 		return (false);
 	}
-	parsing->detach = 0;
 	return (true);
 }
