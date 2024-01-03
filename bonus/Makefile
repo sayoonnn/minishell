@@ -42,7 +42,7 @@ $(LIBFT):
 	@make -C libft
 	@echo LIBFT DONE ✅
 
-objs/%.o : %.c | objs
+%.o : %.c
 	@$(CC) $(CFLAGS) -c $< -o $@ -I $(INC)
 
 clean:

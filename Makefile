@@ -1,59 +1,109 @@
+
 NAME	=	minishell
-SRC		=	builtin/ft_cd.c builtin/ft_echo.c builtin/ft_env.c builtin/ft_exit.c\
-			builtin/ft_export.c builtin/ft_export_utils.c builtin/ft_pwd.c builtin/ft_unset.c\
-			\
-			execve/exec_single.c execve/excute_hub.c execve/exec_bin.c execve/exec_utils.c\
-			execve/exec_builtin.c execve/heredoc.c execve/redirection.c execve/exec_redir.c\
-			execve/exec_pipe.c\
-			\
-			parsing/parsing_init.c parsing/parsing_cleaner.c\
-			parsing/parse_line.c parsing/parsing_utils.c\
-			parsing/syntax_analyzer.c parsing/syntax_analyzer2.c\
-			parsing/syntax_analyzer_utils.c\
-			parsing/syntax_error.c parsing/tokenizer.c parsing/tokenizer_utils.c\
-			\
-			utils/envp_utils.c utils/envtree_func.c utils/envtree_func2.c\
-			utils/reset_io.c utils/signal_handler.c utils/minishell_utils.c\
-			\
-			substitution/convert_word_lst_to_array.c substitution/ft_split_white.c\
-			substitution/quotes_remover.c substitution/word_interpreter_utils.c\
-			substitution/word_interpreter.c\
-			\
-			main.c
 
-OBJ		=	$(SRC:.c=.o)
+BUILTIN	=	ft_cd.c\
+			ft_echo.c\
+			ft_env.c\
+			ft_exit.c\
+			ft_export.c\
+			ft_export_utils.c\
+			ft_pwd.c\
+			ft_unset.c
 
-INC		= ./includes
+EXECVE	=	exec_single.c\
+			excute_hub.c\
+			exec_bin.c\
+			exec_utils.c\
+			exec_builtin.c\
+			exec_pipe.c\
+			exec_redir.c\
+			heredoc.c\
+			redirection.c
 
-LIBFT	= libft/libft.a
+PARSING	=	parsing_init.c\
+			parsing_cleaner.c\
+			parse_line.c\
+			parsing_utils.c\
+			syntax_analyzer.c\
+			syntax_analyzer2.c\
+			syntax_analyzer_utils.c\
+			syntax_error.c\
+			tokenizer.c\
+			tokenizer_utils.c
+
+UTILS	=	envp_utils.c\
+			envtree_func.c\
+			envtree_func2.c\
+			reset_io.c\
+			signal_handler.c\
+			minishell_utils.c
+
+SUBS	=	convert_word_lst_to_array.c\
+			ft_split_white.c\
+			quotes_remover.c\
+			word_interpreter_utils.c\
+			word_interpreter.c
+
+SRC		=	main.c\
+			$(BUILTIN)\
+			$(EXECVE)\
+			$(PARSING)\
+			$(UTILS)\
+			$(SUBS)
+
+OBJDIR	=	.objs
+OBJ		=	$(SRC:%.c=$(OBJDIR)/%.o)
+
+DIR		=	mandatory
+
+vpath %.c	$(addprefix $(DIR), /.\
+			$(addprefix /builtin, /.)\
+			$(addprefix /execve, /.)\
+			$(addprefix /parsing, /.)\
+			$(addprefix /substitution, /.)\
+			$(addprefix /utils, /.))
+
+INC		= $(DIR)/includes
+
+LIBFT	= libft
+LIBFTA	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra 
-#-g -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra
+
+ifdef BONUS
+	DIR	= bonus
+endif
 
 all :
-	@make $(NAME) -j4
+	@make $(NAME) -j8
 
-$(NAME): $(OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $@ -lreadline
+bonus :
+	@make BONUS=1 all
+
+$(NAME): $(OBJ) $(LIBFTA)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFTA) -o $@ -lreadline
 	@echo $(NAME) DONE ✅ 
 
-$(LIBFT):
-	@make -C libft
+$(LIBFTA):
+	@make -C $(LIBFT)
 	@echo LIBFT DONE ✅
 
-%.o : %.c
-	@$(CC) $(CFLAGS) -c $< -o $@ -I $(INC)
+$(OBJDIR)/%.o: %.c | $(OBJDIR)
+	@$(CC) $(CFLAGS) -I $(INC) -c $< -o $@
+
+$(OBJDIR):
+	@mkdir $(OBJDIR)
 
 clean:
-	@make -C libft clean
-	@rm -f $(OBJ)
+	@make -C $(LIBFT) clean
+	@rm -rf $(OBJDIR)
 	@echo CLEAN DONE ✅
 
 fclean:
 	@make clean
-	@make -C libft fclean
-	@rm -f $(NAME)
+	@make -C $(LIBFT) fclean
+	@rm -f $(NAME) $(BONUS)
 	@echo FCLEAN DONE ✅
 
 re: 

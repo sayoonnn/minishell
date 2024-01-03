@@ -18,7 +18,7 @@ void	startup_minishell(void)
 	char	buffer;
 	int		read_bytes;
 
-	fd = open("mandatory/utils/startup.txt", O_RDONLY);
+	fd = open("./utils/startup.txt", O_RDONLY);
 	if (fd < 0)
 		exit(1);
 	read_bytes = read(fd, &buffer, 1);
