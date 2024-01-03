@@ -89,7 +89,7 @@ void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \
 	else
 	{
 		todo_parent(pipe_fd, node->cmd_cnt);
-		if (node->cmd_cnt== 0)
+		if (node->cmd_cnt == 0)
 			*last_pid = pid;
 	}
 }

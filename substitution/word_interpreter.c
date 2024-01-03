@@ -58,7 +58,7 @@ char	*handle_dollar(char *cont, t_envtree *env, size_t *idx, char *quote)
 	key = ft_substr(cont, *idx, tmp - *idx);
 	node = find_envnode(env->root, key);
 	free(key);
-	if (node != NULL)
+	if (node != NULL && node->value != NULL)
 		res = ft_strdup(node->value);
 	else
 		res = ft_strdup("");
@@ -79,14 +79,6 @@ int	ft_strjoin_with_value(char **refine, char *value)
 		return (1);
 	*refine = res;
 	return (0);
-}
-
-void	 update_quote_info(char ch, char *quote)
-{
-	if (is_quote(ch) && *quote == 0)
-		*quote = ch;
-	else if (is_quote(ch) && *quote == ch)
-		*quote = 0;
 }
 
 int	substitute_dollar(char *content, t_envtree *env, char **ref)

@@ -27,14 +27,9 @@ int	ft_cd(char *arg[])
 	cur = getcwd(NULL, PATH_MAX);
 	if (!cur)
 		exit(1);
-	// if (ft_strlen(arg[1]) > PATH_MAX)
-	// {
-	// 	ft_printf(2, "minishell: cd: %s: File name too long\n", arg[1]);
-	// 	status = fail;
-	// }
 	else if (chdir(arg[1]) < 0)
 	{
-		ft_printf(2, "minishell: ");
+		ft_printf(2, "minishell: cd: ");
 		perror(arg[1]);
 		status = fail;
 	}

@@ -45,3 +45,11 @@ int	ft_strjoin_in_depend(char **s1, char *content, size_t *s, size_t *idx)
 	*s1 = res;
 	return (0);
 }
+
+void	update_quote_info(char ch, char *quote)
+{
+	if (is_quote(ch) && *quote == 0)
+		*quote = ch;
+	else if (is_quote(ch) && *quote == ch)
+		*quote = 0;
+}

@@ -14,7 +14,8 @@
 
 int	print_syntax_token_error(char *content)
 {
-	ft_printf(2, "minishell: syntax error near unexpected token `%s'\n", content);
+	ft_printf(2, "minishell: syntax error near unexpected token `%s'\n", \
+	content);
 	g_errcode = CODE_SYNTAX_ERROR;
 	return (CODE_SYNTAX_ERROR);
 }

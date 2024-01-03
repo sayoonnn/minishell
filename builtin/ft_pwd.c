@@ -21,7 +21,11 @@ int	ft_pwd(void)
 	char	path[PATH_MAX];
 
 	if (!getcwd(path, sizeof(path)))
+	{
+		ft_printf(2, "minishell: pwd: ");
+		perror("");
 		return (1);
+	}
 	printf("%s\n", path);
 	return (0);
 }

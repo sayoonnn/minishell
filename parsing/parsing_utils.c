@@ -29,6 +29,6 @@ int	is_operator(char ch)
 
 int	is_bracket(char ch)
 {
-	return (ch == '(' || ch == ')' || ch == '{' || ch == '}'
+	return (ch == '(' || ch == ')' || ch == '{' || ch == '}'\
 			|| ch == '[' || ch == ']');
 }

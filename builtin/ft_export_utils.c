@@ -49,10 +49,7 @@ void	check_n_add(char *key, char *value, t_envtree *env)
 	if (!value)
 		add_env(env, make_envnode(key, NULL));
 	else if (*value == '+')
-	{
-		value += 2;
-		add_value(env, key, value + 1);
-	}
+		add_value(env, key, value + 2);
 	else
 		add_env(env, make_envnode(key, value + 1));
 }
@@ -79,5 +76,3 @@ int	check_is_valid(char *key)
 	}
 	return (true);
 }
-
-

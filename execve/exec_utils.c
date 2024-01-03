@@ -93,7 +93,6 @@ void	close_heredoc(t_tree_node *node)
 	{
 		close_heredoc(node->left);
 		close_heredoc(node->right);
-
 	}
 	else if (node->token_type == CMD)
 	{

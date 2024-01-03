@@ -33,7 +33,7 @@ int	insert_pipeline(t_tree_node **root, t_deque *tokens, t_parsing *parsing)
 	return (0);
 }
 
-int	insert_redirection_list(t_tree_node **root, t_deque *tokens, t_parsing *parsing)
+int	insert_redirection_list(t_tree_node **root, t_deque *tokens, t_parsing *ps)
 {
 	t_tree_node	*rd;
 	t_tree_node	*tmp;
@@ -45,7 +45,7 @@ int	insert_redirection_list(t_tree_node **root, t_deque *tokens, t_parsing *pars
 	if (*root == NULL
 		|| ((*root)->token_type == PIPE && (*root)->right == NULL))
 	{
-		if (insert_cmd_info_token(root, parsing))
+		if (insert_cmd_info_token(root, ps))
 			return (1);
 	}
 	tmp = *root;
@@ -89,20 +89,20 @@ int	check_word_syntax_error(t_tree_node **root, t_parsing *parsing)
 	return (connect_cmd_argv_content(root, parsing));
 }
 
-int	analyze_syntax(t_parsing *parsing)
+int	analyze_syntax(t_parsing *ps)
 {
 	int		token_type;
 	int		check;
 
-	while (!deque_empty(parsing->tokens))
+	while (!deque_empty(ps->tokens))
 	{
-		token_type = deque_front(parsing->tokens);
+		token_type = deque_front(ps->tokens);
 		if (token_type == CMD || token_type == ARGV)
-			check = check_word_syntax_error(&parsing->root, parsing);
+			check = check_word_syntax_error(&ps->root, ps);
 		else if (token_type == REDIRECTION)
-			check = insert_redirection_list(&parsing->root, parsing->tokens, parsing);
+			check = insert_redirection_list(&ps->root, ps->tokens, ps);
 		else if (token_type == PIPE)
-			check = insert_pipeline(&parsing->root, parsing->tokens, parsing);
+			check = insert_pipeline(&ps->root, ps->tokens, ps);
 		if (check)
 			return (check);
 	}

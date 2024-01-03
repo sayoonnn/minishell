@@ -12,9 +12,9 @@
 
 #include "parse_tree.h"
 
-int parse_line(char *line, t_parsing *parsing)
+int	parse_line(char *line, t_parsing *parsing)
 {
-	int			flag;
+	int	flag;
 
 	if (*line == 0)
 		return (false);

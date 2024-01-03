@@ -72,7 +72,7 @@ static int	get_status(int argc, char **argv, int *can_exit)
 		status = ft_myatoi(argv[1], &is_flowed);
 		if (!ft_isnumber(argv[1]) || is_flowed)
 		{
-			ft_printf(2, "minishell: exit: %s: numeric argumet required\n", \
+			ft_printf(2, "minishell: exit: %s: numeric argument required\n", \
 			argv[1]);
 			status = 255;
 		}
