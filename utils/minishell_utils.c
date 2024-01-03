@@ -40,8 +40,9 @@ void	free_minishell_data(t_envtree *env, t_parsing *parsing)
 
 char	*get_input(void)
 {
-	if (g_errcode)
-		return (readline("\033[0;31m✘ \033[0\033[0;34mminishell$ \033[0m"));
-	else
-		return (readline("\033[0;34mminishell$ \033[0m"));
+	// if (g_errcode)
+	// 	return (readline("\033[0;31m✘ \033[0\033[0;34mminishell$ \033[0m"));
+	// else
+	// 	return (readline("\033[0;34mminishell$ \033[0m"));
+	return (readline("$> "));
 }

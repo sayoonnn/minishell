@@ -18,7 +18,10 @@ int	open_in_file(char *file_name)
 
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
+	{
+		ft_printf(2, "minishell: ");
 		perror(file_name);
+	}
 	return (fd);
 }
 
@@ -28,7 +31,10 @@ int	open_out_file(char *file_name, int opt)
 
 	fd = open(file_name, opt, 0644);
 	if (fd < 0)
+	{
+		ft_printf(2, "minishell: ");
 		perror(file_name);
+	}
 	return (fd);
 }
 
