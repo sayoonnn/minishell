@@ -37,7 +37,7 @@ void		free_parsing(t_parsing *parsing);
 int			is_white(char ch);
 int			is_quote(char ch);
 int			is_operator(char ch);
-int			is_bracket(char ch);
+int			is_brack(char ch);
 int			check_rquote(char *cmd, size_t *idx, size_t *new_len);
 
 int			select_parse_tree_token_type(int token_type);

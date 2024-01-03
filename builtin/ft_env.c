@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "built_in_func.h"
 
 static void	print_envnode(t_envnode *tree)
 {

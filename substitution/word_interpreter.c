@@ -3,134 +3,119 @@
 /*                                                        :::      ::::::::   */
 /*   word_interpreter.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 21:04:50 by devpark           #+#    #+#             */
-/*   Updated: 2024/01/01 21:04:51 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/03 15:00:59 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "substitution.h"
 
-char	*handle_dollar_special(char *content, size_t *idx)
+char	*handle_dollar_special(char *content, size_t *idx, char *quote)
 {
 	char	*res;
 
 	res = NULL;
-	if (content[*idx] == 0 || is_bracket(content[*idx]))
-		res = ft_strdup("$");
-	else if (content[*idx] == '$' || ft_isdigit(content[*idx]))
+	if (content[*idx] == '?')
+	{
+		(*idx)++;
+		res = ft_itoa(g_errcode);
+	}
+	else if (ft_isdigit(content[*idx]))
 	{
 		(*idx)++;
 		res = ft_strdup("");
 	}
 	else if (is_quote(content[*idx]))
-		res = ft_strdup("");
-	else if (content[*idx] == '?')
 	{
-		(*idx)++;
-		res = ft_itoa(g_errcode);
+		if (*quote)
+			res = ft_strdup("$");
+		else
+			res = ft_strdup("");
 	}
+	else if (content[*idx] != '_' && !ft_isalpha(content[*idx]))
+		res = ft_strdup("$");
 	if (res == NULL)
 		return (NULL);
 	return (res);
 }
 
-char	*handle_dollar(char *cnt, t_envtree *env, size_t *idx)
+char	*handle_dollar(char *cont, t_envtree *env, size_t *idx, char *quote)
 {
 	char		*res;
+	size_t		tmp;
 	char		*key;
-	size_t		tmp_idx;
 	t_envnode	*node;
 
-	tmp_idx = ++(*idx);
-	if (is_quote(cnt[tmp_idx]) || cnt[tmp_idx] == 0 || ft_isdigit(cnt[tmp_idx])
-		|| cnt[tmp_idx] == '?' || cnt[tmp_idx] == '$' || is_bracket(cnt[tmp_idx]))
-		return (handle_dollar_special(cnt, idx));
-	while (cnt[tmp_idx] != 0 && cnt[tmp_idx] != '$'
-		&& !is_quote(cnt[tmp_idx]) && !is_bracket(cnt[tmp_idx]))
-		tmp_idx++;
-	key = ft_substr(cnt, *idx, tmp_idx - *idx);
-	if (key == NULL)
-		return (NULL);
+	res = NULL;
+	tmp = ++(*idx);
+	if (cont[tmp] == '?' || is_quote(cont[tmp]) || ft_isdigit(cont[tmp])
+		|| (cont[tmp] != '_' && !ft_isalpha(cont[tmp])))
+		return (handle_dollar_special(cont, idx, quote));
+	while (cont[tmp] == '_' || ft_isalnum(cont[tmp]))
+		tmp++;
+	key = ft_substr(cont, *idx, tmp - *idx);
 	node = find_envnode(env->root, key);
 	free(key);
-	if (node != NULL && node->value != NULL)
+	if (node != NULL)
 		res = ft_strdup(node->value);
 	else
 		res = ft_strdup("");
-	if (res == NULL)
-		return (NULL);
-	*idx = tmp_idx;
+	*idx = tmp;
 	return (res);
 }
 
-int	refine_content(char *content, t_envtree *env, char **refine, size_t *idx)
+int	ft_strjoin_with_value(char **refine, char *value)
 {
 	char	*res;
-	char	*value;
-	size_t	s;
 
-	s = *idx;
-	value = handle_dollar(content, env, idx);
 	if (value == NULL)
-	{
-		free(*refine);
 		return (1);
-	}
 	res = ft_strjoin(*refine, value);
-	if (res == NULL)
-	{
-		free(*refine);
-		free(value);
-		return (1);
-	}
 	free(*refine);
 	free(value);
+	if (res == NULL)
+		return (1);
 	*refine = res;
 	return (0);
 }
 
-static void	is_single(char ch, int *single_flag)
+void	 update_quote_info(char ch, char *quote)
 {
-	if (ch == '\'')
-	{
-		if (*single_flag)
-			*single_flag = 0;
-		else
-			*single_flag = 1;
-	}
+	if (is_quote(ch) && *quote == 0)
+		*quote = ch;
+	else if (is_quote(ch) && *quote == ch)
+		*quote = 0;
 }
 
-int	substitute_dollar(t_list *res, char *content, t_envtree *env, char **ref)
+int	substitute_dollar(char *content, t_envtree *env, char **ref)
 {
+	size_t	start;
 	size_t	idx;
-	size_t	s;
-	int		single_flag;
+	char	quote;
+	char	*value;
 
-	if (*ref == NULL)
-		return (1);
+	start = 0;
 	idx = 0;
-	s = 0;
-	single_flag = 0;
+	quote = 0;
 	while (content[idx])
 	{
-		is_single(content[idx], &single_flag);
-		if (content[idx] == '$' && !single_flag)
+		update_quote_info(content[idx], &quote);
+		if (content[idx] == '$' && quote != '\'')
 		{
-			if (ft_strjoin_in_depend(ref, content, &s, &idx))
+			if (ft_strjoin_in_depend(ref, content, &start, &idx))
 				return (1);
-			idx = s;
-			if (refine_content(content, env, ref, &idx))
+			start = idx;
+			value = handle_dollar(content, env, &idx, &quote);
+			if (ft_strjoin_with_value(ref, value))
 				return (1);
-			s = idx;
+			start = idx;
 			continue ;
 		}
 		idx++;
 	}
-	if (ft_strjoin_in_depend(ref, content, &s, &idx))
-		return (1);
-	return (remove_all_quotes(res, *ref));
+	return (ft_strjoin_in_depend(ref, content, &start, &idx));
 }
 
 t_list	*interprete_words(t_list *contents, t_envtree *env)
@@ -146,8 +131,16 @@ t_list	*interprete_words(t_list *contents, t_envtree *env)
 	while (ptr != NULL)
 	{
 		refined = ft_strdup("");
-		if (substitute_dollar(res, ptr->content, env, &refined))
+		if (refined == NULL)
 			return (NULL);
+		if (substitute_dollar(ptr->content, env, &refined)
+			|| remove_all_quotes(res, &refined))
+		{
+			free(refined);
+			ft_lstclear(res);
+			free(res);
+			return (NULL);
+		}
 		ptr = ptr->next;
 	}
 	return (res);

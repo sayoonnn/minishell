@@ -1,6 +1,6 @@
 NAME	=	minishell
 SRC		=	builtin/ft_cd.c builtin/ft_echo.c builtin/ft_env.c builtin/ft_exit.c\
-			builtin/ft_export.c builtin/ft_pwd.c builtin/ft_unset.c\
+			builtin/ft_export.c builtin/ft_export_utils.c builtin/ft_pwd.c builtin/ft_unset.c\
 			\
 			execve/exec_single.c execve/excute_hub.c execve/exec_bin.c execve/exec_utils.c\
 			execve/exec_builtin.c execve/heredoc.c execve/redirection.c execve/exec_redir.c\

@@ -11,74 +11,37 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env_tree.h"
 
-static void	print_envnode(t_envnode *tree)
+static char	*get_key(char *str)
 {
-	if (tree == NULL)
-		return ;
-	print_envnode(tree->left);
-	if (tree->value == NULL)
-		printf("declare -x %s\n", tree->key);
-	else
-		printf("declare -x %s=\"%s\"\n", tree->key, tree->value);
-	print_envnode(tree->right);
-}
-
-static void	add_value(t_envtree *env, char *key, char *value)
-{
-	t_envnode	*node;
-	char		*tmp;
-
-	node = find_envnode(env->root, key);
-	if (!node)
-		add_env(env, make_envnode(key, value));
-	else
-	{
-		tmp = node->value;
-		node->value = ft_strjoin(node->value, value);
-		free(tmp);
-		tmp = node->forarr;
-		node->forarr = ft_strjoin(node->forarr, value);
-		free(tmp);
-	}
-}
-
-static void	check_n_add(char *key, char *value, t_envtree *env)
-{
-	if (!value)
-		add_env(env, make_envnode(key, NULL));
-	else if (*(value - 1) == '+')
-	{
-		*(value - 1) = 0;
-		add_value(env, key, value + 1);
-	}
-	else
-	{
-		*value = 0;
-		add_env(env, make_envnode(key, value + 1));
-	}
-}
-
-static int	check_is_valid(char *key)
-{
-	int	i;
+	size_t	i;
+	char	*tmp;
 
 	i = 0;
-	while (key[i] && key[i] != '=' && key[i] != '+')
-	{
-		if (i == 0 && (!ft_isalpha(key[i]) && key[i] != '_'))
-			return (false);
-		if (key[i] == '_')
-		{
-			i++;
-			continue ;
-		}
-		if (!ft_isalnum(key[i]))
-			return (false);
+	while (str[i] && str[i] != '+' && str[i] != '=')
 		i++;
-	}
-	return (true);
+	if (i == 0)
+		return (NULL);
+	tmp = ft_substr(str, 0, i);
+	if (!tmp)
+		exit(1);
+	return (tmp);
+}
+
+static char	*get_value(char *str)
+{
+	char	*tmp;
+	char	*ret;
+
+	tmp = ft_strchr(str, '+');
+	if (!tmp)
+		tmp = ft_strchr(str, '=');
+	if (!tmp)
+		return (NULL);
+	ret = ft_substr(tmp, 0, ft_strlen(tmp));
+	if (!ret)
+		exit(1);
+	return (ret);
 }
 
 int	ft_export(char *arg[], t_envtree *env)
@@ -90,22 +53,22 @@ int	ft_export(char *arg[], t_envtree *env)
 
 	ret = success;
 	if (arg[1] == NULL)
-	{
-		print_envnode(env->root);
-		return (ret);
-	}
+		return (print_exports(env->root));
 	i = 0;
 	while (arg[++i])
 	{
-		key = arg[i];
-		value = ft_strchr(arg[i], '=');
+		key = get_key(arg[i]);
+		value = get_value(arg[i]);
 		if (!check_is_valid(key))
 		{
-			ft_printf(2, "minishell: export: `%s': %s\n", key, ERR_IDENIFIER);
+			ft_printf(2, "minishell: export: `%s': %s\n", arg[i], ERR_IDENIFIER);
 			ret = fail;
 			continue ;
 		}
 		check_n_add(key, value, env);
+		free(key);
+		if (value)
+			free(value);
 	}
 	return (ret);
 }

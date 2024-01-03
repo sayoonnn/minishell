@@ -21,7 +21,7 @@ extern int	g_errcode;
 char	**ft_split_white(char const *s);
 void	free_perfectly_split(char **strs);
 int		ft_strjoin_in_depend(char **s1, char *content, size_t *s, size_t *idx);
-int		remove_all_quotes(t_list *res, char *ref);
+int		remove_all_quotes(t_list *res, char **ref);
 t_list	*interprete_words(t_list *contents, t_envtree *env);
 char	**convert_word_lst_to_array(t_list *contents, t_envtree *env);
 

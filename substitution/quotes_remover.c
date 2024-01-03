@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_remover.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 20:26:18 by devpark           #+#    #+#             */
-/*   Updated: 2024/01/01 21:04:26 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/03 14:06:13 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ char	*remove_quote(char *str)
 	return (res);
 }
 
-int	remove_all_quotes(t_list *res, char *ref)
+int	remove_all_quotes(t_list *res, char **ref)
 {
 	char	**strs;
 	char	*terminating;
 	size_t	idx;
 	t_node	*new;
 
-	strs = ft_split_white(ref);
+	strs = ft_split_white(*ref);
 	if (strs == NULL)
 		return (1);
 	idx = 0;
@@ -79,5 +79,6 @@ int	remove_all_quotes(t_list *res, char *ref)
 		ft_lstadd_back(res, new);
 	}
 	free_perfectly_split(strs);
+	free(*ref);
 	return (0);
 }
