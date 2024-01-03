@@ -25,6 +25,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <termios.h>
+# include <dirent.h>
 # include "libft.h"
 # include "env_tree.h"
 # include "built_in_func.h"
