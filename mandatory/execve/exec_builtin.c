@@ -38,6 +38,7 @@ void	exec_builtin(char *cmd, char *argv[], t_envtree *env)
 		g_errcode = ft_pwd();
 	if (!ft_strcmp(cmd, "unset"))
 		g_errcode = ft_unset(env, argv);
+	free_perfectly_split(argv);
 }
 
 int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)
@@ -58,5 +59,6 @@ int	exec_builtin_pipe(char *cmd, char *argv[], t_envtree *env)
 		ret = ft_pwd();
 	if (!ft_strcmp(cmd, "unset"))
 		ret = ft_unset(env, argv);
+	free_perfectly_split(argv);
 	return (ret);
 }

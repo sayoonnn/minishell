@@ -54,14 +54,8 @@ SRC		=	main.c\
 OBJDIR	=	.objs
 OBJ		=	$(SRC:%.c=$(OBJDIR)/%.o)
 
-DIR		=	mandatory
-
-vpath %.c	$(addprefix $(DIR), /.\
-			$(addprefix /builtin, /.)\
-			$(addprefix /execve, /.)\
-			$(addprefix /parsing, /.)\
-			$(addprefix /substitution, /.)\
-			$(addprefix /utils, /.))
+MAND	=	mandatory
+BONUS	=	bonus
 
 INC		= $(DIR)/includes
 
@@ -71,15 +65,24 @@ LIBFTA	= libft/libft.a
 CC		= cc
 CFLAGS	= -Wall -Werror -Wextra
 
-ifdef BONUS
-	DIR	= bonus
+ifdef IS_BONUS
+	DIR	= $(BONUS)
+else
+	DIR = $(MAND)
 endif
+
+vpath %.c	$(addprefix $(DIR), /.\
+			$(addprefix /builtin, /.)\
+			$(addprefix /execve, /.)\
+			$(addprefix /parsing, /.)\
+			$(addprefix /substitution, /.)\
+			$(addprefix /utils, /.))
 
 all :
 	@make $(NAME) -j8
 
 bonus :
-	@make BONUS=1 all
+	@make IS_BONUS=1 all
 
 $(NAME): $(OBJ) $(LIBFTA)
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBFTA) -o $@ -lreadline
@@ -103,7 +106,7 @@ clean:
 fclean:
 	@make clean
 	@make -C $(LIBFT) fclean
-	@rm -f $(NAME) $(BONUS)
+	@rm -f $(NAME)
 	@echo FCLEAN DONE ✅
 
 re: 

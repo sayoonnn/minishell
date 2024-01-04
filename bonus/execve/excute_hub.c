@@ -49,6 +49,20 @@ void	sub_redir_exec_pipe(t_tree_node *node, t_envtree *env, int n)
 		undo_setting(saved_fd, last_pid, node);
 }
 
+static void	excute_list(t_tree_node *root, t_envtree *env)
+{
+	if (root->token_type == AND)
+	{
+		excute_hub(root->left, env);
+		if (!g_errcode)
+			excute_hub(root->right, env);
+	}
+	else if (root->token_type == OR)
+	{
+		
+	}
+}
+
 void	excute_hub(t_tree_node *root, t_envtree *env)
 {
 	if (root == NULL)
@@ -60,7 +74,7 @@ void	excute_hub(t_tree_node *root, t_envtree *env)
 	else if (root->token_type == PIPE)
 		sub_redir_exec_pipe(root, env, 0);
 	else if (root->token_type == AND || root->token_type == OR)
-		// 
+		//  
 	else if (root->token_type == SUBSHELL)
 		//
 }

@@ -28,7 +28,7 @@ int	main(void)
 	while (true)
 	{
 		line = get_input();
-		//add_history(line);
+		add_history(line);
 		if (!line)
 			break ;
 		if (!parse_line(line, parsing))
