@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <stdio.h>
+# include "types.h"
 
 t_envnode	*make_envnode(char *key, char *value);
 t_envnode	*add_envnode(t_envnode *tree, t_envnode *newnode);

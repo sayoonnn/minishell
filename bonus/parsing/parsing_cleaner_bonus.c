@@ -10,21 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "parse_tree_bonus.h"
 
 void	cut_tree(t_tree_node *root)
 {
-	if (root != NULL)
+	if (root == NULL)
+		return ;
+	if (root->token_type == SUBSHELL)
+		cut_tree(root->mid);
+	cut_tree(root->left);
+	cut_tree(root->right);
+	if (root->contents != NULL)
 	{
-		cut_tree(root->left);
-		cut_tree(root->right);
-		if (root->contents != NULL)
-		{
+		while (root->contents->head != NULL)
 			ft_lstclear(root->contents);
-			free(root->contents);
-		}
-		free(root);
+		free(root->contents);
 	}
+	free(root);
 }
 
 void	clean_parsing_tools(t_parsing *parsing)

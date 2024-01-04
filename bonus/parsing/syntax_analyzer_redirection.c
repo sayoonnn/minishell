@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_analyzer2.c                                 :+:      :+:    :+:   */
+/*   syntax_analyzer_redirection.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 22:19:34 by devpark           #+#    #+#             */
-/*   Updated: 2024/01/01 22:27:30 by devpark          ###   ########.fr       */
+/*   Created: 2024/01/04 17:11:56 by devpark           #+#    #+#             */
+/*   Updated: 2024/01/04 17:27:17 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
-#include "errors.h"
+#include "parse_tree_bonus.h"
 
 int	insert_filename(t_tree_node **root, t_deque *tokens)
 {
@@ -67,20 +66,29 @@ int	insert_redirection_type(t_tree_node **root, t_deque *tokens)
 
 int	insert_redirection_info(t_tree_node **root, t_deque *tokens)
 {
+	t_tree_node	*rd_list;
 	t_tree_node	*rd_info;
+	t_tree_node	*tmp;
 
-	rd_info = create_tree_node((*root)->token_type);
+	tmp = *root;
+	while (tmp->right != NULL)
+		tmp = tmp->right;
+	rd_list = create_tree_node(REDIRECTION_LIST);
+	if (rd_list == NULL)
+		return (1);
+	tmp->right = rd_list;
+	rd_info = create_tree_node(REDIRECTION_INFO);
 	if (rd_info == NULL)
 		return (1);
-	(*root)->left = rd_info;
-	if (insert_redirection_type(&(*root)->left, tokens))
+	tmp->right->left = rd_info;
+	if (insert_redirection_type(&tmp->right->left, tokens))
 		return (1);
-	if (insert_filename(&(*root)->left, tokens))
+	if (insert_filename(&tmp->right->left, tokens))
 		return (1);
 	return (0);
 }
 
-int	insert_cmd_info_token(t_tree_node **root, t_parsing *parsing)
+int	insert_cmd_info_token(t_tree_node **root, t_parsing *ps)
 {
 	t_tree_node	*cmd;
 	t_tree_node	*cmd_info;
@@ -90,8 +98,14 @@ int	insert_cmd_info_token(t_tree_node **root, t_parsing *parsing)
 		return (1);
 	if (*root == NULL)
 		*root = cmd;
-	if ((*root)->token_type == PIPE && (*root)->right == NULL)
+	if (((*root)->token_type == PIPE
+		|| ((*root)->token_type == AND || (*root)->token_type == OR))
+		&& (*root)->right == NULL)
 		(*root)->right = cmd;
+	if ((((*root)->token_type == AND || (*root)->token_type == OR)
+			&& (*root)->right->token_type == PIPE
+			&& (*root)->right->right == NULL))
+		(*root)->right->right = cmd;
 	cmd_info = create_tree_node(CMD_INFO);
 	if (cmd_info == NULL)
 		return (1);
@@ -99,30 +113,26 @@ int	insert_cmd_info_token(t_tree_node **root, t_parsing *parsing)
 	cmd_info->contents = ft_lstcreate();
 	if (cmd_info->contents == NULL)
 		return (1);
-	parsing->cmd_info_ptr = cmd_info;
+	ps->cmd_info_ptr = cmd_info;
 	return (0);
 }
 
-int	connect_cmd_argv_content(t_tree_node **root, t_parsing *parsing)
+int	insert_rd_list(t_tree_node **root, t_deque *tokens, t_parsing *ps)
 {
-	t_node	*new;
-	char	*content;
-
+	if (tokens->front->right == NULL)
+		return (print_syntax_token_error("newline"));
+	if (tokens->front->right->token_type != FILENAME)
+		return (print_syntax_token_error(tokens->front->right->content));
 	if (*root == NULL
-		|| ((*root)->token_type == PIPE && (*root)->right == NULL))
-	{
-		if (insert_cmd_info_token(root, parsing))
+		|| ((*root)->token_type == PIPE && (*root)->right == NULL)
+		|| ((*root)->token_type == AND && (*root)->token_type == OR
+			&& (*root)->right == NULL)
+		|| ((*root)->token_type == AND && (*root)->token_type == OR
+			&& (*root)->right->token_type == PIPE
+			&& (*root)->right->right == NULL))
+		if (insert_cmd_info_token(root, ps))
 			return (1);
-	}
-	content = ft_strdup(parsing->tokens->front->content);
-	new = ft_lstnew(content);
-	if (content == NULL || new == NULL)
-	{
-		if (content)
-			free(content);
+	if (insert_redirection_info(root, tokens))
 		return (1);
-	}
-	ft_lstadd_back(parsing->cmd_info_ptr->contents, new);
-	deque_pop_front(parsing->tokens);
 	return (0);
 }

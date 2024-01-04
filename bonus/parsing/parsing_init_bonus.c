@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "parse_tree_bonus.h"
 
 t_parsing	*init_parsing_tool(void)
 {
@@ -23,6 +23,7 @@ t_parsing	*init_parsing_tool(void)
 	if (parsing->tokens == NULL)
 		exit(1);
 	parsing->cmd_flag = 0;
+	parsing->subsh_cnt = 0;
 	parsing->root = NULL;
 	parsing->cmd_info_ptr = NULL;
 	return (parsing);

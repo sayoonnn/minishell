@@ -70,15 +70,17 @@ typedef struct s_tree_node
 {
 	int					token_type;
 	t_list				*contents;
+	struct s_tree_node	*left;
+	struct s_tree_node	*mid;
+	struct s_tree_node	*right;
 	int					cmd_cnt;
 	int					fd[2];
-	struct s_tree_node	*left;
-	struct s_tree_node	*right;
 }				t_tree_node;
 
 typedef struct s_parsing
 {
 	int			cmd_flag;
+	int			subsh_cnt;
 	t_deque		*tokens;
 	t_tree_node	*root;
 	t_tree_node	*cmd_info_ptr;

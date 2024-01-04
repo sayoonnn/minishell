@@ -25,5 +25,6 @@ int		remove_all_quotes(t_list *res, char **ref);
 t_list	*interprete_words(t_list *contents, t_envtree *env);
 char	**convert_word_lst_to_array(t_list *contents, t_envtree *env);
 void	update_quote_info(char ch, char *quote);
+int		substitute_dollar(char *content, t_envtree *env, char **ref);
 
 #endif

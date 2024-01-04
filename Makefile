@@ -44,12 +44,33 @@ SUBS	=	convert_word_lst_to_array.c\
 			word_interpreter_utils.c\
 			word_interpreter.c
 
-SRC		=	main.c\
+B_PARS	=	parse_line_bonus.c\
+			parsing_utils_bonus.c\
+			syntax_analyzer_bonus.c\
+			syntax_analyzer_operator.c\
+			syntax_analyzer_redirection.c\
+			syntax_analyzer_subshell.c\
+			syntax_analyzer_utils_bonus.c\
+			syntax_error_bonus.c\
+			tokenizer_bonus.c\
+			tokenizer_utils_bonus.c\
+			parsing_cleaner_bonus.c\
+			parsing_init_bonus.c
+
+M_SRC		=	main.c\
 			$(BUILTIN)\
 			$(EXECVE)\
 			$(PARSING)\
 			$(UTILS)\
 			$(SUBS)
+
+B_SRC	=	main.c\
+			$(BUILTIN)\
+			$(EXECVE)\
+			$(B_PARS)\
+			$(UTILS)\
+			$(SUBS)
+
 
 OBJDIR	=	.objs
 OBJ		=	$(SRC:%.c=$(OBJDIR)/%.o)
@@ -67,8 +88,10 @@ CFLAGS	= -Wall -Werror -Wextra
 
 ifdef IS_BONUS
 	DIR	= $(BONUS)
+	SRC = $(B_SRC)
 else
 	DIR = $(MAND)
+	SRC = $(M_SRC)
 endif
 
 vpath %.c	$(addprefix $(DIR), /.\

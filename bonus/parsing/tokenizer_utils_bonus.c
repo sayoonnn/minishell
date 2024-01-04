@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
+/*   tokenizer_utils_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:30:47 by jonghopa          #+#    #+#             */
-/*   Updated: 2024/01/02 12:24:47 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/02 12:37:09 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "parse_tree_bonus.h"
 
 int	check_rquote(char *cmd, size_t *idx, size_t *new_len)
 {
@@ -35,6 +35,32 @@ int	check_rquote(char *cmd, size_t *idx, size_t *new_len)
 	return (0);
 }
 
+int	select_paren_token_type(char *paren)
+{
+	int	token_type;
+
+	token_type = CMD;
+	if (!ft_strncmp(paren, "(", 1))
+		token_type = LPAREN;
+	else if (!ft_strncmp(paren, ")", 1))
+		token_type = RPAREN;
+	return (token_type);
+}
+
+int	select_opr_token_type(char *operator)
+{
+	int	token_type;
+
+	token_type = CMD;
+	if (!ft_strncmp(operator, "||", 2))
+		token_type = LIST;
+	else if (!ft_strncmp(operator, "&&", 2))
+		token_type = LIST;
+	else if (!ft_strncmp(operator, "|", 1))
+		token_type = PIPE;
+	return (token_type);
+}
+
 int	select_word_token_type(t_deque *tokens, int *cmd_flag)
 {
 	int	token_type;
@@ -47,7 +73,7 @@ int	select_word_token_type(t_deque *tokens, int *cmd_flag)
 		*cmd_flag = 1;
 		token_type = CMD;
 	}
-	else if (*cmd_flag == 1)
+	else if (*cmd_flag)
 		token_type = ARGV;
 	return (token_type);
 }
