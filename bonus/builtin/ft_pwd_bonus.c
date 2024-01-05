@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   ft_pwd_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/19 16:31:08 by sayoon            #+#    #+#             */
-/*   Updated: 2024/01/05 15:13:13 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/12/01 18:59:00 by sayoon            #+#    #+#             */
+/*   Updated: 2024/01/05 12:48:12 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "minishell_bonus.h"
 
-int	parse_line(char *line, t_parsing *parsing)
+#include <limits.h>
+#include <unistd.h>
+#include <stdio.h>
+
+int	ft_pwd(void)
 {
-	int	flag;
+	char	path[PATH_MAX];
 
-	if (*line == 0)
-		return (false);
-	if (tokenize(line, parsing))
-		exit(1);
-	flag = analyze_syntax(parsing);
-	if (flag == 1)
-		exit(1);
-	if (flag == 258)
+	if (!getcwd(path, sizeof(path)))
 	{
-		clean_parsing_tools(parsing);
-		free(line);
-		return (false);
+		ft_printf(2, "minishell: pwd: ");
+		perror("");
+		return (1);
 	}
-	return (true);
+	printf("%s\n", path);
+	return (0);
 }

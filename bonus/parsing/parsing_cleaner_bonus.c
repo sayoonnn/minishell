@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_cleaner.c                                  :+:      :+:    :+:   */
+/*   parsing_cleaner_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 14:34:22 by devpark           #+#    #+#             */
-/*   Updated: 2023/12/26 16:55:14 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/05 14:07:22 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	clean_parsing_tools(t_parsing *parsing)
 	deque_clear(parsing->tokens);
 	cut_tree(parsing->root);
 	parsing->root = NULL;
+	parsing->subsh_cnt = 0;
 }
 
 void	free_parsing(t_parsing *parsing)
