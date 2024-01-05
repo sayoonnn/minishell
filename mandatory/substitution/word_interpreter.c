@@ -110,11 +110,20 @@ int	substitute_dollar(char *content, t_envtree *env, char **ref)
 	return (ft_strjoin_in_depend(ref, content, &start, &idx));
 }
 
+static void	sum_lst(t_list *dst, t_list *src)
+{
+	if (src->head == NULL && src->tail == NULL)
+		return ;
+	ft_lstadd_back(dst, src->head);
+	while (dst->tail->next != NULL)
+		dst->tail = dst->tail->next;
+	free(src);
+}
+
 t_list	*interprete_words(t_list *contents, t_envtree *env)
 {
 	t_list	*res;
 	t_node	*ptr;
-	char	*refined;
 
 	res = ft_lstcreate();
 	if (res == NULL)
@@ -122,17 +131,7 @@ t_list	*interprete_words(t_list *contents, t_envtree *env)
 	ptr = contents->head;
 	while (ptr != NULL)
 	{
-		refined = ft_strdup("");
-		if (refined == NULL)
-			return (NULL);
-		if (substitute_dollar(ptr->content, env, &refined)
-			|| remove_all_quotes(res, &refined))
-		{
-			free(refined);
-			ft_lstclear(res);
-			free(res);
-			return (NULL);
-		}
+		sum_lst(res, expansion(ptr->content, env));
 		ptr = ptr->next;
 	}
 	return (res);

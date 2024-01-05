@@ -82,3 +82,37 @@ int	remove_all_quotes(t_list *res, char **ref)
 	free(*ref);
 	return (0);
 }
+
+// int	remove_all_quotes_tmp(t_list *res, char **ref)
+// {
+// 	char	**strs;
+// 	char	*terminating;
+// 	size_t	idx;
+// 	t_node	*new;
+
+// 	strs = ft_split_white(*ref);
+// 	if (strs == NULL)
+// 		return (1);
+// 	idx = 0;
+// 	while (strs[idx] != 0)
+// 	{
+// 		terminating = remove_quote(strs[idx++]);
+// 		if (res->head == NULL || is_white(*terminating))
+// 		{
+// 			new = ft_lstnew(terminating);
+// 			if (terminating == NULL || new == NULL)
+// 			{
+// 				if (terminating)
+// 					free(terminating);
+// 				free_perfectly_split(strs);
+// 				return (1);
+// 			}
+// 			ft_lstadd_back(res, new);
+// 		}
+// 		else if (!is_white(*terminating))
+// 			join_str_to_lastnode(res, terminating);
+// 	}
+// 	free_perfectly_split(strs);
+// 	free(*ref);
+// 	return (0);
+// }

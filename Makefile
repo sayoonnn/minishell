@@ -42,7 +42,8 @@ SUBS	=	convert_word_lst_to_array.c\
 			ft_split_white.c\
 			quotes_remover.c\
 			word_interpreter_utils.c\
-			word_interpreter.c
+			word_interpreter.c\
+			expansion.c
 
 B_PARS	=	parse_line_bonus.c\
 			parsing_utils_bonus.c\
@@ -58,11 +59,11 @@ B_PARS	=	parse_line_bonus.c\
 			parsing_init_bonus.c
 
 M_SRC		=	main.c\
-			$(BUILTIN)\
-			$(EXECVE)\
-			$(PARSING)\
-			$(UTILS)\
-			$(SUBS)
+				$(BUILTIN)\
+				$(EXECVE)\
+				$(PARSING)\
+				$(UTILS)\
+				$(SUBS)
 
 B_SRC	=	main.c\
 			$(BUILTIN)\
@@ -84,7 +85,7 @@ LIBFT	= libft
 LIBFTA	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra -fsanitize=address -g
 
 ifdef IS_BONUS
 	DIR	= $(BONUS)
