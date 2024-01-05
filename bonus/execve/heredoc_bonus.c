@@ -46,8 +46,7 @@ int	get_heredoc_fd(char *delimiter)
 		}
 		if (!ft_strcmp(line, delimiter))
 			break ;
-		ft_putstr_fd(line, pipe_fd[1]);
-		ft_putstr_fd("\n", pipe_fd[1]);
+		ft_printf(pipe_fd[1], "%s\n", line);
 		free(line);
 		line = readline("> ");
 	}

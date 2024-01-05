@@ -27,5 +27,6 @@ t_list	*interprete_words(t_list *contents, t_envtree *env);
 char	**convert_word_lst_to_array(t_list *contents, t_envtree *env);
 void	update_quote_info(char ch, char *quote);
 int		substitute_dollar(char *content, t_envtree *env, char **ref);
+t_list	*make_pattern_match_list(char *pattern);
 
 #endif

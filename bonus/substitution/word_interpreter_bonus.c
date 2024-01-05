@@ -120,6 +120,70 @@ static void	sum_lst(t_list *dst, t_list *src)
 	free(src);
 }
 
+static t_list	*sum_lst_middle(t_list *dst_lst, t_node *dst, t_list *src)
+{
+	t_list	*tmp;
+	t_node	*node;
+
+	tmp = ft_lstcreate();
+	if (!tmp)
+		exit(1);
+	node = dst_lst->head;
+	while (node != dst)
+	{
+		ft_lstadd_back(tmp, node);
+		node = node->next;
+	}
+	if (tmp->tail == NULL)
+	{
+		tmp->head = src->head;
+		tmp->tail = src->head;
+	}
+	else
+		tmp->tail->next = src->head;
+	src->tail->next = node->next;
+	while (tmp->tail->next != NULL)
+		tmp->tail = tmp->tail->next;
+	return (tmp);
+}
+
+static void	wildcard_change(char *str)
+{
+	while (*str)
+	{
+		if (*str == 5)
+			*str = '*';
+		str++;
+	}
+}
+
+static void	expand_wilds(t_list *res)
+{
+	t_node	*ptr;
+	t_node	*tmp;
+	t_list	*replaced;
+
+	ptr = res->head;
+	while (ptr != NULL)
+	{
+		if (ft_strchr(ptr->content, 5))
+		{
+			replaced = make_pattern_match_list(ptr->content);
+			if (replaced->head)
+			{
+				tmp = ptr->next;
+				sum_lst_middle(res, ptr, replaced);
+				ft_lstdelone(ptr);
+				ptr = tmp;
+			}
+			else
+				wildcard_change(ptr->content);
+		}
+		else
+			ptr = ptr->next;
+	}
+}
+
 t_list	*interprete_words(t_list *contents, t_envtree *env)
 {
 	t_list	*res;
@@ -134,5 +198,6 @@ t_list	*interprete_words(t_list *contents, t_envtree *env)
 		sum_lst(res, expansion(ptr->content, env));
 		ptr = ptr->next;
 	}
+	expand_wilds(res);
 	return (res);
 }

@@ -82,6 +82,16 @@ static int	is_there_white(char *str)
 	return (false);
 }
 
+static void	wildcard_change(char *str)
+{
+	while (*str)
+	{
+		if (*str == '*')
+			*str = 5;
+		str++;
+	}
+}
+
 static void	trim_quote(t_list *ret, char *str)
 {
 	char	*tmp;
@@ -96,7 +106,10 @@ static void	trim_quote(t_list *ret, char *str)
 		is_quoted = true;
 	}
 	else
+	{
 		tmp = ft_strdup(str);
+		wildcard_change(tmp);
+	}
 	if (is_there_white(str) && !is_quoted)
 	{
 		splited = ft_split_white(tmp);

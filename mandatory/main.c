@@ -21,14 +21,13 @@ int	main(void)
 	t_parsing	*parsing;
 	extern char	**environ;
 
-	//startup_minishell();
+	startup_minishell();
 	set_signal();
 	env = init_envp(environ);
 	parsing = init_parsing_tool();
 	while (true)
 	{
-		//line = get_input();
-		line = readline("$> ");
+		line = get_input();
 		add_history(line);
 		if (!line)
 			break ;

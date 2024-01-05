@@ -26,7 +26,7 @@ static int	check_pattern(char	*pattern, char *fname)
 		i++;
 	if (p_len == i)
 		return (true);
-	if (pattern[i] == '*')
+	if (pattern[i] == 5)
 	{
 		skip = 0;
 		while (skip + i <= f_len)
@@ -53,7 +53,7 @@ t_list	*make_pattern_match_list(char *pattern)
 	cur_file = readdir(dir);
 	while (cur_file)
 	{
-		if (check_pattern(pattern, cur_file->d_name))
+		if (check_pattern(pattern, cur_file->d_name) && *(cur_file->d_name) != '.')
 		{
 			newnode = ft_lstnew(ft_strdup(cur_file->d_name));
 			if (!newnode)

@@ -94,8 +94,7 @@ LIBFT	= libft
 LIBFTA	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra -g
-# -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra -g -fsanitize=address
 
 ifdef IS_BONUS
 	DIR	= $(BONUS)
