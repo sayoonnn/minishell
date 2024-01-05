@@ -26,7 +26,7 @@ static int	check_pattern(char	*pattern, char *fname)
 		i++;
 	if (p_len == i)
 		return (true);
-	if (pattern[i] == 5)
+	if (pattern[i] == '*')
 	{
 		skip = 0;
 		while (skip + i <= f_len)

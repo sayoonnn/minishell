@@ -17,7 +17,10 @@ int	parse_line(char *line, t_parsing *parsing)
 	int	flag;
 
 	if (*line == 0)
+	{
+		free(line);
 		return (false);
+	}
 	if (tokenize(line, parsing))
 		exit(1);
 	flag = analyze_syntax(&parsing->root, parsing);

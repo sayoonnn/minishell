@@ -51,7 +51,7 @@ static int	ft_myatoi(const char *str, int *is_flowed)
 		temp = ret * 10 + (str[i] - '0');
 		if (temp > LONG_MAX || ret > temp)
 		{
-			*is_flowed = true - (temp == (unsigned long)-LONG_MIN && sign < 0);
+			*is_flowed = true - (temp == -(unsigned long)LONG_MIN && sign < 0);
 			return (-1 + (sign < 0));
 		}
 		ret = temp;

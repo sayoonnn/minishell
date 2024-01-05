@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_bonus.h                                  :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:18:27 by sayoon            #+#    #+#             */
-/*   Updated: 2024/01/05 13:47:26 by jonghopa         ###   ########.fr       */
+/*   Updated: 2024/01/01 22:08:28 by devpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_BONUS_H
-# define MINISHELL_BONUS_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -56,14 +56,15 @@ void		signal_handler(int signal);
 // redirection
 int			open_in_file(char *file_name);
 int			open_out_file(char *file_name, int opt);
-int			get_heredoc_fd(char *delimiter);
+int			get_heredoc_fd(char *delimiter, t_envtree *env);
 int			handle_other_redir(t_tree_node *pt, t_envtree *env);
 int			handle_other_redirs(t_tree_node *pt, t_envtree *env);
 int			handle_heredoc_redir(t_tree_node *pt, t_envtree *env);
 int			handle_heredoc_first(t_tree_node *pt, t_envtree *env);
 int			make_output(char *filename, int io_fd[2], int opt);
-int			make_input(char *filename, int io_fd[2], int opt);
+int			make_input(char *filename, int io_fd[2], int opt, t_envtree *env);
 void		close_heredoc(t_tree_node *node);
+int			cknopen(char *file_name, int io_fd[2], int type, t_envtree *env);
 
 // utils
 void		free_minishell_data(t_envtree *env, t_parsing *parsing);

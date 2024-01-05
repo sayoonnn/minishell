@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	cknopen(char *file_name, int io_fd[2], int type)
+int	cknopen(char *file_name, int io_fd[2], int type, t_envtree *env)
 {
 	if (type == GREAT || type == DGREAT)
 	{
@@ -21,75 +21,63 @@ static int	cknopen(char *file_name, int io_fd[2], int type)
 	}
 	else
 	{
-		if (!make_input(file_name, io_fd, type))
+		if (!make_input(file_name, io_fd, type, env))
 			return (false);
 	}
 	return (true);
 }
-
-static int	is_ambiguous(char *before, t_list *lst)
+int	open_in_file(char *file_name)
 {
-	if (lst->head == NULL || lst->head->next != NULL)
+	int	fd;
+
+	fd = open(file_name, O_RDONLY);
+	if (fd < 0)
 	{
-		ft_printf(2, "minishell: %s: ambiguous redirect\n", before);
-		ft_lstclear(lst);
-		return (true);
+		ft_printf(2, "minishell: ");
+		perror(file_name);
 	}
-	return (false);
+	return (fd);
 }
 
-int	handle_heredoc_redir(t_tree_node *pt, t_envtree *env)
+int	open_out_file(char *file_name, int opt)
 {
-	int		ret;
-	t_list	*word_lst;
+	int	fd;
 
-	ret = true;
-	if (pt == NULL)
-		return (true);
-	if (pt->token_type == REDIRECTION_LIST)
+	fd = open(file_name, opt, 0644);
+	if (fd < 0)
 	{
-		if (!handle_heredoc_redir(pt->left, env)
-			|| !handle_heredoc_redir(pt->right, env))
-			return (false);
+		ft_printf(2, "minishell: ");
+		perror(file_name);
 	}
-	else if (pt->token_type == REDIRECTION_INFO && \
-			pt->left->token_type == DLESS)
-	{
-		word_lst = interprete_words(pt->right->contents, env);
-		if (word_lst == NULL)
-			return (false);
-		ret = make_input(word_lst->head->content, pt->fd, pt->left->token_type);
-		ft_lstclear(word_lst);
-		free(word_lst);
-	}
-	return (ret);
+	return (fd);
 }
 
-int	handle_other_redir(t_tree_node *pt, t_envtree *env)
+int	make_output(char *filename, int io_fd[2], int opt)
 {
-	int		ret;
-	t_list	*word_lst;
+	int	write_flag;
 
-	ret = true;
-	if (pt == NULL)
-		return (true);
-	if (pt->token_type == REDIRECTION_LIST)
-	{
-		if (!handle_other_redir(pt->left, env)
-			|| !handle_other_redir(pt->right, env))
-			return (false);
-	}
-	else if (pt->token_type == REDIRECTION_INFO && \
-			pt->left->token_type != DLESS)
-	{
-		word_lst = interprete_words(pt->right->contents, env);
-		if (word_lst == NULL)
-			return (false);
-		if (is_ambiguous(pt->right->contents->head->content, word_lst))
-			return (false);
-		ret = cknopen(word_lst->head->content, pt->fd, pt->left->token_type);
-		ft_lstclear(word_lst);
-		free(word_lst);
-	}
-	return (ret);
+	write_flag = 0;
+	if (io_fd[1] != STDOUT_FILENO)
+		close(io_fd[1]);
+	if (opt == GREAT)
+		write_flag = (O_CREAT | O_WRONLY | O_TRUNC);
+	else if (opt == DGREAT)
+		write_flag = (O_CREAT | O_WRONLY | O_APPEND);
+	io_fd[1] = open_out_file(filename, write_flag);
+	if (io_fd[1] == -1)
+		return (false);
+	return (true);
+}
+
+int	make_input(char *filename, int io_fd[2], int opt, t_envtree *env)
+{
+	if (io_fd[0] != STDIN_FILENO)
+		close(io_fd[0]);
+	if (opt == LESS)
+		io_fd[0] = open_in_file(filename);
+	else if (opt == DLESS)
+		io_fd[0] = get_heredoc_fd(filename, env);
+	if (io_fd[0] == -1)
+		return (false);
+	return (true);
 }

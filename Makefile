@@ -16,9 +16,9 @@ EXECVE	=	exec_single.c\
 			exec_utils.c\
 			exec_builtin.c\
 			exec_pipe.c\
-			exec_redir.c\
 			heredoc.c\
-			redirection.c
+			redirection.c\
+			redirection_utils.c
 
 PARS	=	parsing_init.c\
 			parsing_cleaner.c\
@@ -43,7 +43,8 @@ SUBS	=	convert_word_lst_to_array.c\
 			quotes_remover.c\
 			word_interpreter_utils.c\
 			word_interpreter.c\
-			expansion.c
+			expansion.c\
+			expansion_utils.c
 
 B_BUILTIN	=	$(BUILTIN:%.c=%_bonus.c)
 
@@ -94,7 +95,9 @@ LIBFT	= libft
 LIBFTA	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra 
+#-g -fsanitize=address
+
 
 ifdef IS_BONUS
 	DIR	= $(BONUS)

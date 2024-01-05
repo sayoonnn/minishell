@@ -10,47 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell_bonus.h"
-
-int	get_sublen(char *str, char cur)
-{
-	int	size;
-
-	size = 0;
-	while (*str)
-	{
-		if (*str == cur && is_quote(cur))
-			break ;
-		else if (!is_quote(cur) && is_quote(*str))
-			break ;
-		str++;
-		size++;
-	}
-	return (size);
-}
-
-void	add_to_lst(t_list *tmp, char *str)
-{
-	int		start;
-	int		len;
-	char	*sub_str;
-
-	start = 0;
-	while (str[start])
-	{
-		if (str[start] == '$' && is_quote(str[start + 1]))
-		{
-			start++;
-			continue;
-		}
-		len = get_sublen(&str[start + is_quote(*(str + start))], str[start]);
-		if (is_quote(str[start]))
-			len += 2;
-		sub_str = ft_substr(str, start, len);
-		ft_lstadd_back(tmp, ft_lstnew(sub_str));
-		start += len;
-	}
-}
+#include "minishell_bonus.h"
 
 static void	join_str_to_lastnode(t_list *res, char *str)
 {
@@ -62,6 +22,8 @@ static void	join_str_to_lastnode(t_list *res, char *str)
 	if (lastnode == NULL)
 	{
 		newnode = ft_lstnew(str);
+		if (!newnode)
+			exit(1);
 		ft_lstadd_back(res, newnode);
 		return ;
 	}
@@ -71,32 +33,25 @@ static void	join_str_to_lastnode(t_list *res, char *str)
 	lastnode->content = tmp;
 }
 
-static int	is_there_white(char *str)
+static void	split_n_add(t_list *ret, char *str)
 {
-	while (*str)
-	{
-		if (is_white(*str))
-			return (true);
-		str++;
-	}
-	return (false);
-}
+	char	**splited;
+	int		i;
 
-static void	wildcard_change(char *str)
-{
-	while (*str)
-	{
-		if (*str == '*')
-			*str = 5;
-		str++;
-	}
+	splited = ft_split_white(str);
+	i = 0;
+	if (ft_lstsize(ret) != 0 && ret->tail->content != NULL)
+		join_str_to_lastnode(ret, splited[i++]);
+	while (splited[i])
+		ft_lstadd_back(ret, ft_lstnew(splited[i++]));
+	ft_lstadd_back(ret, ft_lstnew(NULL));
+	free(splited);
+	free(str);
 }
 
 static void	trim_quote(t_list *ret, char *str)
 {
 	char	*tmp;
-	char	**splited;
-	int		i;
 	int		is_quoted;
 
 	is_quoted = false;
@@ -106,20 +61,9 @@ static void	trim_quote(t_list *ret, char *str)
 		is_quoted = true;
 	}
 	else
-	{
 		tmp = ft_strdup(str);
-		wildcard_change(tmp);
-	}
-	if (is_there_white(str) && !is_quoted)
-	{
-		splited = ft_split_white(tmp);
-		i = 0;
-		if (ft_lstsize(ret) != 0 && ret->tail->content != NULL)
-			join_str_to_lastnode(ret, splited[i++]);
-		while (splited[i])
-			ft_lstadd_back(ret, ft_lstnew(splited[i++]));
-		ft_lstadd_back(ret, ft_lstnew(NULL));
-	}
+	if (is_there_white(tmp) && !is_quoted)
+		split_n_add(ret, tmp);
 	else
 	{
 		if (ft_lstsize(ret) != 0 && ret->tail->content == NULL)

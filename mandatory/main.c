@@ -14,16 +14,17 @@
 
 int	g_errcode = 0;
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
 	char		*line;
 	t_envtree	*env;
 	t_parsing	*parsing;
-	extern char	**environ;
 
+	(void)ac;
+	(void)av;
 	startup_minishell();
 	set_signal();
-	env = init_envp(environ);
+	env = init_envp(envp);
 	parsing = init_parsing_tool();
 	while (true)
 	{
