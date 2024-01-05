@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   ft_cd_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/19 16:31:08 by sayoon            #+#    #+#             */
-/*   Updated: 2024/01/05 15:13:13 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/11/30 20:45:24 by sayoon            #+#    #+#             */
+/*   Updated: 2024/01/05 12:47:11 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "minishell_bonus.h"
 
-int	parse_line(char *line, t_parsing *parsing)
+#ifndef PATH_MAX
+# define PATH_MAX 1024
+#endif
+
+int	ft_cd(char *arg[])
 {
-	int	flag;
+	char	*cur;
+	int		status;
 
-	if (*line == 0)
-		return (false);
-	if (tokenize(line, parsing))
+	if (arg[1] == NULL || *arg[1] == 0)
+		return (success);
+	status = success;
+	cur = getcwd(NULL, PATH_MAX);
+	if (!cur)
 		exit(1);
-	flag = analyze_syntax(parsing);
-	if (flag == 1)
-		exit(1);
-	if (flag == 258)
+	else if (chdir(arg[1]) < 0)
 	{
-		clean_parsing_tools(parsing);
-		free(line);
-		return (false);
+		ft_printf(2, "minishell: cd: ");
+		perror(arg[1]);
+		status = fail;
 	}
-	return (true);
+	free(cur);
+	return (status);
 }

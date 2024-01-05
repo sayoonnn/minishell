@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 13:27:25 by jonghopa          #+#    #+#             */
-/*   Updated: 2024/01/02 12:22:02 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/05 14:27:00 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,13 @@ int	check_word(char *cmd, t_deque *tokens, int *cmd_flag, size_t *idx)
 	size_t	new_len;
 
 	if (cmd[*idx] == 0 || is_white(cmd[*idx])
-		|| is_operator(cmd[*idx]) || is_parenthesis(cmd[*idx]))
+		|| is_operator(cmd, *idx) || is_parenthesis(cmd[*idx]))
 		return (0);
 	token_type = select_word_token_type(tokens, cmd_flag);
 	new_len = 0;
 	start = *idx;
 	while (cmd[*idx] != 0 && !is_white(cmd[*idx])
-		&& !is_operator(cmd[*idx]) && !is_parenthesis(cmd[*idx]))
+		&& !is_operator(cmd, *idx) && !is_parenthesis(cmd[*idx]))
 	{
 		if (is_quote(cmd[*idx]))
 			check_rquote(cmd, idx, &new_len);

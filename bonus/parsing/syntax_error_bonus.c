@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 19:17:54 by jonghopa          #+#    #+#             */
-/*   Updated: 2024/01/04 17:08:58 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/05 13:23:40 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "errors.h"
+#include "errors_bonus.h"
 
 int	print_syntax_token_error(char *content)
 {

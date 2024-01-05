@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+# include "minishell_bonus.h"
 
 int	get_sublen(char *str, char cur)
 {

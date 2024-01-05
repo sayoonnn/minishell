@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 19:34:56 by sayoon            #+#    #+#             */
-/*   Updated: 2024/01/05 15:13:13 by jonghopa         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:11:21 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 int	g_errcode = 0;
 
@@ -21,14 +21,13 @@ int	main(void)
 	t_parsing	*parsing;
 	extern char	**environ;
 
-	//startup_minishell();
+	startup_minishell();
 	set_signal();
 	env = init_envp(environ);
 	parsing = init_parsing_tool();
 	while (true)
 	{
-		//line = get_input();
-		line = readline("$> ");
+		line = get_input();
 		add_history(line);
 		if (!line)
 			break ;

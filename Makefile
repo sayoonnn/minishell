@@ -20,7 +20,7 @@ EXECVE	=	exec_single.c\
 			heredoc.c\
 			redirection.c
 
-PARSING	=	parsing_init.c\
+PARS	=	parsing_init.c\
 			parsing_cleaner.c\
 			parse_line.c\
 			parsing_utils.c\
@@ -45,12 +45,16 @@ SUBS	=	convert_word_lst_to_array.c\
 			word_interpreter.c\
 			expansion.c
 
+B_BUILTIN	=	$(BUILTIN:%.c=%_bonus.c)
+
+B_EXECVE	=	$(EXECVE:%.c=%_bonus.c)
+
 B_PARS	=	parse_line_bonus.c\
 			parsing_utils_bonus.c\
 			syntax_analyzer_bonus.c\
-			syntax_analyzer_operator.c\
-			syntax_analyzer_redirection.c\
-			syntax_analyzer_subshell.c\
+			syntax_analyzer_operator_bonus.c\
+			syntax_analyzer_redirection_bonus.c\
+			syntax_analyzer_subshell_bonus.c\
 			syntax_analyzer_utils_bonus.c\
 			syntax_error_bonus.c\
 			tokenizer_bonus.c\
@@ -58,19 +62,24 @@ B_PARS	=	parse_line_bonus.c\
 			parsing_cleaner_bonus.c\
 			parsing_init_bonus.c
 
+B_UTILS	=	$(UTILS:%.c=%_bonus.c)
+
+B_SUBS	=	$(SUBS:%.c=%_bonus.c)\
+			wildcards_bonus.c
+
 M_SRC		=	main.c\
 				$(BUILTIN)\
 				$(EXECVE)\
-				$(PARSING)\
+				$(PARS)\
 				$(UTILS)\
 				$(SUBS)
 
-B_SRC	=	main.c\
-			$(BUILTIN)\
-			$(EXECVE)\
+B_SRC	=	main_bonus.c\
+			$(B_BUILTIN)\
+			$(B_EXECVE)\
 			$(B_PARS)\
-			$(UTILS)\
-			$(SUBS)
+			$(B_UTILS)\
+			$(B_SUBS)
 
 
 OBJDIR	=	.objs
@@ -85,7 +94,8 @@ LIBFT	= libft
 LIBFTA	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra -fsanitize=address -g
+CFLAGS	= -Wall -Werror -Wextra -g
+# -fsanitize=address
 
 ifdef IS_BONUS
 	DIR	= $(BONUS)

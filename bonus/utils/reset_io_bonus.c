@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   reset_io_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/19 16:31:08 by sayoon            #+#    #+#             */
-/*   Updated: 2024/01/05 15:13:13 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/12/19 18:32:49 by sayoon            #+#    #+#             */
+/*   Updated: 2024/01/05 13:22:47 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "minishell_bonus.h"
 
-int	parse_line(char *line, t_parsing *parsing)
+void	reset_io(int save[2])
 {
-	int	flag;
-
-	if (*line == 0)
-		return (false);
-	if (tokenize(line, parsing))
-		exit(1);
-	flag = analyze_syntax(parsing);
-	if (flag == 1)
-		exit(1);
-	if (flag == 258)
-	{
-		clean_parsing_tools(parsing);
-		free(line);
-		return (false);
-	}
-	return (true);
+	dup2(save[0], STDIN_FILENO);
+	dup2(save[1], STDOUT_FILENO);
+	if (save[0] != 0)
+		close(save[0]);
+	if (save[1] != 1)
+		close(save[1]);
 }

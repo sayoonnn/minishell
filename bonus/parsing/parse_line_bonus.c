@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:31:08 by sayoon            #+#    #+#             */
-/*   Updated: 2023/12/24 01:37:46 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/05 15:11:21 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	parse_line(char *line, t_parsing *parsing)
 	if (flag == 258)
 	{
 		clean_parsing_tools(parsing);
+		free(line);
 		return (false);
 	}
 	return (true);

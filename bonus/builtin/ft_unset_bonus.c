@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   ft_unset_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/19 16:31:08 by sayoon            #+#    #+#             */
-/*   Updated: 2024/01/05 15:13:13 by jonghopa         ###   ########.fr       */
+/*   Created: 2023/12/05 16:34:16 by sayoon            #+#    #+#             */
+/*   Updated: 2024/01/05 12:48:15 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_tree.h"
+#include "minishell_bonus.h"
 
-int	parse_line(char *line, t_parsing *parsing)
+int	ft_unset(t_envtree *env, char *arg[])
 {
-	int	flag;
+	int	i;
 
-	if (*line == 0)
-		return (false);
-	if (tokenize(line, parsing))
-		exit(1);
-	flag = analyze_syntax(parsing);
-	if (flag == 1)
-		exit(1);
-	if (flag == 258)
+	i = 1;
+	while (arg[i])
 	{
-		clean_parsing_tools(parsing);
-		free(line);
-		return (false);
+		if (find_envnode(env->root, arg[i]))
+		{
+			env->num_nodes--;
+			env->root = delete_envnode(env->root, arg[i]);
+		}
+		i++;
 	}
-	return (true);
+	return (success);
 }

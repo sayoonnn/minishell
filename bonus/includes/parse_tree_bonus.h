@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tree_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 15:38:25 by jonghopa          #+#    #+#             */
-/*   Updated: 2024/01/04 17:31:08 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/05 14:26:42 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define OR 17
 
 # include <stdio.h>
-# include "libft.h"
-# include "types.h"
+# include "libft_bonus.h"
+# include "types_bonus.h"
 
 t_parsing	*init_parsing_tool(void);
 int			parse_line(char *line, t_parsing *parsing);
@@ -43,7 +43,7 @@ void		free_parsing(t_parsing *parsing);
 int			is_white(char ch);
 int			is_quote(char ch);
 int			is_parenthesis(char ch);
-int			is_operator(char ch);
+int			is_operator(char *cmd, size_t idx);
 
 int			print_syntax_token_error(char *content);
 int			print_syntax_unmatched_error(char ch);
