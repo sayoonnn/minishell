@@ -45,3 +45,11 @@ char	*get_input(void)
 	else
 		return (readline("\033[0;34mminishell$ \033[0m"));
 }
+
+void	goodbye_minishell(t_envtree *env, t_parsing *parsing)
+{
+	set_child_signal();
+	free_minishell_data(env, parsing);
+	printf("exit\n");
+	exit(g_errcode);
+}

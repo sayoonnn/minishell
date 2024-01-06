@@ -41,6 +41,7 @@ static void	write_to_pipe(char *line, t_envtree *env, int pipe_fd)
 
 static int	close_and_return(int pipe[2])
 {
+	set_signal();
 	close(pipe[0]);
 	close(pipe[1]);
 	return (-1);
@@ -55,6 +56,7 @@ int	get_heredoc_fd(char *delimiter, t_envtree *env)
 	rl_event_hook = none;
 	if (pipe(pipe_fd) < 0)
 		exit(1);
+	g_errcode = 0;
 	while (true)
 	{
 		line = readline("> ");

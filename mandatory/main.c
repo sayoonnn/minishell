@@ -29,7 +29,8 @@ int	main(int ac, char **av, char **envp)
 	while (true)
 	{
 		line = get_input();
-		add_history(line);
+		if (*line != 0)
+			add_history(line);
 		if (!line)
 			break ;
 		if (!parse_line(line, parsing))
@@ -38,7 +39,5 @@ int	main(int ac, char **av, char **envp)
 		clean_parsing_tools(parsing);
 		free(line);
 	}
-	set_child_signal();
-	free_minishell_data(env, parsing);
-	exit(g_errcode);
+	goodbye_minishell(env, parsing);
 }

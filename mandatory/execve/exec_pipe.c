@@ -45,6 +45,11 @@ static void	todo_chid(t_tree_node *node, t_envtree *env, \
 	set_child_signal();
 	redirect_io(node, pipe_fd, saved_fd);
 	argv = convert_word_lst_to_array(node->left->contents, env);
+	if (*argv == NULL)
+	{
+		free(argv);
+		exit(EXIT_SUCCESS);
+	}
 	if (is_builtin(argv[0]))
 	{
 		exit_code = exec_builtin_pipe(argv[0], argv, env);
