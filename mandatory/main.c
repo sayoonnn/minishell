@@ -22,14 +22,13 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	//startup_minishell();
+	startup_minishell();
 	set_signal();
 	env = init_envp(envp);
 	parsing = init_parsing_tool();
 	while (true)
 	{
-		//line = get_input();
-		line = readline("$>");
+		line = get_input();
 		if (!line)
 			break ;
 		if (*line != 0)
