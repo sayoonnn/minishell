@@ -20,13 +20,16 @@ int	main(int ac, char **av, char **envp)
 	t_envtree	*env;
 	t_parsing	*parsing;
 
-	startup_minishell();
+	(void)ac;
+	(void)av;
+	//startup_minishell();
 	set_signal();
 	env = init_envp(envp);
 	parsing = init_parsing_tool();
 	while (true)
 	{
-		line = get_input();
+		//line = get_input();
+		line = readline("$>");
 		if (!line)
 			break ;
 		if (*line != 0)

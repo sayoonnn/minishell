@@ -73,5 +73,6 @@ void		startup_minishell(void);
 t_envtree	*init_envp(char *envp[]);
 char		**tree_2_envp(t_envtree *env);
 void		cut_tree(t_tree_node *root);
+void		goodbye_minishell(t_envtree *env, t_parsing *parsing);
 
 #endif

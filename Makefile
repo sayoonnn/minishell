@@ -68,12 +68,12 @@ B_UTILS	=	$(UTILS:%.c=%_bonus.c)
 B_SUBS	=	$(SUBS:%.c=%_bonus.c)\
 			wildcards_bonus.c
 
-M_SRC		=	main.c\
-				$(BUILTIN)\
-				$(EXECVE)\
-				$(PARS)\
-				$(UTILS)\
-				$(SUBS)
+M_SRC	=	main.c\
+			$(BUILTIN)\
+			$(EXECVE)\
+			$(PARS)\
+			$(UTILS)\
+			$(SUBS)
 
 B_SRC	=	main_bonus.c\
 			$(B_BUILTIN)\
@@ -96,8 +96,6 @@ LIBFTA	= libft/libft.a
 
 CC		= cc
 CFLAGS	= -Wall -Werror -Wextra 
-#-g -fsanitize=address
-
 
 ifdef IS_BONUS
 	DIR	= $(BONUS)
