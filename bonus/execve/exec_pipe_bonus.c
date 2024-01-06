@@ -63,6 +63,8 @@ static void	todo_parent(int pipe_fd[2], int n)
 		dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
 	}
+	else
+		close(STDIN_FILENO);
 }
 
 void	exec_pipe_cmd(t_tree_node *node, t_envtree *env, \

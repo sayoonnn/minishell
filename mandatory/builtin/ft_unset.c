@@ -19,6 +19,12 @@ int	ft_unset(t_envtree *env, char *arg[])
 	i = 1;
 	while (arg[i])
 	{
+		if (!check_is_valid(arg[i]))
+		{
+			ft_printf(2, "minishell: unset: `%s': not a valid identifier\n", \
+			arg[i]);
+			return (fail);
+		}
 		if (find_envnode(env->root, arg[i]))
 		{
 			env->num_nodes--;

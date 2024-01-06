@@ -12,20 +12,18 @@
 
 #include "minishell.h"
 
-#include <limits.h>
-#include <unistd.h>
-#include <stdio.h>
-
 int	ft_pwd(void)
 {
-	char	path[PATH_MAX];
+	char	*path;
 
-	if (!getcwd(path, sizeof(path)))
+	path = getcwd(NULL, PATH_MAX);
+	if (!path)
 	{
-		ft_printf(2, "minishell: pwd: ");
-		perror("");
+		ft_printf(2, "minishell: ");
+		perror("getcwd: cannot access parent directories");
 		return (1);
 	}
 	printf("%s\n", path);
-	return (0);
+	free(path);
+	return (success);
 }
