@@ -41,7 +41,6 @@ static void	write_to_pipe(char *line, t_envtree *env, int pipe_fd)
 
 static int	close_and_return(int pipe[2])
 {
-	set_signal();
 	close(pipe[0]);
 	close(pipe[1]);
 	return (-1);

@@ -14,30 +14,30 @@
 
 int	g_errcode = 0;
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
 	char		*line;
 	t_envtree	*env;
 	t_parsing	*parsing;
-	extern char	**environ;
 
 	startup_minishell();
 	set_signal();
-	env = init_envp(environ);
+	env = init_envp(envp);
 	parsing = init_parsing_tool();
 	while (true)
 	{
 		line = get_input();
-		add_history(line);
 		if (!line)
 			break ;
+		if (*line != 0)
+			add_history(line);
 		if (!parse_line(line, parsing))
 			continue ;
 		excute_hub(parsing->root, env);
 		clean_parsing_tools(parsing);
 		free(line);
 	}
-	set_child_signal();
-	free_minishell_data(env, parsing);
-	exit(g_errcode);
+	goodbye_minishell(env, parsing);
 }
+
+

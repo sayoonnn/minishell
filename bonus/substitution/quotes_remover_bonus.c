@@ -53,32 +53,3 @@ char	*remove_quote(char *str)
 		return (NULL);
 	return (res);
 }
-
-int	remove_all_quotes(t_list *res, char **ref)
-{
-	char	**strs;
-	char	*terminating;
-	size_t	idx;
-	t_node	*new;
-
-	strs = ft_split_white(*ref);
-	if (strs == NULL)
-		return (1);
-	idx = 0;
-	while (strs[idx] != 0)
-	{
-		terminating = remove_quote(strs[idx++]);
-		new = ft_lstnew(terminating);
-		if (terminating == NULL || new == NULL)
-		{
-			if (terminating)
-				free(terminating);
-			free_perfectly_split(strs);
-			return (1);
-		}
-		ft_lstadd_back(res, new);
-	}
-	free_perfectly_split(strs);
-	free(*ref);
-	return (0);
-}

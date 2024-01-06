@@ -57,17 +57,10 @@ static void	change_fd(t_tree_node *node, int save_fd[2])
 	}
 }
 
-void	exec_single_cmd(t_tree_node *node, t_envtree *env)
+static void	excute_command(char **argv, t_envtree *env, int save_fd[2])
 {
-	int		save_fd[2];
-	char	**argv;
 	pid_t	pid;
 
-	argv = convert_word_lst_to_array(node->left->contents, env);
-	find_fd(node->right, node->fd);
-	if (*argv == NULL)
-		return ;
-	change_fd(node, save_fd);
 	if (is_builtin(argv[0]))
 	{
 		exec_builtin(argv[0], argv, env);
@@ -83,4 +76,21 @@ void	exec_single_cmd(t_tree_node *node, t_envtree *env)
 		else
 			todo_parent(argv, save_fd);
 	}
+}
+
+void	exec_single_cmd(t_tree_node *node, t_envtree *env)
+{
+	int		save_fd[2];
+	char	**argv;
+
+	argv = convert_word_lst_to_array(node->left->contents, env);
+	find_fd(node->right, node->fd);
+	if (*argv == NULL)
+	{
+		free(argv);
+		g_errcode = 0;
+		return ;
+	}
+	change_fd(node, save_fd);
+	excute_command(argv, env, save_fd);
 }
