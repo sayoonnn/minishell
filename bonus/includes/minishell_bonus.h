@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef MINISHELL_BONUS_H
+# define MINISHELL_BONUS_H
 
 # include <stdio.h>
 # include <stdlib.h>

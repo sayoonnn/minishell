@@ -26,6 +26,7 @@ int	cknopen(char *file_name, int io_fd[2], int type, t_envtree *env)
 	}
 	return (true);
 }
+
 int	open_in_file(char *file_name)
 {
 	int	fd;

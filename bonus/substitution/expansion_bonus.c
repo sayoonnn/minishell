@@ -49,7 +49,8 @@ static void	split_n_add(t_list *ret, char *str)
 	free(str);
 }
 
-static void	trim_quote(t_list *ret, char *str)
+
+static void	trim_quote(t_list *ret, char *str, int *is_wild)
 {
 	char	*tmp;
 	int		is_quoted;
@@ -61,7 +62,11 @@ static void	trim_quote(t_list *ret, char *str)
 		is_quoted = true;
 	}
 	else
+	{
 		tmp = ft_strdup(str);
+		if (is_there_wild(str))
+			*is_wild = true;
+	}
 	if (is_there_white(tmp) && !is_quoted)
 		split_n_add(ret, tmp);
 	else
@@ -106,22 +111,26 @@ t_list	*expansion(char *str, t_envtree *env)
 	t_list	*ret;
 	t_node	*word;
 	char	*refined;
+	int		is_wild;
 
 	word_split = ft_lstcreate();
 	ret = ft_lstcreate();
 	add_to_lst(word_split, str);
 	word = word_split->head;
+	is_wild = false;
 	while (word != NULL)
 	{
 		refined = ft_strdup("");
 		if (substitute_dollar(word->content, env, &refined))
 			exit(1);
 		if (*refined != 0)
-			trim_quote(ret, refined);
+			trim_quote(ret, refined, &is_wild);
 		free(refined);
 		word = word->next;
 	}
 	ret = remove_null_node(ret);
+	if (is_wild)
+		ret = substitute_wilds(ret);
 	ft_lstclear(word_split);
 	free(word_split);
 	return (ret);

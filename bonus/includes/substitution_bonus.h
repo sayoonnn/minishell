@@ -32,5 +32,8 @@ void	add_to_lst(t_list *tmp, char *str);
 int		is_there_white(char *str);
 int		get_sublen(char *str, char cur);
 void	sum_lst(t_list *dst, t_list *src);
+t_list	*make_pattern_match_list(char *pattern);
+int		is_there_wild(char *str);
+t_list	*substitute_wilds(t_list *lst);
 
 #endif

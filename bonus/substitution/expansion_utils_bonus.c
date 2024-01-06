@@ -23,6 +23,17 @@ int	is_there_white(char *str)
 	return (false);
 }
 
+int	is_there_wild(char *str)
+{
+	while (*str)
+	{
+		if (*str == '*')
+			return (true);
+		str++;
+	}
+	return (false);
+}
+
 int	get_sublen(char *str, char cur)
 {
 	int	size;

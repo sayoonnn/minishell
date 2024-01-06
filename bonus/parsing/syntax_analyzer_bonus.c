@@ -87,7 +87,7 @@ int	analyze_syntax(t_tree_node **root, t_parsing *ps)
 				break ;
 		}
 		else if (token_type == CMD || token_type == ARGV)
-			check = connect_cmd_argv_content(root, ps->tokens, ps);
+			check = check_word_syntax_error(root, ps->tokens, ps);
 		else if (token_type == REDIRECTION)
 			check = insert_rd_list(root, ps->tokens, ps);
 		else if (token_type == PIPE || token_type == LIST)

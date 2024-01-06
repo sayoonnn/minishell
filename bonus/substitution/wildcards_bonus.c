@@ -50,6 +50,8 @@ t_list	*make_pattern_match_list(char *pattern)
 	dir = opendir(".");
 	if (!dir)
 		return (NULL);
+	if (!tmp)
+		exit(1);
 	cur_file = readdir(dir);
 	while (cur_file)
 	{
@@ -63,5 +65,45 @@ t_list	*make_pattern_match_list(char *pattern)
 		cur_file = readdir(dir);
 	}
 	closedir(dir);
+	return (tmp);
+}
+
+t_list	*substitute_wilds(t_list *lst)
+{
+	t_list	*tmp;
+	t_list	*subed;
+	t_node	*dump;
+	t_node	*cur;
+
+	tmp = ft_lstcreate();
+	cur = lst->head;
+	while (cur)
+	{
+		if (is_there_wild(cur->content))
+		{	
+			subed = make_pattern_match_list(cur->content);
+			if (subed->head == NULL)
+			{
+				ft_lstadd_back(tmp, cur);
+				cur = cur->next;
+			}
+			else
+			{
+				ft_lstadd_back(tmp, subed->head);
+				while (tmp->tail->next != NULL)
+					tmp->tail = tmp->tail->next;
+				dump = cur;
+				cur = cur->next;
+				ft_lstdelone(dump);
+			}
+			free(subed);
+		}
+		else
+		{
+			ft_lstadd_back(tmp, cur);
+			cur = cur->next;
+		}
+	}
+	free(lst);
 	return (tmp);
 }
