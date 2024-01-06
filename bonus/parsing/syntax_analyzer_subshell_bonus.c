@@ -21,12 +21,11 @@ int	insert_subshell(t_tree_node **root, t_parsing *ps)
 		return (1);
 	if (*root == NULL)
 		*root = subsh;
-	else if (((*root)->token_type == PIPE
-		|| (*root)->token_type == OR || (*root)->token_type == AND)
-		&& (*root)->right == NULL)
+	else if (((*root)->token_type == PIPE || (*root)->token_type == OR \
+	|| (*root)->token_type == AND) && (*root)->right == NULL)
 		(*root)->right = subsh;
-	else if (((*root)->token_type == OR || (*root)->token_type == AND
-		|| (*root)->right->token_type == PIPE) && (*root)->right->right == NULL)
+	else if (((*root)->token_type == OR || (*root)->token_type == AND \
+	|| (*root)->right->token_type == PIPE) && (*root)->right->right == NULL)
 		(*root)->right->right = subsh;
 	ps->subsh_cnt += 1;
 	deque_pop_front(ps->tokens);

@@ -17,13 +17,11 @@ int	connect_cmd_argv_content(t_tree_node **root, t_deque *tokens, t_parsing *ps)
 	t_node	*new;
 	char	*content;
 
-	if (*root == NULL
-		|| (((*root)->token_type == PIPE
-			|| ((*root)->token_type == AND || (*root)->token_type == OR))
-				&& (*root)->right == NULL)
-		|| (((*root)->token_type == AND || (*root)->token_type == OR)
-			&& (*root)->right->token_type == PIPE
-			&& (*root)->right->right == NULL))
+	if (*root == NULL || (((*root)->token_type == PIPE \
+	|| ((*root)->token_type == AND || (*root)->token_type == OR)) \
+	&& (*root)->right == NULL) || (((*root)->token_type == AND \
+	|| (*root)->token_type == OR) && (*root)->right->token_type == PIPE \
+	&& (*root)->right->right == NULL))
 	{
 		if (insert_cmd_info_token(root, ps))
 			return (1);

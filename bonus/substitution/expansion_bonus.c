@@ -49,7 +49,6 @@ static void	split_n_add(t_list *ret, char *str)
 	free(str);
 }
 
-
 static void	trim_quote(t_list *ret, char *str, int *is_wild)
 {
 	char	*tmp;

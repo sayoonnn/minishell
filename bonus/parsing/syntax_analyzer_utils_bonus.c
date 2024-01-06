@@ -40,8 +40,8 @@ int	check_subshell(t_tree_node **root)
 {
 	if (*root == NULL)
 		return (0);
-	if (((*root)->token_type == AND || (*root)->token_type == OR)
-			&& (*root)->right == NULL)
+	if (((*root)->token_type == AND || (*root)->token_type == OR) \
+	&& (*root)->right == NULL)
 		return (0);
 	return (1);
 }

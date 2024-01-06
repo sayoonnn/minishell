@@ -110,6 +110,34 @@ int	substitute_dollar(char *content, t_envtree *env, char **ref)
 	return (ft_strjoin_in_depend(ref, content, &start, &idx));
 }
 
+int	substitute_dollar_heredoc(char *content, t_envtree *env, char **ref)
+{
+	size_t	start;
+	size_t	idx;
+	char	quote;
+	char	*value;
+
+	start = 0;
+	idx = 0;
+	quote = 0;
+	while (content[idx])
+	{
+		if (content[idx] == '$')
+		{
+			if (ft_strjoin_in_depend(ref, content, &start, &idx))
+				return (1);
+			start = idx;
+			value = handle_dollar(content, env, &idx, &quote);
+			if (ft_strjoin_with_value(ref, value))
+				return (1);
+			start = idx;
+			continue ;
+		}
+		idx++;
+	}
+	return (ft_strjoin_in_depend(ref, content, &start, &idx));
+}
+
 t_list	*interprete_words(t_list *contents, t_envtree *env)
 {
 	t_list	*res;

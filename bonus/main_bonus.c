@@ -41,5 +41,3 @@ int	main(int ac, char **av, char **envp)
 	}
 	goodbye_minishell(env, parsing);
 }
-
-

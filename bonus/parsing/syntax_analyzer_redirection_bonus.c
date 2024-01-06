@@ -98,9 +98,8 @@ int	insert_cmd_info_token(t_tree_node **root, t_parsing *ps)
 		return (1);
 	if (*root == NULL)
 		*root = cmd;
-	if (((*root)->token_type == PIPE
-		|| ((*root)->token_type == AND || (*root)->token_type == OR))
-		&& (*root)->right == NULL)
+	if (((*root)->token_type == PIPE || ((*root)->token_type == AND \
+	|| (*root)->token_type == OR)) && (*root)->right == NULL)
 		(*root)->right = cmd;
 	if ((((*root)->token_type == AND || (*root)->token_type == OR)
 			&& (*root)->right->token_type == PIPE

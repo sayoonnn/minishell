@@ -32,7 +32,7 @@ static void	write_to_pipe(char *line, t_envtree *env, int pipe_fd)
 	char	*tmp;
 
 	tmp = ft_strdup("");
-	substitute_dollar(line, env, &tmp);
+	substitute_dollar_heredoc(line, env, &tmp);
 	ft_printf(pipe_fd, "%s\n", tmp);
 	free(tmp);
 	free(line);
