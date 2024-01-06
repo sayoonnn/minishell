@@ -80,7 +80,6 @@ int				ft_lstsize(t_list *lst);
 t_node			*ft_lstlast(t_list *lst);
 void			ft_lstdelone(t_node *argv);
 void			ft_lstclear(t_list *lst);
-char			**ft_split(char const *s);
 
 // printf
 int				ft_printf(int fd, const char *str, ...);

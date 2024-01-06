@@ -29,7 +29,6 @@ SRC		= ft_atoi.c ft_bzero.c ft_calloc.c \
 		  \
 		  list/ft_lstadd_back.c list/ft_lstclear.c list/ft_lstcreate.c\
 		  list/ft_lstdelone.c list/ft_lstlast.c list/ft_lstnew.c list/ft_lstsize.c\
-		  list/ft_split.c
 
 OBJ		= $(SRC:.c=.o)
 
