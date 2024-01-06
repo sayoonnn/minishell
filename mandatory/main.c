@@ -29,10 +29,10 @@ int	main(int ac, char **av, char **envp)
 	while (true)
 	{
 		line = get_input();
-		if (*line != 0)
-			add_history(line);
 		if (!line)
 			break ;
+		if (*line != 0)
+			add_history(line);
 		if (!parse_line(line, parsing))
 			continue ;
 		excute_hub(parsing->root, env);
