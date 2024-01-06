@@ -44,6 +44,7 @@ static int	is_ambiguous(char *before, t_list *lst)
 	{
 		ft_printf(2, "minishell: %s: ambiguous redirect\n", before);
 		ft_lstclear(lst);
+		free(lst);
 		return (true);
 	}
 	return (false);

@@ -12,7 +12,7 @@
 
 #include "minishell_bonus.h"
 
-static void	join_str_to_lastnode(t_list *res, char *str)
+void	join_str_to_lastnode(t_list *res, char *str)
 {
 	t_node	*lastnode;
 	t_node	*newnode;
@@ -33,7 +33,7 @@ static void	join_str_to_lastnode(t_list *res, char *str)
 	lastnode->content = tmp;
 }
 
-static void	split_n_add(t_list *ret, char *str)
+void	split_n_add(t_list *ret, char *str)
 {
 	char	**splited;
 	int		i;
@@ -47,34 +47,6 @@ static void	split_n_add(t_list *ret, char *str)
 	ft_lstadd_back(ret, ft_lstnew(NULL));
 	free(splited);
 	free(str);
-}
-
-static void	trim_quote(t_list *ret, char *str, int *is_wild)
-{
-	char	*tmp;
-	int		is_quoted;
-
-	is_quoted = false;
-	if (is_quote(*str))
-	{
-		tmp = ft_substr(str, 1, ft_strlen(str) - 2);
-		is_quoted = true;
-	}
-	else
-	{
-		tmp = ft_strdup(str);
-		if (is_there_wild(str))
-			*is_wild = true;
-	}
-	if (is_there_white(tmp) && !is_quoted)
-		split_n_add(ret, tmp);
-	else
-	{
-		if (ft_lstsize(ret) != 0 && ret->tail->content == NULL)
-			ft_lstadd_back(ret, ft_lstnew(tmp));
-		else
-			join_str_to_lastnode(ret, tmp);
-	}
 }
 
 static t_list	*remove_null_node(t_list *lst)
@@ -104,6 +76,17 @@ static t_list	*remove_null_node(t_list *lst)
 	return (tmp);
 }
 
+static void	make_list(t_list **word_split, t_list **ret, char *str)
+{
+	*word_split = ft_lstcreate();
+	if (!*word_split)
+		exit(1);
+	*ret = ft_lstcreate();
+	if (!*ret)
+		exit(1);
+	add_to_lst(*word_split, str);
+}
+
 t_list	*expansion(char *str, t_envtree *env)
 {
 	t_list	*word_split;
@@ -112,9 +95,7 @@ t_list	*expansion(char *str, t_envtree *env)
 	char	*refined;
 	int		is_wild;
 
-	word_split = ft_lstcreate();
-	ret = ft_lstcreate();
-	add_to_lst(word_split, str);
+	make_list(&word_split, &ret, str);
 	word = word_split->head;
 	is_wild = false;
 	while (word != NULL)

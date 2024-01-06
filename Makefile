@@ -83,6 +83,14 @@ B_SRC	=	main_bonus.c\
 			$(B_SUBS)
 
 
+ifdef IS_BONUS
+	DIR	= $(BONUS)
+	SRC = $(B_SRC)
+else
+	DIR = $(MAND)
+	SRC = $(M_SRC)
+endif
+
 OBJDIR	=	.objs
 OBJ		=	$(SRC:%.c=$(OBJDIR)/%.o)
 
@@ -95,15 +103,7 @@ LIBFT	= libft
 LIBFTA	= libft/libft.a
 
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra 
-
-ifdef IS_BONUS
-	DIR	= $(BONUS)
-	SRC = $(B_SRC)
-else
-	DIR = $(MAND)
-	SRC = $(M_SRC)
-endif
+CFLAGS	= -Wall -Werror -Wextra
 
 vpath %.c	$(addprefix $(DIR), /.\
 			$(addprefix /builtin, /.)\

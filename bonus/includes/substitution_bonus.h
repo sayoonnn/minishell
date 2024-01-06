@@ -35,5 +35,9 @@ void	sum_lst(t_list *dst, t_list *src);
 t_list	*make_pattern_match_list(char *pattern);
 int		is_there_wild(char *str);
 t_list	*substitute_wilds(t_list *lst);
+void	trim_quote(t_list *ret, char *str, int *is_wild);
+void	split_n_add(t_list *ret, char *str);
+void	join_str_to_lastnode(t_list *res, char *str);
+int		ft_strjoin_with_value(char **refine, char *value);
 
 #endif

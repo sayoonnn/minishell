@@ -42,7 +42,7 @@ static int	check_pattern(char	*pattern, char *fname)
 t_list	*make_pattern_match_list(char *pattern)
 {
 	DIR				*dir;
-	struct dirent	*cur_file;
+	struct dirent	*file;
 	t_list			*tmp;
 	t_node			*newnode;
 
@@ -52,27 +52,48 @@ t_list	*make_pattern_match_list(char *pattern)
 		return (NULL);
 	if (!tmp)
 		exit(1);
-	cur_file = readdir(dir);
-	while (cur_file)
+	file = readdir(dir);
+	while (file)
 	{
-		if (check_pattern(pattern, cur_file->d_name) && *(cur_file->d_name) != '.')
+		if (check_pattern(pattern, file->d_name) && *(file->d_name) != '.')
 		{
-			newnode = ft_lstnew(ft_strdup(cur_file->d_name));
+			newnode = ft_lstnew(ft_strdup(file->d_name));
 			if (!newnode)
 				exit(1);
 			ft_lstadd_back(tmp, newnode);
 		}
-		cur_file = readdir(dir);
+		file = readdir(dir);
 	}
 	closedir(dir);
 	return (tmp);
 }
 
+static void	wildcard_handler(t_list *tmp, t_node **cur)
+{
+	t_node	*dump;
+	t_list	*subed;
+
+	subed = make_pattern_match_list((*cur)->content);
+	if (subed->head == NULL)
+	{
+		ft_lstadd_back(tmp, *cur);
+		*cur = (*cur)->next;
+	}
+	else
+	{
+		ft_lstadd_back(tmp, subed->head);
+		while (tmp->tail->next != NULL)
+			tmp->tail = tmp->tail->next;
+		dump = *cur;
+		*cur = (*cur)->next;
+		ft_lstdelone(dump);
+	}
+	free(subed);
+}
+
 t_list	*substitute_wilds(t_list *lst)
 {
 	t_list	*tmp;
-	t_list	*subed;
-	t_node	*dump;
 	t_node	*cur;
 
 	tmp = ft_lstcreate();
@@ -80,24 +101,7 @@ t_list	*substitute_wilds(t_list *lst)
 	while (cur)
 	{
 		if (is_there_wild(cur->content))
-		{	
-			subed = make_pattern_match_list(cur->content);
-			if (subed->head == NULL)
-			{
-				ft_lstadd_back(tmp, cur);
-				cur = cur->next;
-			}
-			else
-			{
-				ft_lstadd_back(tmp, subed->head);
-				while (tmp->tail->next != NULL)
-					tmp->tail = tmp->tail->next;
-				dump = cur;
-				cur = cur->next;
-				ft_lstdelone(dump);
-			}
-			free(subed);
-		}
+			wildcard_handler(tmp, &cur);
 		else
 		{
 			ft_lstadd_back(tmp, cur);

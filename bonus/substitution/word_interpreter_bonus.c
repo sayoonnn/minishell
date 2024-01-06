@@ -66,21 +66,6 @@ char	*handle_dollar(char *cont, t_envtree *env, size_t *idx, char *quote)
 	return (res);
 }
 
-int	ft_strjoin_with_value(char **refine, char *value)
-{
-	char	*res;
-
-	if (value == NULL)
-		return (1);
-	res = ft_strjoin(*refine, value);
-	free(*refine);
-	free(value);
-	if (res == NULL)
-		return (1);
-	*refine = res;
-	return (0);
-}
-
 int	substitute_dollar(char *content, t_envtree *env, char **ref)
 {
 	size_t	start;

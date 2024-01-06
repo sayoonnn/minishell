@@ -53,3 +53,31 @@ char	*remove_quote(char *str)
 		return (NULL);
 	return (res);
 }
+
+void	trim_quote(t_list *ret, char *str, int *is_wild)
+{
+	char	*tmp;
+	int		is_quoted;
+
+	is_quoted = false;
+	if (is_quote(*str))
+	{
+		tmp = ft_substr(str, 1, ft_strlen(str) - 2);
+		is_quoted = true;
+	}
+	else
+	{
+		tmp = ft_strdup(str);
+		if (is_there_wild(str))
+			*is_wild = true;
+	}
+	if (is_there_white(tmp) && !is_quoted)
+		split_n_add(ret, tmp);
+	else
+	{
+		if (ft_lstsize(ret) != 0 && ret->tail->content == NULL)
+			ft_lstadd_back(ret, ft_lstnew(tmp));
+		else
+			join_str_to_lastnode(ret, tmp);
+	}
+}
