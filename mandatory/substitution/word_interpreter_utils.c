@@ -53,3 +53,18 @@ void	update_quote_info(char ch, char *quote)
 	else if (is_quote(ch) && *quote == ch)
 		*quote = 0;
 }
+
+int	ft_strjoin_with_value(char **refine, char *value)
+{
+	char	*res;
+
+	if (value == NULL)
+		return (1);
+	res = ft_strjoin(*refine, value);
+	free(*refine);
+	free(value);
+	if (res == NULL)
+		return (1);
+	*refine = res;
+	return (0);
+}

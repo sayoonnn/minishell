@@ -31,5 +31,7 @@ void	add_to_lst(t_list *tmp, char *str);
 int		is_there_white(char *str);
 int		get_sublen(char *str, char cur);
 void	sum_lst(t_list *dst, t_list *src);
+int		substitute_dollar_heredoc(char *content, t_envtree *env, char **ref);
+int		ft_strjoin_with_value(char **refine, char *value);
 
 #endif

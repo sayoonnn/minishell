@@ -66,21 +66,6 @@ char	*handle_dollar(char *cont, t_envtree *env, size_t *idx, char *quote)
 	return (res);
 }
 
-int	ft_strjoin_with_value(char **refine, char *value)
-{
-	char	*res;
-
-	if (value == NULL)
-		return (1);
-	res = ft_strjoin(*refine, value);
-	free(*refine);
-	free(value);
-	if (res == NULL)
-		return (1);
-	*refine = res;
-	return (0);
-}
-
 int	substitute_dollar(char *content, t_envtree *env, char **ref)
 {
 	size_t	start;
@@ -95,6 +80,34 @@ int	substitute_dollar(char *content, t_envtree *env, char **ref)
 	{
 		update_quote_info(content[idx], &quote);
 		if (content[idx] == '$' && quote != '\'')
+		{
+			if (ft_strjoin_in_depend(ref, content, &start, &idx))
+				return (1);
+			start = idx;
+			value = handle_dollar(content, env, &idx, &quote);
+			if (ft_strjoin_with_value(ref, value))
+				return (1);
+			start = idx;
+			continue ;
+		}
+		idx++;
+	}
+	return (ft_strjoin_in_depend(ref, content, &start, &idx));
+}
+
+int	substitute_dollar_heredoc(char *content, t_envtree *env, char **ref)
+{
+	size_t	start;
+	size_t	idx;
+	char	quote;
+	char	*value;
+
+	start = 0;
+	idx = 0;
+	quote = 0;
+	while (content[idx])
+	{
+		if (content[idx] == '$')
 		{
 			if (ft_strjoin_in_depend(ref, content, &start, &idx))
 				return (1);

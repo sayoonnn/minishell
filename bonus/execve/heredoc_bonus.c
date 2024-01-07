@@ -38,10 +38,11 @@ static void	write_to_pipe(char *line, t_envtree *env, int pipe_fd)
 	free(line);
 }
 
-static int	close_and_return(int pipe[2])
+static int	close_and_return(int pipe[2], char *line)
 {
 	close(pipe[0]);
 	close(pipe[1]);
+	free(line);
 	return (-1);
 }
 
@@ -59,7 +60,7 @@ int	get_heredoc_fd(char *delimiter, t_envtree *env)
 	{
 		line = readline("> ");
 		if (rl_done == 1 && g_errcode == 1)
-			return (close_and_return(pipe_fd));
+			return (close_and_return(pipe_fd, line));
 		if (!line)
 			break ;
 		if (!ft_strncmp(line, delimiter, ft_strlen(line) + 1))

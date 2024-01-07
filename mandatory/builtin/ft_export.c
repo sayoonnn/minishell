@@ -44,6 +44,14 @@ static char	*get_value(char *str)
 	return (ret);
 }
 
+static int	print_err_and_free(char *key, char *value)
+{
+	ft_printf(2, "minishell: export: `%s': %s\n", key, ERR_IDENIFIER);
+	free(key);
+	free(value);
+	return (fail);
+}
+
 int	ft_export(char *arg[], t_envtree *env)
 {
 	char	*key;
@@ -61,8 +69,7 @@ int	ft_export(char *arg[], t_envtree *env)
 		value = get_value(arg[i]);
 		if (!check_is_valid(key))
 		{
-			ft_printf(2, "minishell: export: `%s': %s\n", arg[i], ERR_IDENIFIER);
-			ret = fail;
+			ret = print_err_and_free(key, value);
 			continue ;
 		}
 		check_n_add(key, value, env);

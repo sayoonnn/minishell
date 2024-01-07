@@ -21,6 +21,7 @@ int	ft_pwd(void)
 	{
 		ft_printf(2, "minishell: ");
 		perror("getcwd: cannot access parent directories");
+		free(path);
 		return (1);
 	}
 	printf("%s\n", path);

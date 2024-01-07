@@ -49,12 +49,12 @@ int	ft_echo(char *argv[])
 	start = find_start_idx(argv, &nflag);
 	while (argv[start])
 	{
-		printf("%s", argv[start]);
+		ft_printf(1, "%s", argv[start]);
 		if (argv[start + 1] != NULL)
-			printf(" ");
+			ft_printf(1, " ");
 		start++;
 	}
 	if (!nflag)
-		printf("\n");
+		ft_printf(1, "\n");
 	return (success);
 }
