@@ -63,7 +63,7 @@ int	check_is_valid(char *key)
 		return (false);
 	while (key[i])
 	{
-		if (i == 0 && !(ft_isalpha(key[i]) && key[i] != '_'))
+		if (i == 0 && (!ft_isalpha(key[i]) && key[i] != '_'))
 			return (false);
 		if (key[i] == '_')
 		{
