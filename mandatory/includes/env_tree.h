@@ -23,5 +23,6 @@ t_envnode	*delete_envnode(t_envnode *env, char *str);
 t_envnode	*find_envnode(t_envnode *root, char *key);
 void		add_env(t_envtree *env, t_envnode *newnode);
 void		clear_node(t_envnode *env);
+void		free_node(t_envnode *node);
 
 #endif

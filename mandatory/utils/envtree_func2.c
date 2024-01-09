@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	free_node(t_envnode *node)
+void	free_node(t_envnode *node)
 {
 	free(node->key);
 	free(node->value);
