@@ -56,10 +56,23 @@ static void	make_forarr(t_envnode *env, char *key, char *value)
 	env->forarr = ret;
 }
 
+void	find_n_delete(t_envnode *env, t_envnode *del)
+{
+	while (del->left != NULL)
+		del = del->left;
+	free(env->key);
+	free(env->value);
+	env->key = ft_strdup(del->key);
+	if (env->value)
+		env->value = ft_strdup(del->value);
+	else
+		env->value = NULL;
+	make_forarr(env, env->key, env->value);
+	env->right = delete_envnode(env->right, env->key);
+}
+
 t_envnode	*delete_envnode(t_envnode *env, char *str)
 {
-	t_envnode	*tmp;
-
 	if (env == NULL)
 		return (NULL);
 	if (ft_strcmp(env->key, str) > 0)
@@ -72,24 +85,8 @@ t_envnode	*delete_envnode(t_envnode *env, char *str)
 		|| (env->right != NULL && env->left == NULL) \
 		|| (env->left != NULL && env->right == NULL))
 			return (delete_leafnode(env));
-		tmp = env->right;
-		while (tmp->left != NULL)
-			tmp = tmp->left;
-		free(env->key);
-		free(env->value);
-		env->key = ft_strdup(tmp->key);
-		env->value = ft_strdup(tmp->value);
-		make_forarr(env, env->key, env->value);
-		env->right = delete_envnode(env->right, env->key);
+		else
+			find_n_delete(env, env->right);
 	}
 	return (env);
-}
-
-void	clear_node(t_envnode *env)
-{
-	if (env == NULL)
-		return ;
-	clear_node(env->left);
-	clear_node(env->right);
-	free_node(env);
 }

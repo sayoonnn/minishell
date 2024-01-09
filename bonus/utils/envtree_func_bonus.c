@@ -80,3 +80,12 @@ t_envnode	*find_envnode(t_envnode *root, char *key)
 		return (find_envnode(root->right, key));
 	return (root);
 }
+
+void	clear_node(t_envnode *env)
+{
+	if (env == NULL)
+		return ;
+	clear_node(env->left);
+	clear_node(env->right);
+	free_node(env);
+}
