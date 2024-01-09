@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_analyzer_subshell.c                         :+:      :+:    :+:   */
+/*   syntax_analyzer_subshell_bonus.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: devpark <devpark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jonghopa <jonghopa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 17:18:35 by devpark           #+#    #+#             */
-/*   Updated: 2024/01/04 17:28:38 by devpark          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:14:54 by jonghopa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	end_subshell(t_tree_node **root, t_deque *tokens, t_parsing *ps)
 	if (*root == NULL || ps->subsh_cnt == 0)
 		return (print_syntax_token_error(tokens->front->content));
 	if (tokens->front->right != NULL
-		&& tokens->front->right->token_type != LIST)
+		&& (tokens->front->right->token_type != LIST
+			&& tokens->front->right->token_type != RPAREN))
 		return (print_syntax_token_error(tokens->front->right->content));
 	ps->subsh_cnt -= 1;
 	deque_pop_front(tokens);
