@@ -49,13 +49,13 @@ static void	split_n_add(t_list *ret, char *str)
 	free(str);
 }
 
-static void	trim_quote(t_list *ret, char *str)
+static void	trim_quote(t_list *ret, char *str, int in_quote)
 {
 	char	*tmp;
 	int		is_quoted;
 
 	is_quoted = false;
-	if (is_quote(*str))
+	if (is_quote(*str) && in_quote)
 	{
 		tmp = ft_substr(str, 1, ft_strlen(str) - 2);
 		is_quoted = true;
@@ -102,27 +102,25 @@ static t_list	*remove_null_node(t_list *lst)
 
 t_list	*expansion(char *str, t_envtree *env)
 {
-	t_list	*word_split;
-	t_list	*ret;
-	t_node	*word;
-	char	*refined;
+	t_deque			*word_split;
+	t_list			*ret;
+	char			*refined;
 
-	word_split = ft_lstcreate();
+	word_split = deque_create();
 	ret = ft_lstcreate();
-	add_to_lst(word_split, str);
-	word = word_split->head;
-	while (word != NULL)
+	tokenize_and_add(word_split, str);
+	while (word_split->front != NULL)
 	{
 		refined = ft_strdup("");
-		if (substitute_dollar(word->content, env, &refined))
+		if (substitute_dollar(word_split->front->content, env, &refined))
 			exit(1);
 		if (*refined != 0)
-			trim_quote(ret, refined);
+			trim_quote(ret, refined, word_split->front->token_type);
 		free(refined);
-		word = word->next;
+		deque_pop_front(word_split);
 	}
 	ret = remove_null_node(ret);
-	ft_lstclear(word_split);
+	deque_clear(word_split);
 	free(word_split);
 	return (ret);
 }

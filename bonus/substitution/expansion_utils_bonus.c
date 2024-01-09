@@ -51,7 +51,7 @@ int	get_sublen(char *str, char cur)
 	return (size);
 }
 
-void	add_to_lst(t_list *tmp, char *str)
+void	tokenize_and_add(t_deque *tmp, char *str)
 {
 	int		start;
 	int		len;
@@ -69,7 +69,10 @@ void	add_to_lst(t_list *tmp, char *str)
 		if (is_quote(str[start]))
 			len += 2;
 		sub_str = ft_substr(str, start, len);
-		ft_lstadd_back(tmp, ft_lstnew(sub_str));
+		if (is_quote(str[start]))
+			deque_push_back(tmp, QUOTE, sub_str);
+		else
+			deque_push_back(tmp, WORD, sub_str);
 		start += len;
 	}
 }

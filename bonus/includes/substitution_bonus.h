@@ -16,6 +16,9 @@
 # include "env_tree_bonus.h"
 # include "types_bonus.h"
 
+# define WORD 0
+# define QUOTE 1
+
 extern int	g_errcode;
 
 char	**ft_split_white(char const *s);
@@ -28,14 +31,14 @@ void	update_quote_info(char ch, char *quote);
 int		substitute_dollar(char *content, t_envtree *env, char **ref);
 int		substitute_dollar_heredoc(char *content, t_envtree *env, char **ref);
 char	*remove_quote(char *str);
-void	add_to_lst(t_list *tmp, char *str);
+void	tokenize_and_add(t_deque *tmp, char *str);
 int		is_there_white(char *str);
 int		get_sublen(char *str, char cur);
 void	sum_lst(t_list *dst, t_list *src);
 t_list	*make_pattern_match_list(char *pattern);
 int		is_there_wild(char *str);
 t_list	*substitute_wilds(t_list *lst);
-void	trim_quote(t_list *ret, char *str, int *is_wild);
+void	trim_quote(t_list *ret, char *str, int is_quoted, int *is_wild);
 void	split_n_add(t_list *ret, char *str);
 void	join_str_to_lastnode(t_list *res, char *str);
 int		ft_strjoin_with_value(char **refine, char *value);

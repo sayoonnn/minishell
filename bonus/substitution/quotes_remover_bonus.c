@@ -54,13 +54,13 @@ char	*remove_quote(char *str)
 	return (res);
 }
 
-void	trim_quote(t_list *ret, char *str, int *is_wild)
+void	trim_quote(t_list *ret, char *str, int in_quote, int *is_wild)
 {
 	char	*tmp;
 	int		is_quoted;
 
 	is_quoted = false;
-	if (is_quote(*str))
+	if (is_quote(*str) && in_quote)
 	{
 		tmp = ft_substr(str, 1, ft_strlen(str) - 2);
 		is_quoted = true;
@@ -68,7 +68,7 @@ void	trim_quote(t_list *ret, char *str, int *is_wild)
 	else
 	{
 		tmp = ft_strdup(str);
-		if (is_there_wild(str))
+		if (is_there_wild(str) && !in_quote)
 			*is_wild = true;
 	}
 	if (is_there_white(tmp) && !is_quoted)

@@ -76,42 +76,31 @@ static t_list	*remove_null_node(t_list *lst)
 	return (tmp);
 }
 
-static void	make_list(t_list **word_split, t_list **ret, char *str)
-{
-	*word_split = ft_lstcreate();
-	if (!*word_split)
-		exit(1);
-	*ret = ft_lstcreate();
-	if (!*ret)
-		exit(1);
-	add_to_lst(*word_split, str);
-}
-
 t_list	*expansion(char *str, t_envtree *env)
 {
-	t_list	*word_split;
+	t_deque	*word_split;
 	t_list	*ret;
-	t_node	*word;
 	char	*refined;
 	int		is_wild;
 
-	make_list(&word_split, &ret, str);
-	word = word_split->head;
+	word_split = deque_create();
+	ret = ft_lstcreate();
+	tokenize_and_add(word_split, str);
 	is_wild = false;
-	while (word != NULL)
+	while (word_split->front != NULL)
 	{
 		refined = ft_strdup("");
-		if (substitute_dollar(word->content, env, &refined))
+		if (substitute_dollar(word_split->front->content, env, &refined))
 			exit(1);
 		if (*refined != 0)
-			trim_quote(ret, refined, &is_wild);
+			trim_quote(ret, refined, word_split->front->token_type, &is_wild);
 		free(refined);
-		word = word->next;
+		deque_pop_front(word_split);
 	}
 	ret = remove_null_node(ret);
 	if (is_wild)
 		ret = substitute_wilds(ret);
-	ft_lstclear(word_split);
+	deque_clear(word_split);
 	free(word_split);
 	return (ret);
 }

@@ -16,6 +16,9 @@
 # include "env_tree.h"
 # include "types.h"
 
+# define WORD 0
+# define QUOTE 1
+
 extern int	g_errcode;
 
 char	**ft_split_white(char const *s);
@@ -27,7 +30,7 @@ char	**convert_word_lst_to_array(t_list *contents, t_envtree *env);
 void	update_quote_info(char ch, char *quote);
 int		substitute_dollar(char *content, t_envtree *env, char **ref);
 char	*remove_quote(char *str);
-void	add_to_lst(t_list *tmp, char *str);
+void	tokenize_and_add(t_deque *tmp, char *str);
 int		is_there_white(char *str);
 int		get_sublen(char *str, char cur);
 void	sum_lst(t_list *dst, t_list *src);
