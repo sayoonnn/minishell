@@ -64,11 +64,11 @@ static char	**ft_emptyc(char const *s)
 
 	if (*s == 0)
 	{
-			tmp = (char **)malloc(sizeof(char *) * 1);
-			if (!tmp)
-				return (NULL);
-			tmp[0] = NULL;
-			return (tmp);
+		tmp = (char **)malloc(sizeof(char *) * 1);
+		if (!tmp)
+			return (NULL);
+		tmp[0] = NULL;
+		return (tmp);
 	}
 	else
 	{
@@ -86,7 +86,7 @@ static char	**ft_emptyc(char const *s)
 	}
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_oldsplit(char const *s, char c)
 {
 	int		row;
 	int		cnt;
